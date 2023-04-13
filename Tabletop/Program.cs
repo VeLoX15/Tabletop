@@ -1,9 +1,8 @@
 using DbController;
 using DbController.MySql;
 using System.Reflection;
-using Tabletop.Core.Services.Services;
+using Tabletop.Interfaces;
 using Tabletop.Services;
-using FluentValidation;
 
 namespace Tabletop
 {
@@ -32,9 +31,9 @@ namespace Tabletop
             using var serviceScope = app.Services.CreateScope();
 
             var services = serviceScope.ServiceProvider;
-            var dbProviderService = services.GetRequiredService<IDbController>()!;
+            var dbProviderService = services.GetRequiredService<IDbProviderService>()!;
 
-            await AppdatenService.InitAsync(builder.Configuration, dbProviderService);
+            await AppdatenService.Init(builder.Configuration, dbProviderService);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

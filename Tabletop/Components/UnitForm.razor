@@ -1,5 +1,12 @@
 ﻿<h3>UnitForm</h3>
 
-@code {
+<EditForm Model="Input" @ref="_form">
+    <FluentValidationValidator />
+    <ValidationSummary />
 
-}
+    <p>
+        <label>Name:</label>
+        <InputText @bind-Value="@Input.Name" />
+    </p>
+
+</EditForm>

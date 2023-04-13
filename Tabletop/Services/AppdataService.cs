@@ -7,11 +7,13 @@ namespace Tabletop.Services
     {
         private static IConfiguration? _configuration;
 
-        public static void Init(IConfiguration configuration, IDbProviderService dbProviderService)
+        public static Task Init(IConfiguration configuration, IDbProviderService dbProviderService)
         {
             _configuration = configuration;
             using IDbController dbController = dbProviderService.GetDbController(ConnectionString);
+            return Task.CompletedTask;
         }
+
         public static string ConnectionString => _configuration?.GetConnectionString("Default") ?? string.Empty;
 
     }

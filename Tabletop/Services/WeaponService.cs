@@ -2,7 +2,7 @@
 using Tabletop.Interfaces;
 using Tabletop.Models;
 
-namespace Tabletop.Core.Services.Services
+namespace Tabletop.Services
 {
     public class WeaponService : IModelService<Weapon, int>
     {

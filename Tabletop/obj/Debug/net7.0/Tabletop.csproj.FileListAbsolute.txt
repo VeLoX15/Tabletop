@@ -1,8 +1,0 @@
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.csproj.AssemblyReference.cache
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.AssemblyInfoInputs.cache
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.AssemblyInfo.cs
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.csproj.CoreCompileInputs.cache
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.RazorAssemblyInfo.cache
-C:\Users\Tom\source\repos\Tabletop\Tabletop\obj\Debug\net7.0\Tabletop.RazorAssemblyInfo.cs
