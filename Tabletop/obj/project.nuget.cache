@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "pWDOhmKhrR04SIOuiXI+H4muYm5N0qaVKfXwfEakY/Q/sJoA98isAcnfYaFsz+K6AryjFd+WayKNx1CDPExltA==",
+  "dgSpecHash": "7VFVefAoV6oJuoQohu05pgIHBpPNks2wnT3sKUC/7b9AQEuTHbaF5i2IqJsKSw++Svokyz0tMYryP+hrhqff5g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tom\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\dbcontroller\\1.0.1\\dbcontroller.1.0.1.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\dbcontroller.mysql\\1.0.1\\dbcontroller.mysql.1.0.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\fluentvalidation\\11.5.2\\fluentvalidation.11.5.2.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",

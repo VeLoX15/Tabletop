@@ -47,6 +47,10 @@
             "DbController.MySql": {
               "target": "Package",
               "version": "[1.0.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.5.2, )"
             }
           },
           "imports": [
