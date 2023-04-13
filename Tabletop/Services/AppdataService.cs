@@ -7,7 +7,7 @@ namespace Tabletop.Services
     {
         private static IConfiguration? _configuration;
 
-        public static async Task InitAsync(IConfiguration configuration, IDbController dbProviderService)
+        public static void Init(IConfiguration configuration, IDbProviderService dbProviderService)
         {
             _configuration = configuration;
             using IDbController dbController = dbProviderService.GetDbController(ConnectionString);
