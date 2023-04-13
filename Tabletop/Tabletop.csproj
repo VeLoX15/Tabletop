@@ -10,10 +10,7 @@
     <PackageReference Include="DbController" Version="1.0.1" />
     <PackageReference Include="DbController.MySql" Version="1.0.1" />
     <PackageReference Include="FluentValidation" Version="11.5.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Validator\" />
+    <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
