@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Xml.Linq;
 using Tabletop.Models;
 
 namespace Tabletop.Validator

@@ -27,7 +27,7 @@ namespace Tabletop
 
             // FluentValidation
             //builder.Services.AddValidatorsFromAssembly(Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FormPortal.Core.Validators.dll")));
-            //var app = builder.Build();
+            var app = builder.Build();
             using var serviceScope = app.Services.CreateScope();
 
             var services = serviceScope.ServiceProvider;
