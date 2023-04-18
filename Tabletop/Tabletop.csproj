@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazor.Pagination" Version="2.0.2" />
     <PackageReference Include="DbController" Version="1.0.1" />
     <PackageReference Include="DbController.MySql" Version="1.0.1" />
     <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.5" />
     <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 

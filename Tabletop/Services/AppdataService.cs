@@ -15,6 +15,7 @@ namespace Tabletop.Services
         }
 
         public static string ConnectionString => _configuration?.GetConnectionString("Default") ?? string.Empty;
+        public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
 
     }
 }

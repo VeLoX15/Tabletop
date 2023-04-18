@@ -1,5 +1,3 @@
-using DbController;
-using DbController.MySql;
 using System.Reflection;
 using Tabletop.Interfaces;
 using Tabletop.Services;
@@ -20,7 +18,7 @@ namespace Tabletop
                     options.DetailedErrors = true;
                 });
 
-            builder.Services.AddScoped<IDbController, MySqlController>();
+            builder.Services.AddScoped<IDbProviderService, MySqlProviderService>();
             builder.Services.AddScoped<UnitService>();
             builder.Services.AddScoped<WeaponService>();
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);

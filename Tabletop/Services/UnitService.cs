@@ -1,10 +1,12 @@
 ﻿using DbController;
+using System.Text;
+using Tabletop.Filters;
 using Tabletop.Interfaces;
 using Tabletop.Models;
 
 namespace Tabletop.Services
 {
-    public class UnitService : IModelService<Unit, int>
+    public class UnitService : IModelService<Unit, int, UnitFilter>
     {
         public async Task CreateAsync(Unit input, IDbController dbController)
         {
@@ -50,6 +52,58 @@ VALUES
             });
 
             return unit;
+        }
+
+        public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController)
+        {
+            StringBuilder sb = new();
+            sb.AppendLine("SELECT * FROM units WHERE 1 = 1");
+            sb.AppendLine(GetFilterWhere(filter));
+            sb.AppendLine(@$"  ORDER BY unit_id DESC");
+            sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
+
+            string sql = sb.ToString();
+
+            List<Unit> list = await dbController.SelectDataAsync<Unit>(sql, GetFilterParameter(filter));
+
+            return list;
+        }
+
+        public Dictionary<string, object?> GetFilterParameter(UnitFilter filter)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+            };
+        }
+
+        public string GetFilterWhere(UnitFilter filter)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
+            {
+                sb.AppendLine(@" AND 
+(
+    UPPER(name) LIKE @SEARCHPHRASE
+)");
+            }
+
+            string sql = sb.ToString();
+            return sql;
+        }
+
+        public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController)
+        {
+            StringBuilder sb = new();
+            sb.AppendLine("SELECT COUNT(*) FROM units WHERE 1 = 1");
+            sb.AppendLine(GetFilterWhere(filter));
+
+            string sql = sb.ToString();
+
+            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter));
+
+            return result;
         }
 
         public async Task UpdateAsync(Unit input, IDbController dbController)

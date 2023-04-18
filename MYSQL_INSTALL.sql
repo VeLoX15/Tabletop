@@ -1,4 +1,4 @@
-DROP SCHEMA IF EXISTS `tabletop` ;
+DROP SCHEMA IF EXISTS `tabletop`;
 CREATE SCHEMA IF NOT EXISTS `tabletop` DEFAULT CHARACTER SET latin2;
 USE `tabletop`;
 
