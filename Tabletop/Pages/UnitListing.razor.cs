@@ -18,7 +18,6 @@ namespace Tabletop.Pages
         [Parameter]
         public int Page { get; set; }
         public int TotalItems { get; set; }
-        public bool UserCanDeleteForms { get; set; }
         public Unit? SelectedForDeletion { get; set; }
 
         public async Task LoadAsync(bool navigateToPage1 = false)
