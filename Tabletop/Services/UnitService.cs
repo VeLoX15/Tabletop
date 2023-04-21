@@ -18,6 +18,8 @@ fraction,
 description,
 defense,
 moving,
+primary_weapon_id,
+secondary_weapon_id
 )
 VALUES
 (
@@ -27,6 +29,8 @@ VALUES
 @DESCRIPTION,
 @DEFENSE,
 @MOVING
+@PRIMARY_WEAPON_ID,
+@SECONDARY_WEAPON_ID
 ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
@@ -113,7 +117,9 @@ name = @NAME,
 fraction = @FRACTION,
 description = @DESCRIPTION,
 defense = @DEFENSE,
-moving = MOVING
+moving = @MOVING,
+primary_weapon_id = @PRIMARY_WEAPON_ID,
+secondary_weapon_id = @SECONDARY_WEAPON_ID
 WHERE unit_id = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters());

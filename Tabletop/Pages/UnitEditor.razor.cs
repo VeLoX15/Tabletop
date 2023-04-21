@@ -1,257 +1,89 @@
-//using DbController;
-//using FluentValidation.Results;
-//using Microsoft.AspNetCore.Components;
-//using Microsoft.AspNetCore.Components.Forms;
-//using System.Text;
-//using System.Xml.Linq;
-//using Tabletop.Models;
-//using Tabletop.Services;
-//using Tabletop.Validator;
+using DbController;
+using Tabletop.Services;
+using Tabletop.Models;
+using Microsoft.AspNetCore.Components;
 
-//namespace Tabletop.Pages
-//{
-//    public partial class UnitEditor
-//    {
-//        [Parameter]
-//        public int UnitId { get; set; }
-//        public Unit? Input { get; set; }
+namespace Tabletop.Pages
+{
+    public partial class UnitEditor
+    {
+        [Parameter]
+        public int UnitId { get; set; }
+        public Unit Input { get; set; } = new();
+        public Unit StartCopy { get; set; } = new();
+        public List<Weapon> WeaponList { get; set; } = new();
 
-//        public Unit StartCopy { get; set; } = new();
-//        public bool EditFormProperties { get; set; }
-//        public Guid? ScrollToGuid { get; set; }
-//        public string ContextMenuHeaderName { get; set; } = string.Empty;
-//        public UnitValidator Validator { get; } = new UnitValidator();
+        protected override async Task OnParametersSetAsync()
+        {
 
-//        private bool _showMobileToolbar;
-//        protected override async Task OnParametersSetAsync()
-//        {
+            if (UnitId > 0)
+            {
+                await Task.Run(LoadEditModeAsync);
+            }
+            else
+            {
+                Input = new Unit();
+            }
+        }
 
-//            if (UnitId > 0)
-//            {
-//                // This Task will take some time depending on the size of the form.
-//                // To not block the UI we run it in a different Task.
-//                await Task.Run(LoadEditModeAsync);
+        public async Task LoadEditModeAsync()
+        {
+            using IDbController dbController = dbProviderService.GetDbController(AppdatenService.ConnectionString);
 
-//            }
-//            else
-//            {
-//                Input = new Unit();
-//                EditFormProperties = true;
-//            }
-//        }
+            Unit? form = await unitService.GetAsync(UnitId, dbController);
 
-//        public async Task LoadEditModeAsync()
-//        {
-//            using IDbController dbController = dbProviderService.GetDbController(AppdatenService.ConnectionString);
+            if (form is not null)
+            {
+                //Input = form.DeepCopyByExpressionTree();
+                //StartCopy = form.DeepCopyByExpressionTree();
+            }
+        }
 
-//            Unit? form = await unitService.GetAsync(UnitId, dbController);
-
-//            if (form is not null)
-//            {
-//                Input = form.DeepCopyByExpressionTree();
-//                StartCopy = form.DeepCopyByExpressionTree();
-//            }
-//        }
-//        public void DropDelete()
-//        {
-//            if (Input is null)
-//            {
-//                return;
-//            }
-//        }
-
-//        public async Task SaveAsync()
-//        {
-//            if (Input is null)
-//            {
-//                return;
-//            }
-
-//            ValidationResult validationResult = Validator.Validate(Input);
-
-//            if (!validationResult.IsValid)
-//            {
-//                StringBuilder errorBuilder = new StringBuilder();
-//                errorBuilder.AppendLine("Speichern nicht möglich, da die Validierung des Formulars fehlgeschlagen ist.");
-
-//                foreach (var item in validationResult.Errors)
-//                {
-//                    errorBuilder.AppendLine(Environment.NewLine);
-//                    errorBuilder.AppendLine(item.ErrorMessage);
-//                }
-//                string errorMessage = errorBuilder.ToString();
-
-//                await jsRuntime.ShowToastAsync(ToastType.error, errorMessage);
-//                return;
-//            }
+        public async Task SaveAsync()
+        {
+            if (Input is null)
+            {
+                return;
+            }
 
 
+            using IDbController dbController = dbProviderService.GetDbController(AppdatenService.ConnectionString);
 
+            await dbController.StartTransactionAsync();
 
-//            using IDbController dbController = dbProviderService.GetDbController(AppdatenService.ConnectionString);
+            try
+            {
+                if (Input.UnitId is 0)
+                {
+                    await unitService.CreateAsync(Input, dbController);
 
-//            await dbController.StartTransactionAsync();
+                }
+                else
+                {
+                    await unitService.UpdateAsync(Input, dbController);
 
-//            try
-//            {
-//                if (Input.UnitId is 0)
-//                {
-//                    await unitService.CreateAsync(Input, dbController);
+                }
 
-//                }
-//                else
-//                {
-//                    await unitService.UpdateAsync(Input, StartCopy, dbController);
+                await dbController.CommitChangesAsync();
+            }
+            catch (Exception)
+            {
+                await dbController.RollbackChangesAsync();
+                throw;
+            }
 
-//                }
+            if (UnitId is 0)
+            {
+                navigationManager.NavigateTo($"/Admin/FormEditor/{Input.UnitId}");
+            }
+            else
+            {
+                await OnParametersSetAsync();
 
-//                await dbController.CommitChangesAsync();
-//            }
-//            catch (Exception)
-//            {
-//                await dbController.RollbackChangesAsync();
-//                throw;
-//            }
+            }
 
-//            if (UnitId is 0)
-//            {
-//                navigationManager.NavigateTo($"/Units/{Input.UnitId}");
-//            }
-//            else
-//            {
-//                await OnParametersSetAsync();
+            await jsRuntime.ShowToastAsync(ToastType.success, "Unit has been saved successfully.");
 
-//                // We need to reset the active object in order to save the correct data.
-
-//                if (SelectedFormElement is not null)
-//                {
-//                    var activeTab = SelectedFormElement.ActiveTab;
-//                    SelectedFormElement = Input.GetAllElements().FirstOrDefault(x => x.ElementId == SelectedFormElement.ElementId);
-//                    if (SelectedFormElement is not null)
-//                    {
-//                        SelectedFormElement.ActiveTab = activeTab;
-//                    }
-//                }
-
-//                if (SelectedFormElementStack.Any())
-//                {
-//                    for (int i = 0; i < SelectedFormElementStack.Count;)
-//                    {
-//                        var element = Input.GetAllElements().FirstOrDefault(x => x.ElementId == SelectedFormElementStack[i].ElementId);
-
-//                        if (element is not null)
-//                        {
-//                            var activeTab = SelectedFormElementStack[i].ActiveTab;
-//                            element.ActiveTab = activeTab;
-//                            SelectedFormElementStack[i] = element;
-//                            i++;
-//                        }
-//                        else
-//                        {
-//                            SelectedFormElementStack.RemoveAt(i);
-//                            i--;
-//                        }
-//                    }
-
-//                }
-//            }
-
-//            await jsRuntime.ShowToastAsync(ToastType.success, "Form has been saved successfully.");
-
-//        }
-
-//        private Task OpenFormElementAsync(FormElement element)
-//        {
-//            SelectedFormElementStack.Add(element);
-//            SelectedFormElement = element;
-//            return Task.CompletedTask;
-//        }
-//        private string GetTabNavClass(bool isActive) => isActive ? "nav-link active" : "nav-link";
-//        public string GetTabClass(bool active) => active ? "tab-pane fade active show" : "tab-pane fade";
-
-//        private string GetMobileDeleteWrapperClass()
-//        {
-//            if (dragDropServiceColumns.ActiveItem is not null || dragDropServiceElements.ActiveItem is not null || dragDropServiceRows.ActiveItem is not null)
-//            {
-//                return "d-block";
-//            }
-
-//            return "d-none";
-//        }
-
-//        private async Task UploadImageAsync(InputFileChangeEventArgs e)
-//        {
-//            if (Input is null)
-//            {
-//                return;
-//            }
-//            await using MemoryStream fs = new();
-//            await e.File.OpenReadStream(e.File.Size).CopyToAsync(fs);
-
-//            Input.Image = fs.ToArray();
-//        }
-//        private string GetFormGridEditorCssClass()
-//        {
-//            if (SelectedFormElement is not null)
-//            {
-//                return "d-none";
-//            }
-
-//            return string.Empty;
-//        }
-
-//        private string GetToobalWrapperCss()
-//        {
-//            if (_showMobileToolbar)
-//            {
-//                return "d-block";
-//            }
-//            else
-//            {
-//                return "d-none";
-//            }
-//        }
-
-//        protected override async Task OnAfterRenderAsync(bool firstRender)
-//        {
-//            if (!firstRender)
-//            {
-//                if (ScrollToGuid is not null)
-//                {
-//                    await jsRuntime.ScrollToFragment(ScrollToGuid!.ToString()!, ScrollBehavior.auto);
-//                    ScrollToGuid = null;
-//                }
-//            }
-
-//        }
-
-//        private Task CloseItemAsync()
-//        {
-//            bool redirect = SelectedFormElement is null;
-
-//            if (SelectedFormElement is not null)
-//            {
-//                SelectedFormElementStack.Remove(SelectedFormElement);
-
-//                if (SelectedFormElementStack.Any())
-//                {
-//                    SelectedFormElement = SelectedFormElementStack.Last();
-//                }
-//                else
-//                {
-//                    // Cache element to jump back to it in editor
-//                    var tmp = SelectedFormElement;
-//                    ScrollToGuid = tmp.Guid;
-//                    SelectedFormElement = null;
-//                }
-//            }
-
-//            if (redirect)
-//            {
-//                navigationManager.NavigateTo("/Admin/Forms");
-//            }
-
-//            return Task.CompletedTask;
-//        }
-//    }
-//}
+        }
+    }
+}

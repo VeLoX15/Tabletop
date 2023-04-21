@@ -1,10 +1,10 @@
-﻿@page "/Units/"
-@inject UnitService unitService
+﻿@page "/Weapons/"
+@inject WeaponService weaponService
 @inject IDbProviderService dbProviderService
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 
-<PageTitle>Unit List</PageTitle>
+<PageTitle>Weapon List</PageTitle>
 
 <div class="col-lg-3 col-sm-12 order-lg-3">
     <div class="card">
@@ -37,19 +37,17 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Fraction</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <Virtualize Items="Data" Context="item">
                             <tr>
-                                <td>@item.UnitId</td>
+                                <td>@item.WeaponId</td>
                                 <td>@item.Name</td>
-                                <td>@item.Fraction</td>
                                 <td class="text-right text-nowrap">
-                                       <button type="button" class="btn btn-danger me-1" @onclick="() => SelectedForDeletion = item"><i class="fa-solid fa-trash"></i></button>
-                                    <a class="btn btn-primary" href="/Unit/@item.UnitId"><i class="fa-solid fa-edit"></i></a>
+                                    <button type="button" class="btn btn-danger me-1" @onclick="() => SelectedForDeletion = item"><i class="fa-solid fa-trash"></i></button>
+                                    <a class="btn btn-primary" href="/Weapons/@item.WeaponId"><i class="fa-solid fa-edit"></i></a>
                                 </td>
                             </tr>
                         </Virtualize>
@@ -57,7 +55,7 @@
                         @if (!Data.Any())
                         {
                             <tr>
-                                <td colspan="5" class="text-center">No units were found.</td>
+                                <td colspan="5" class="text-center">No Weapons were found.</td>
                             </tr>
                         }
                     </tbody>
@@ -71,12 +69,12 @@
     <Pagination CurrentPageNumber="Page"
                 ItemsPerPage="Filter.Limit"
                 TotalItems="TotalItems"
-                NavUrl="/Unit/" />
+                NavUrl="/Weapons/" />
 </div>
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete unit?"
+    <ConfirmModal Title="Delete Weapon?"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
         <p>Wenn Sie das Formular "@SelectedForDeletion.Name" löschen, dann werden auch alle ausgefüllten Formulare unwiderruflich gelöscht. Möchten Sie das Formular wirklich löschen?</p>
