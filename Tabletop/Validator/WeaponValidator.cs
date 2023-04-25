@@ -15,7 +15,7 @@ namespace Tabletop.Validator
             RuleFor(x => x.Description)
                 .NotEmpty()
                 .MaximumLength(255)
-                .WithMessage("Name must contain only 255 characters.");
+                .WithMessage("Description must contain only 255 characters.");
 
             RuleFor(x => x.Attack)
                 .NotEmpty()

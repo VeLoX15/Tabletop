@@ -1,5 +1,6 @@
 ﻿@page "/Weapon/"
 @page "/Weapon/{UnitId:int}"
+@using vNext.BlazorComponents.FluentValidation
 @inject WeaponService weaponService
 @inject IDbProviderService dbProviderService
 @inject IJSRuntime jsRuntime
@@ -7,6 +8,8 @@
 
 
 <EditForm Model="Input" OnValidSubmit="async () => await LoadEditModeAsync()">
+    <FluentValidationValidator />
+    <ValidationSummary />
     <div class="col-3">
         <h3>Edit Weapon</h3>
         <hr />
