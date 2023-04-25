@@ -6,7 +6,7 @@
 
 <h3>Force Calculator</h3>
 
-<EditForm Model="Units">
+<EditForm Model="Units" OnValidSubmit="async () => await OnInitializedAsync()">
     <div class="form-group row">
         <label for="unit" class="col-sm-2 col-form-label">
             Choose a unit:

@@ -19,7 +19,6 @@ namespace Tabletop.Services
         {
             string sql = $@"INSERT INTO `tabletop`.`units` 
                             (
-                            `unit_id`,
                             `name`,
                             `fraction`,
                             `description`,
@@ -28,7 +27,6 @@ namespace Tabletop.Services
                             )
                             VALUES
                             (
-                            @UNIT_ID,
                             @NAME,
                             @FRACTION,
                             @DESCRIPTION,
@@ -67,6 +65,15 @@ namespace Tabletop.Services
             return unit;
         }
 
+        public async Task<List<Unit>> GetAllAsync(IDbController dbController)
+        {
+            string sql = "SELECT * FROM `tabletop`.`units`";
+
+            var list = await dbController.SelectDataAsync<Unit>(sql);
+
+            return list;
+        }
+
         public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController)
         {
             StringBuilder sb = new();
@@ -97,9 +104,9 @@ namespace Tabletop.Services
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
                 sb.AppendLine(@" AND 
-(
-    UPPER(`name`) LIKE @SEARCHPHRASE
-)");
+                                (
+                                    UPPER(`name`) LIKE @SEARCHPHRASE
+                                )");
             }
 
             string sql = sb.ToString();
@@ -121,13 +128,13 @@ namespace Tabletop.Services
 
         public async Task UpdateAsync(Unit input, IDbController dbController)
         {
-            string sql = @"UPDATE `tabletop`.`units`  SET
-`name` = @NAME,
-`fraction` = @FRACTION,
-`description` = @DESCRIPTION,
-`defense` = @DEFENSE,
-`moving` = @MOVING
-WHERE `unit_id` = @UNIT_ID";
+            string sql = @"UPDATE `tabletop`.`units` SET
+                            `name` = @NAME,
+                            `fraction` = @FRACTION,
+                            `description` = @DESCRIPTION,
+                            `defense` = @DEFENSE,
+                            `moving` = @MOVING
+                            WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters());
         }

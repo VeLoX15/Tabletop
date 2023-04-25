@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
     `description` VARCHAR(255) NOT NULL,
     `defense` INTEGER NOT NULL,
     `moving` INTEGER NOT NULL,
-    
+
     PRIMARY KEY (`unit_id`)
 ); 
 

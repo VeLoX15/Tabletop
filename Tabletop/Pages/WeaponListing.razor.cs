@@ -58,7 +58,6 @@ namespace Tabletop.Pages
             }
 
             await LoadAsync();
-
         }
 
     }

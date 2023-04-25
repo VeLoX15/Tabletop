@@ -12,7 +12,6 @@ namespace Tabletop.Services
         {
             string sql = $@"INSERT INTO `tabletop`.`weapons`
                             (
-                            `weapon_id`,
                             `name`,
                             `description`,
                             `attack`,
@@ -22,7 +21,6 @@ namespace Tabletop.Services
                             )
                             VALUES
                             (
-                            @WEAPON_ID,
                             @NAME,
                             @DESCRIPTION,
                             @ATTACK,
@@ -40,7 +38,7 @@ namespace Tabletop.Services
 
             await dbController.QueryAsync(sql, new
             {
-                WEAPONS_ID = input.WeaponId,
+                WEAPON_ID = input.WeaponId,
             });
         }
 
@@ -86,9 +84,9 @@ namespace Tabletop.Services
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
                 sb.AppendLine(@" AND 
-(
-    UPPER(`name`) LIKE @SEARCHPHRASE
-)");
+                                (
+                                    UPPER(`name`) LIKE @SEARCHPHRASE
+                                )");
             }
 
             string sql = sb.ToString();

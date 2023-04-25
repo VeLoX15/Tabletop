@@ -41,27 +41,27 @@ namespace Tabletop.Calculators
         //    return x;
         //}
 
-        //public (int, int) AttackValueTranslator(Unit attacker, Unit defender)
-        //{
-        //    int x = 5;
+        public (int, int) AttackValueTranslator(Unit attacker, Unit defender)
+        {
+            int x = 5;
 
-        //    if (attacker.Weapon.Attack > defender.Defense)
-        //    {
-        //        x -= attacker.Weapon.Attack - defender.Defense;
-        //    }
-        //    else if (attacker.Weapon.Attack < defender.Defense)
-        //    {
-        //        x += defender.Defense - attacker.Weapon.Attack;
-        //    }
-        //    if (x > 8)
-        //    {
-        //        return (8, x - 6);
-        //    }
-        //    if (x < 2)
-        //    {
-        //        x = 2;
-        //    }
-        //    return (x, 0);
-        //}
+            if (attacker.PrimaryWeapon.Attack > defender.Defense)
+            {
+                x -= attacker.PrimaryWeapon.Attack - defender.Defense;
+            }
+            else if (attacker.PrimaryWeapon.Attack < defender.Defense)
+            {
+                x += defender.Defense - attacker.PrimaryWeapon.Attack;
+            }
+            if (x > 8)
+            {
+                return (8, x - 6);
+            }
+            if (x < 2)
+            {
+                x = 2;
+            }
+            return (x, 0);
+        }
     }
 }
