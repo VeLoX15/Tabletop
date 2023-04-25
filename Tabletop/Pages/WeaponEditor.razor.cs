@@ -5,15 +5,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace Tabletop.Pages
 {
-    public partial class UnitEditor
+    public partial class WeaponEditor
     {
         [Parameter]
         public int UnitId { get; set; }
-        public Unit Input { get; set; } = new();
-        public Unit StartCopy { get; set; } = new();
-        public List<Weapon> WeaponList { get; set; } = new();
-        public int SelectedPrimaryWeapon { get; set; } = 0;
-        public int SelectedSecondaryWeapon { get; set; } = 0;
+        public Weapon Input { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -24,7 +20,7 @@ namespace Tabletop.Pages
             }
             else
             {
-                Input = new Unit();
+                Input = new Weapon();
             }
         }
 
@@ -32,8 +28,7 @@ namespace Tabletop.Pages
         {
             using IDbController dbController = dbProviderService.GetDbController(AppdatenService.ConnectionString);
 
-            Unit? unit = await unitService.GetAsync(UnitId, dbController);
-            WeaponList = await weaponService.GetAllAsync(dbController);
+            Weapon? unit = await weaponService.GetAsync(UnitId, dbController);
 
             if (unit is not null)
             {
@@ -55,14 +50,14 @@ namespace Tabletop.Pages
 
             try
             {
-                if (Input.UnitId is 0)
+                if (Input.WeaponId is 0)
                 {
-                    await unitService.CreateAsync(Input, dbController);
+                    await weaponService.CreateAsync(Input, dbController);
 
                 }
                 else
                 {
-                    await unitService.UpdateAsync(Input, dbController);
+                    await weaponService.UpdateAsync(Input, dbController);
 
                 }
 
@@ -76,7 +71,7 @@ namespace Tabletop.Pages
 
             if (UnitId is 0)
             {
-                navigationManager.NavigateTo($"/Unit/{Input.UnitId}");
+                navigationManager.NavigateTo($"/Weapon/{Input.WeaponId}");
             }
             else
             {
@@ -84,13 +79,13 @@ namespace Tabletop.Pages
 
             }
 
-            await jsRuntime.ShowToastAsync(ToastType.success, "Unit has been saved successfully.");
+            await jsRuntime.ShowToastAsync(ToastType.success, "Weapon has been saved successfully.");
 
         }
 
         private Task CloseItemAsync()
         {
-            navigationManager.NavigateTo("/Units");
+            navigationManager.NavigateTo("/Weapons");
             return Task.CompletedTask;
         }
     }

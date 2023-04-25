@@ -1,0 +1,43 @@
+﻿@page "/Weapon/"
+@page "/Weapon/{UnitId:int}"
+@inject WeaponService weaponService
+@inject IDbProviderService dbProviderService
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navigationManager
+
+
+<EditForm Model="Input" OnValidSubmit="async () => await LoadEditModeAsync()">
+    <div class="col-3">
+        <h3>Edit Weapon</h3>
+        <hr />
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <InputText id="name" @bind-Value="Input.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <InputTextArea id="description" @bind-Value="Input.Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="defense">Attack:</label>
+            <InputNumber id="attack" @bind-Value="Input.Attack" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="moving">Quality:</label>
+            <InputNumber id="quality" @bind-Value="Input.Quality" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="moving">Range:</label>
+            <InputNumber id="range" @bind-Value="Input.Range" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="moving">Dices:</label>
+            <InputNumber id="dices" @bind-Value="Input.Dices" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+            <button type="button" class="btn btn-warning" @onclick="CloseItemAsync">Close</button>
+        </div>
+    </div>
+</EditForm>

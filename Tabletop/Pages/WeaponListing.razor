@@ -46,8 +46,8 @@
                                 <td>@item.WeaponId</td>
                                 <td>@item.Name</td>
                                 <td class="text-right text-nowrap">
-                                    <button type="button" class="btn btn-danger me-1" @onclick="() => SelectedForDeletion = item"><i class="fa-solid fa-trash"></i></button>
-                                    <a class="btn btn-primary" href="/Weapons/@item.WeaponId"><i class="fa-solid fa-edit"></i></a>
+                                    <button type="button" class="btn btn-danger me-1" @onclick="() => SelectedForDeletion = item"><i class="bi bi-trash"></i></button>
+                                    <a class="btn btn-primary" href="/Weapon/@item.WeaponId"><i class="bi bi-pencil-square"></i></a>
                                 </td>
                             </tr>
                         </Virtualize>
@@ -77,6 +77,6 @@
     <ConfirmModal Title="Delete Weapon?"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
-        <p>Wenn Sie das Formular "@SelectedForDeletion.Name" löschen, dann werden auch alle ausgefüllten Formulare unwiderruflich gelöscht. Möchten Sie das Formular wirklich löschen?</p>
+        <p>Do you really want to delete the weapon called @SelectedForDeletion.Name?</p>
     </ConfirmModal>
 }

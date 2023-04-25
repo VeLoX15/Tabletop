@@ -15,4 +15,9 @@
     <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\lib\bootstrap-icons\" />
+  </ItemGroup>
+
 </Project>

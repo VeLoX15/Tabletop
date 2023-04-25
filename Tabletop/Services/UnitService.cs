@@ -8,37 +8,40 @@ namespace Tabletop.Services
 {
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
+        private readonly WeaponService _weaponService;
+
+        public UnitService(WeaponService weaponService)
+        {
+            _weaponService = weaponService;
+        }
+
         public async Task CreateAsync(Unit input, IDbController dbController)
         {
-            string sql = $@"INSERT INTO units 
-(
-unit_id,
-name,
-fraction,
-description,
-defense,
-moving,
-primary_weapon_id,
-secondary_weapon_id
-)
-VALUES
-(
-@UNIT_ID,
-@NAME,
-@FRACTION,
-@DESCRIPTION,
-@DEFENSE,
-@MOVING
-@PRIMARY_WEAPON_ID,
-@SECONDARY_WEAPON_ID
-); {dbController.GetLastIdSql()}";
+            string sql = $@"INSERT INTO `tabletop`.`units` 
+                            (
+                            `unit_id`,
+                            `name`,
+                            `fraction`,
+                            `description`,
+                            `defense`,
+                            `moving`
+                            )
+                            VALUES
+                            (
+                            @UNIT_ID,
+                            @NAME,
+                            @FRACTION,
+                            @DESCRIPTION,
+                            @DEFENSE,
+                            @MOVING
+                            ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
         }
 
         public async Task DeleteAsync(Unit input, IDbController dbController)
         {
-            string sql = "DELETE FROM units WHERE unit_id = @UNIT_ID";
+            string sql = "DELETE FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -48,12 +51,18 @@ VALUES
 
         public async Task<Unit?> GetAsync(int unitId, IDbController dbController)
         {
-            string sql = @"SELECT * FROM units WHERE unit_id = @UNIT_ID";
+            string sql = @"SELECT * FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
             var unit = await dbController.GetFirstAsync<Unit>(sql, new
             {
                 UNIT_ID = unitId
             });
+
+            if (unit is not null)
+            {
+                //unit.PrimaryWeapon = await _weaponService.GetPrimaryWeaponAsync(unit.UnitId, dbController);
+                //unit.SecondaryWeapon = await _weaponService.GetSecondaryWeaponAsync(unit.UnitId, dbController);
+            }
 
             return unit;
         }
@@ -61,9 +70,9 @@ VALUES
         public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController)
         {
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM units WHERE 1 = 1");
+            sb.AppendLine("SELECT * FROM `tabletop`.`units`  WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY unit_id DESC");
+            sb.AppendLine(@$"  ORDER BY `unit_id` DESC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
@@ -89,7 +98,7 @@ VALUES
             {
                 sb.AppendLine(@" AND 
 (
-    UPPER(name) LIKE @SEARCHPHRASE
+    UPPER(`name`) LIKE @SEARCHPHRASE
 )");
             }
 
@@ -100,7 +109,7 @@ VALUES
         public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController)
         {
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM units WHERE 1 = 1");
+            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`units`  WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
@@ -112,15 +121,13 @@ VALUES
 
         public async Task UpdateAsync(Unit input, IDbController dbController)
         {
-            string sql = @"UPDATE units SET
-name = @NAME,
-fraction = @FRACTION,
-description = @DESCRIPTION,
-defense = @DEFENSE,
-moving = @MOVING,
-primary_weapon_id = @PRIMARY_WEAPON_ID,
-secondary_weapon_id = @SECONDARY_WEAPON_ID
-WHERE unit_id = @UNIT_ID";
+            string sql = @"UPDATE `tabletop`.`units`  SET
+`name` = @NAME,
+`fraction` = @FRACTION,
+`description` = @DESCRIPTION,
+`defense` = @DEFENSE,
+`moving` = @MOVING
+WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters());
         }

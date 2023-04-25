@@ -16,9 +16,7 @@ namespace Tabletop.Models
         public int Defense { get; set; }
         [CompareField("moving")]
         public int Moving { get; set; }
-        [CompareField("primary_weapon_id")]
         public Weapon PrimaryWeapon { get; set; } = new();
-        [CompareField("secondary_weapon_id")]
         public Weapon SecondaryWeapon { get; set; } = new();
 
         public Dictionary<string, object?> GetParameters()
@@ -30,9 +28,7 @@ namespace Tabletop.Models
                 { "FRACTION", Fraction },
                 { "DESCRIPTION", Description },
                 { "DEFENSE", Defense },
-                { "MOVING", Moving },
-                { "PRIMARY_WEAPON_ID", PrimaryWeapon },
-                { "SECONDARY_WEAPON_ID", SecondaryWeapon }
+                { "MOVING", Moving }
             };
         }
     }

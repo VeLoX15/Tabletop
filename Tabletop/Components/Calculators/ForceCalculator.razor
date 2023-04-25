@@ -1,0 +1,23 @@
+﻿@page "/Force_Calculator/"
+@inject UnitService unitService
+@inject IDbProviderService dbProviderService
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navigationManager
+
+<h3>Force Calculator</h3>
+
+<EditForm Model="Units">
+    <div class="form-group row">
+        <label for="unit" class="col-sm-2 col-form-label">
+            Choose a unit:
+        </label>
+        <div class="col-sm-10">
+            <InputSelect id="unit" @bind-Value="UnitId" class="form-control">
+                @foreach (var unit in Units)
+                {
+                    <option value="@unit.UnitId">@unit.Name</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+</EditForm>

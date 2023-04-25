@@ -1,36 +1,74 @@
 ﻿@page "/Unit/"
 @page "/Unit/{UnitId:int}"
 @inject UnitService unitService
+@inject WeaponService weaponService
 @inject IDbProviderService dbProviderService
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navigationManager
 
 
 <EditForm Model="Input" OnValidSubmit="async () => await LoadEditModeAsync()">
-    <div class="form-floating mb-3">
-        <InputText id="name" @bind-Value="Input.Name" />
-        <label for="name">Name:</label>
-        <InputText id="fraction" @bind-Value="Input.Fraction" />
-        <label for="fraction">Fraction:</label>
-        <InputText id="description" @bind-Value="Input.Description" />
-        <label for="description">Description:</label>
-        <InputNumber id="defense" @bind-Value="Input.Defense" />
-        <label for="defense">Defense:</label>
-        <InputNumber id="moving" @bind-Value="Input.Moving" />
-        <label for="moving">Moving:</label>
-        <InputSelect id="primary" @bind-Value="Input.PrimaryWeapon">
-            @foreach (var dept in WeaponList)
-            {
-                <option value="@dept.WeaponId">@dept.Name</option>
-            }
-        </InputSelect>
-        <label for="primary">Primary Weapon:</label>
-        <InputSelect id="secondary" @bind-Value="Input.SecondaryWeapon">
-            @foreach (var dept in WeaponList)
-            {
-                <option value="@dept.WeaponId">@dept.Name</option>
-            }
-        </InputSelect>
-        <label for="secondary">Secondary Weapon:</label>
+    <div class="col-3">
+        <h3>Edit Unit</h3>
+        <hr />
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <InputText id="name" @bind-Value="Input.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="fraction">Fraction:</label>
+            <InputText id="fraction" @bind-Value="Input.Fraction" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <InputTextArea id="description" @bind-Value="Input.Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="defense">Defense:</label>
+            <InputNumber id="defense" @bind-Value="Input.Defense" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="moving">Moving:</label>
+            <InputNumber id="moving" @bind-Value="Input.Moving" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="primary">Primary Weapon:</label>
+            <InputSelect id="primary" @bind-Value="Input.PrimaryWeapon" class="form-control" >
+                @if (SelectedPrimaryWeapon == 0)
+                {
+                    <option value="0">Select Weapon</option>
+                }
+                else
+                {
+                    <option value=@Input.PrimaryWeapon.WeaponId>@Input.PrimaryWeapon.Name</option>
+                }
+                @foreach (var item in WeaponList)
+                {
+                    <option value="@item.WeaponId">@item.Name</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label for="secondary">Secondary Weapon:</label>
+            <InputSelect id="secondary" @bind-Value="Input.SecondaryWeapon" class="form-control" >
+                @if (SelectedSecondaryWeapon == 0)
+                {
+                    <option value="0">Select Weapon</option>
+                } 
+                else
+                {
+                    <option value=@Input.SecondaryWeapon.WeaponId>@Input.SecondaryWeapon.Name</option>
+                }
+                @foreach (var item in WeaponList)
+                {
+                    <option value="@item.WeaponId">@item.Name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group"> 
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+            <button type="button" class="btn btn-warning" @onclick="CloseItemAsync">Close</button>
+        </div>
     </div>
 </EditForm>

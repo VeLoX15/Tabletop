@@ -10,33 +10,33 @@ namespace Tabletop.Services
     {
         public async Task CreateAsync(Weapon input, IDbController dbController)
         {
-            string sql = $@"INSERT INTO weapons 
-(
-weapon_id,
-name,
-description,
-attack,
-quality,
-range,
-dices
-)
-VALUES
-(
-@WEAPON_ID,
-@NAME,
-@DESCRIPTION,
-@ATTACK,
-@QUALITY,
-@RANGE,
-@DICES
-); {dbController.GetLastIdSql()}";
+            string sql = $@"INSERT INTO `tabletop`.`weapons`
+                            (
+                            `weapon_id`,
+                            `name`,
+                            `description`,
+                            `attack`,
+                            `quality`,
+                            `range`,
+                            `dices`
+                            )
+                            VALUES
+                            (
+                            @WEAPON_ID,
+                            @NAME,
+                            @DESCRIPTION,
+                            @ATTACK,
+                            @QUALITY,
+                            @RANGE,
+                            @DICES
+                            ); {dbController.GetLastIdSql()}";
 
             input.WeaponId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
         }
 
         public async Task DeleteAsync(Weapon input, IDbController dbController)
         {
-            string sql = "DELETE FROM weapons WHERE weapon_id = @WEAPON_ID";
+            string sql = "DELETE FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -46,7 +46,7 @@ VALUES
 
         public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController)
         {
-            string sql = @"SELECT * FROM weapons WHERE weapon_id = @WEAPON_ID";
+            string sql = @"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
             var weapon = await dbController.GetFirstAsync<Weapon>(sql, new
             {
@@ -59,9 +59,9 @@ VALUES
         public async Task<List<Weapon>> GetAsync(WeaponFilter filter, IDbController dbController)
         {
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM weapons WHERE 1 = 1");
+            sb.AppendLine("SELECT * FROM `tabletop`.`weapons` WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY weapon_id DESC");
+            sb.AppendLine(@$"  ORDER BY `weapon_id` DESC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
@@ -87,7 +87,7 @@ VALUES
             {
                 sb.AppendLine(@" AND 
 (
-    UPPER(name) LIKE @SEARCHPHRASE
+    UPPER(`name`) LIKE @SEARCHPHRASE
 )");
             }
 
@@ -98,7 +98,7 @@ VALUES
         public async Task<int> GetTotalAsync(WeaponFilter filter, IDbController dbController)
         {
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM weapons WHERE 1 = 1");
+            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`weapons` WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
@@ -108,16 +108,25 @@ VALUES
             return result;
         }
 
+        public async Task<List<Weapon>> GetAllAsync(IDbController dbController)
+        {
+            string sql = "SELECT * FROM `tabletop`.`weapons`";
+
+            var list = await dbController.SelectDataAsync<Weapon>(sql);
+
+            return list;
+        }
+
         public async Task UpdateAsync(Weapon input, IDbController dbController)
         {
-            string sql = @"UPDATE weapons SET
-name = @NAME,
-description = @DESCRIPTION,
-attack = @ATTACK,
-quality = @QUALITY,
-range = @RANGE,
-dices = @DICES
-WHERE weapon_id = @WEAPON_ID";
+            string sql = @"UPDATE `tabletop`.`weapons` SET
+                            `name` = @NAME,
+                            `description` = @DESCRIPTION,
+                            `attack` = @ATTACK,
+                            `quality` = @QUALITY,
+                            `range` = @RANGE,
+                            `dices` = @DICES
+                            WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters());
         }
@@ -126,5 +135,46 @@ WHERE weapon_id = @WEAPON_ID";
         {
             throw new NotImplementedException();
         }
+
+    //    public async Task<List<Weapon>> GetUnitWeaponsAsync(int unitId, IDbController dbController)
+    //    {
+    //        string sql = @"SELECT w.*
+    //FROM unit_weapons uw
+    //INNER JOIN weapons w ON (w.weapon_id = uw.weapon_id)
+    //WHERE unit_id = @UNIT_ID";
+
+    //        var weapon = await dbController.GetFirstAsync<Weapon>(sql, new
+    //        {
+    //            UNIT_ID = unitId
+    //        });
+
+    //        weapon = await dbController.GetFirstAsync<Weapon>(sql, new
+    //        {
+    //            UNIT_ID = unitId
+    //        });
+
+
+    //        List<Weapon> list = new();
+
+    //        if (weapon is not null)
+    //        {
+    //            list.Add(weapon);
+    //        }
+
+    //        var list = await dbController.GetFirstAsync<Weapon>(sql, new
+    //        {
+    //            UNIT_ID = unitId
+    //        });
+
+    //        if (primaryWeapon == null)
+    //        {
+    //            throw new InvalidOperationException("No weapon found.");
+    //        }
+    //        if (p)
+    //        else
+    //        {
+    //            return list;
+    //        }
+    //    }
     }
 }

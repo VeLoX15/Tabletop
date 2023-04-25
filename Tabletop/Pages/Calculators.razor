@@ -1,0 +1,15 @@
+﻿@page "/Calculators/"
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+
+<h3>Choose a Application</h3>
+
+@if(SelectedOption == 0)
+{
+    <div class="form-group">
+    <button type="button" class="btn btn-light" @onclick=" x => SelectedOption = 1">Force Calculator</button>
+</div>
+}
+else if(SelectedOption == 1) {
+    <ForceCalculator></ForceCalculator>
+}
