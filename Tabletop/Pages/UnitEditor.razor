@@ -9,7 +9,7 @@
 
 
 <EditForm Model="Input" OnValidSubmit="async () => await LoadEditModeAsync()">
-    <FluentValidationValidator />
+    <FluentValidationValidator Validator="Validator" />
     <ValidationSummary />
     <div class="col-3">
         <h3>Edit Unit</h3>

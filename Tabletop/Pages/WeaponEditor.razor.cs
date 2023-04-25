@@ -2,6 +2,7 @@ using DbController;
 using Tabletop.Services;
 using Tabletop.Models;
 using Microsoft.AspNetCore.Components;
+using Tabletop.Validator;
 
 namespace Tabletop.Pages
 {
@@ -10,6 +11,7 @@ namespace Tabletop.Pages
         [Parameter]
         public int UnitId { get; set; }
         public Weapon Input { get; set; } = new();
+        private WeaponValidator Validator { get; set; } = new WeaponValidator();
 
         protected override async Task OnParametersSetAsync()
         {
