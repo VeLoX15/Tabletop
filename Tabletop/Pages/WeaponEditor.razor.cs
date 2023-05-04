@@ -1,8 +1,8 @@
 using DbController;
-using Tabletop.Services;
-using Tabletop.Models;
+using Tabletop.Core.Services;
+using Tabletop.Core.Models;
 using Microsoft.AspNetCore.Components;
-using Tabletop.Validator;
+using Tabletop.Core.Validator;
 
 namespace Tabletop.Pages
 {

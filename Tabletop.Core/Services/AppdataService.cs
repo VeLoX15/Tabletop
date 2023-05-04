@@ -15,7 +15,7 @@ namespace Tabletop.Core.Services
             return Task.CompletedTask;
         }
 
-        public static string ConnectionString => _configuration?.GetConnectionString("Default") ?? string.Empty;
+        public static string ConnectionString => _configuration?["ConnectionString"] ?? string.Empty;
         public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
 
     }

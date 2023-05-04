@@ -1,6 +1,6 @@
 using System.Reflection;
-using Tabletop.Interfaces;
-using Tabletop.Services;
+using Tabletop.Core.Interfaces;
+using Tabletop.Core.Services;
 
 namespace Tabletop
 {

@@ -1,9 +1,9 @@
 using Blazor.Pagination;
 using DbController;
 using Microsoft.AspNetCore.Components;
-using Tabletop.Filters;
-using Tabletop.Models;
-using Tabletop.Services;
+using Tabletop.Core.Filters;
+using Tabletop.Core.Models;
+using Tabletop.Core.Services;
 
 namespace Tabletop.Pages
 {

@@ -1,6 +1,6 @@
 using DbController;
-using Tabletop.Models;
-using Tabletop.Services;
+using Tabletop.Core.Models;
+using Tabletop.Core.Services;
 
 namespace Tabletop.Pages
 {
