@@ -1,6 +1,0 @@
-{
-  "ConnectionStrings": {
-    "Default": "Server=localhost;Database=tabletop;Uid=root;"
-  },
-  "PageLimit": 30
-}

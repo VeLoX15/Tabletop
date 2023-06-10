@@ -14,29 +14,29 @@ namespace Tabletop.Core.Services
             _weaponService = weaponService;
         }
 
-        public async Task CreateAsync(Unit input, IDbController dbController)
+        public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = $@"INSERT INTO `tabletop`.`units` 
-                            (
-                            `name`,
-                            `fraction`,
-                            `description`,
-                            `defense`,
-                            `moving`
-                            )
-                            VALUES
-                            (
-                            @NAME,
-                            @FRACTION,
-                            @DESCRIPTION,
-                            @DEFENSE,
-                            @MOVING
-                            ); {dbController.GetLastIdSql()}";
+                (
+                `name`,
+                `fraction`,
+                `description`,
+                `defense`,
+                `moving`
+                )
+                VALUES
+                (
+                @NAME,
+                @FRACTION,
+                @DESCRIPTION,
+                @DEFENSE,
+                @MOVING
+                ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
         }
 
-        public async Task DeleteAsync(Unit input, IDbController dbController)
+        public async Task DeleteAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = "DELETE FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
@@ -46,7 +46,7 @@ namespace Tabletop.Core.Services
             });
         }
 
-        public async Task<Unit?> GetAsync(int unitId, IDbController dbController)
+        public async Task<Unit?> GetAsync(int unitId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"SELECT * FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
@@ -64,7 +64,7 @@ namespace Tabletop.Core.Services
             return unit;
         }
 
-        public async Task<List<Unit>> GetAllAsync(IDbController dbController)
+        public async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = "SELECT * FROM `tabletop`.`units`";
 
@@ -73,7 +73,7 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController)
+        public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             StringBuilder sb = new();
             sb.AppendLine("SELECT * FROM `tabletop`.`units`  WHERE 1 = 1");
@@ -102,17 +102,14 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND 
-                                (
-                                    UPPER(`name`) LIKE @SEARCHPHRASE
-                                )");
+                sb.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sb.ToString();
             return sql;
         }
 
-        public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController)
+        public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             StringBuilder sb = new();
             sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`units`  WHERE 1 = 1");
@@ -125,22 +122,17 @@ namespace Tabletop.Core.Services
             return result;
         }
 
-        public async Task UpdateAsync(Unit input, IDbController dbController)
+        public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`units` SET
-                            `name` = @NAME,
-                            `fraction` = @FRACTION,
-                            `description` = @DESCRIPTION,
-                            `defense` = @DEFENSE,
-                            `moving` = @MOVING
-                            WHERE `unit_id` = @UNIT_ID";
+                `name` = @NAME,
+                `fraction` = @FRACTION,
+                `description` = @DESCRIPTION,
+                `defense` = @DEFENSE,
+                `moving` = @MOVING
+                WHERE `unit_id` = @UNIT_ID";
 
-            await dbController.QueryAsync(sql, input.GetParameters());
-        }
-
-        public Task UpdateAsync(Unit input, Unit oldInputToCompare, IDbController dbController)
-        {
-            throw new NotImplementedException();
+            await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using DbController;
 using DbController.MySql;
-using FormPortal.Core.Settings;
+using Tabletop.Core.Settings;
 using MySql.Data.MySqlClient;
 using System.Text.Json;
 using Tabeltop.Core.Installer;
@@ -16,16 +16,11 @@ settings.ConnectionString = dbController.ConnectionString;
 
 User user = new User
 {
-    Origin = "local",
     Salt = StringExtensions.RandomString(10)
 };
 
 Console.WriteLine("Please enter a username:");
 user.Username = ReadConsole(false, x => ValidateString(x, false));
-Console.WriteLine("Please enter display name:");
-user.DisplayName = ReadConsole(false, x => ValidateString(x, false));
-Console.WriteLine("Please enter email:");
-user.Email = ReadConsole(false, x => ValidateString(x, false));
 Console.WriteLine("Please enter password:");
 user.Password = ReadConsole(false, x => ValidateString(x, false));
 

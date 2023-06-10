@@ -3,37 +3,11 @@ using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class PermissionService : IModelService<Permission, int>
+    public class PermissionService
     {
-        public Task CreateAsync(Permission input, IDbController dbController)
+        public async Task<List<Permission>> GetUserPermissionsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(Permission input, IDbController dbController)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Permission?> GetAsync(int permissionId, IDbController dbController)
-        {
-            string sql = "SELECT * FROM permissions WHERE permission_id = @PERMISSION_ID";
-
-            var item = dbController.GetFirstAsync<Permission>(sql, new
-            {
-                PERMISSION_ID = permissionId
-            });
-
-            return item;
-        }
-
-        public Task UpdateAsync(Permission input, IDbController dbController)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Permission>> GetUserPermissionsAsync(int userId, IDbController dbController)
-        {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT p.*
     FROM user_permissions up
     INNER JOIN permissions p ON (p.permission_id = up.permission_id)
@@ -42,19 +16,22 @@ namespace Tabletop.Core.Services
             var list = await dbController.SelectDataAsync<Permission>(sql, new
             {
                 USER_ID = userId
-            });
+            }, cancellationToken);
+
+            //await LoadPermissionDescriptionsAsync(list, dbController, cancellationToken);
 
             return list;
         }
 
-        public async Task UpdateUserPermissionsAsync(User user, IDbController dbController)
+        public async Task UpdateUserPermissionsAsync(User user, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             // Step 1: Delete all permissions for the user.
             string sql = "DELETE FROM user_permissions WHERE user_id = @USER_ID";
             await dbController.QueryAsync(sql, new
             {
                 USER_ID = user.UserId
-            });
+            }, cancellationToken);
 
             // Step 2: Add all permissions from the object back.
             foreach (var permission in user.Permissions)
@@ -74,7 +51,7 @@ namespace Tabletop.Core.Services
                 {
                     USER_ID = user.UserId,
                     PERMISSION_ID = permission.PermissionId
-                });
+                }, cancellationToken);
 
             }
         }
@@ -83,13 +60,7 @@ namespace Tabletop.Core.Services
             string sql = "SELECT * FROM permissions";
 
             var list = await dbController.SelectDataAsync<Permission>(sql);
-
             return list;
-        }
-
-        public Task UpdateAsync(Permission input, Permission oldInputToCompare, IDbController dbController)
-        {
-            throw new NotImplementedException();
         }
     }
 }

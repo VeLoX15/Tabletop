@@ -35,7 +35,7 @@ namespace Tabletop.Core.Models
                 { "EMAIL", Email },
                 { "PASSWORD", Password },
                 { "SALT", Salt },
-                { "ORIGIN", Origin },
+                { "ORIGIN", Origin }
             };
         }
     }

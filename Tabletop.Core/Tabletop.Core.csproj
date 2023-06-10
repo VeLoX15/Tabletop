@@ -25,9 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DbController" Version="2.1.0" />
-    <PackageReference Include="DbController.MySql" Version="2.1.0" />
+    <PackageReference Include="DbController" Version="2.2.0" />
+    <PackageReference Include="DbController.MySql" Version="2.2.0" />
+    <PackageReference Include="DbController.TypeHandler" Version="2.2.0" />
     <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
 

@@ -7,31 +7,31 @@ namespace Tabletop.Core.Services
 {
     public class WeaponService : IModelService<Weapon, int, WeaponFilter>
     {
-        public async Task CreateAsync(Weapon input, IDbController dbController)
+        public async Task CreateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = $@"INSERT INTO `tabletop`.`weapons`
-                            (
-                            `name`,
-                            `description`,
-                            `attack`,
-                            `quality`,
-                            `range`,
-                            `dices`
-                            )
-                            VALUES
-                            (
-                            @NAME,
-                            @DESCRIPTION,
-                            @ATTACK,
-                            @QUALITY,
-                            @RANGE,
-                            @DICES
-                            ); {dbController.GetLastIdSql()}";
+                (
+                `name`,
+                `description`,
+                `attack`,
+                `quality`,
+                `range`,
+                `dices`
+                )
+                VALUES
+                (
+                @NAME,
+                @DESCRIPTION,
+                @ATTACK,
+                @QUALITY,
+                @RANGE,
+                @DICES
+                ); {dbController.GetLastIdSql()}";
 
             input.WeaponId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
         }
 
-        public async Task DeleteAsync(Weapon input, IDbController dbController)
+        public async Task DeleteAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = "DELETE FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
@@ -41,7 +41,7 @@ namespace Tabletop.Core.Services
             });
         }
 
-        public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController)
+        public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
@@ -53,7 +53,7 @@ namespace Tabletop.Core.Services
             return weapon;
         }
 
-        public async Task<List<Weapon>> GetAsync(WeaponFilter filter, IDbController dbController)
+        public async Task<List<Weapon>> GetAsync(WeaponFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             StringBuilder sb = new();
             sb.AppendLine("SELECT * FROM `tabletop`.`weapons` WHERE 1 = 1");
@@ -82,17 +82,14 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND 
-                                (
-                                    UPPER(`name`) LIKE @SEARCHPHRASE
-                                )");
+                sb.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sb.ToString();
             return sql;
         }
 
-        public async Task<int> GetTotalAsync(WeaponFilter filter, IDbController dbController)
+        public async Task<int> GetTotalAsync(WeaponFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             StringBuilder sb = new();
             sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`weapons` WHERE 1 = 1");
@@ -114,64 +111,18 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        public async Task UpdateAsync(Weapon input, IDbController dbController)
+        public async Task UpdateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`weapons` SET
-                            `name` = @NAME,
-                            `description` = @DESCRIPTION,
-                            `attack` = @ATTACK,
-                            `quality` = @QUALITY,
-                            `range` = @RANGE,
-                            `dices` = @DICES
-                            WHERE `weapon_id` = @WEAPON_ID";
+                `name` = @NAME,
+                `description` = @DESCRIPTION,
+                `attack` = @ATTACK,
+                `quality` = @QUALITY,
+                `range` = @RANGE,
+                `dices` = @DICES
+                WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters());
         }
-
-        public Task UpdateAsync(Weapon input, Weapon oldInputToCompare, IDbController dbController)
-        {
-            throw new NotImplementedException();
-        }
-
-    //    public async Task<List<Weapon>> GetUnitWeaponsAsync(int unitId, IDbController dbController)
-    //    {
-    //        string sql = @"SELECT w.*
-    //FROM unit_weapons uw
-    //INNER JOIN weapons w ON (w.weapon_id = uw.weapon_id)
-    //WHERE unit_id = @UNIT_ID";
-
-    //        var weapon = await dbController.GetFirstAsync<Weapon>(sql, new
-    //        {
-    //            UNIT_ID = unitId
-    //        });
-
-    //        weapon = await dbController.GetFirstAsync<Weapon>(sql, new
-    //        {
-    //            UNIT_ID = unitId
-    //        });
-
-
-    //        List<Weapon> list = new();
-
-    //        if (weapon is not null)
-    //        {
-    //            list.Add(weapon);
-    //        }
-
-    //        var list = await dbController.GetFirstAsync<Weapon>(sql, new
-    //        {
-    //            UNIT_ID = unitId
-    //        });
-
-    //        if (primaryWeapon == null)
-    //        {
-    //            throw new InvalidOperationException("No weapon found.");
-    //        }
-    //        if (p)
-    //        else
-    //        {
-    //            return list;
-    //        }
-    //    }
     }
 }

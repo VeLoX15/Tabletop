@@ -8,18 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="Blazor.Pagination" Version="2.0.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.5" />
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="7.0.0" />
     <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
 	<ProjectReference Include="..\Tabletop.Core\Tabletop.Core.csproj" />
-	<ProjectReference Include="..\Tabletop.Installer\Tabletop.Installer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\" />
-    <Folder Include="wwwroot\lib\bootstrap-icons\" />
+    <Folder Include="Pages\Admin\" />
+    <Folder Include="wwwroot\assets\img\logo\" />
   </ItemGroup>
 
 </Project>

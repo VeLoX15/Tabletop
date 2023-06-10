@@ -1,44 +1,92 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Tabletop</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿@using System.Runtime.InteropServices
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/Units" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Units
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/Weapons" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Weapons
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/Calculators" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Calculators
-            </NavLink>
-        </div>
-    </nav>
-</div>
+<h3 class="text-center">TABLETOP</h3>
 
-@code {
-    private bool collapseNavMenu = true;
+<ul class="menu">
+    <li class="sidebar-item">
+        <NavLink href="/" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+            <i class="bi bi-speedometer"></i>
+            <span>Home</span>
+        </NavLink>
+    </li>
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+    <li class="sidebar-title">Information</li>
+
+
+
+            <li class="sidebar-item">
+                <NavLink href="/Rules" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                    <i class="bi bi-stack"></i>
+                    <span>Rules</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/fractions" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                    <i class="bi bi-box-fill"></i>
+                    <span>Fractions</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Gamemodes" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                    <i class="bi bi-archive-fill"></i>
+                    <span>Gamemodes</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Tables" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                    <i class="bi bi-cart-fill"></i>
+                    <span>Table Values</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Social-Media" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                    <i class="bi bi-cart-fill"></i>
+                    <span>Social Media</span>
+                </NavLink>
+            </li>
+
+
+
+
+    <li class="sidebar-title">Account</li>
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <Authorized>
+                <li class="sidebar-item">
+                    <NavLink href="/Account/Details" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                        <i class="bi bi-person-fill"></i>
+                        <span>Account</span>
+                    </NavLink>
+                </li>
+
+                <li class="sidebar-item">
+                    <form method="post" action="/Account/Logout">
+                        <button type="submit" class="btn btn-danger btn-block text-left sidebar-link logout-button">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                </li>
+            </Authorized>
+            <NotAuthorized>
+                <li class="sidebar-item">
+                    <NavLink href="/Account/Login" class='sidebar-link blazor-link' Match="NavLinkMatch.All">
+                        <i class="bi bi-person-fill"></i>
+                        <span>Login</span>
+                    </NavLink>
+                </li>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+
+</ul>
+
+<p class="text-center">
+    Ver. @Program.GetVersion()
+    <div>@RuntimeInformation.FrameworkDescription / @RuntimeInformation.ProcessArchitecture</div>
+</p>

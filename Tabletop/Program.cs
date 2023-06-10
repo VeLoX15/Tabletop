@@ -1,5 +1,8 @@
+using Dapper;
+using DbController.TypeHandler;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Reflection;
-using Tabletop.Core.Interfaces;
 using Tabletop.Core.Services;
 
 namespace Tabletop
@@ -10,6 +13,11 @@ namespace Tabletop
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            SqlMapper.AddTypeHandler(typeof(Guid), new GuidTypeHandler());
+            SqlMapper.RemoveTypeMap(typeof(Guid));
+            SqlMapper.RemoveTypeMap(typeof(Guid?));
+
+            var config = builder.Configuration;
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor()
@@ -18,20 +26,28 @@ namespace Tabletop
                     options.DetailedErrors = true;
                 });
 
-            builder.Services.AddScoped<IDbProviderService, MySqlProviderService>();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, configureOptions =>
+                {
+                });
+
+            builder.Services.AddScoped<PermissionService>();
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UnitService>();
             builder.Services.AddScoped<WeaponService>();
+
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);
 
             // FluentValidation
-            //builder.Services.AddValidatorsFromAssembly(Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FormPortal.Core.Validators.dll")));
+            builder.Services.AddValidatorsFromAssembly(Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tabletop.Core.dll")));
             var app = builder.Build();
             using var serviceScope = app.Services.CreateScope();
 
             var services = serviceScope.ServiceProvider;
-            var dbProviderService = services.GetRequiredService<IDbProviderService>()!;
 
-            await AppdatenService.Init(builder.Configuration, dbProviderService);
+
+            await AppdatenService.InitAsync(builder.Configuration);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -49,6 +65,7 @@ namespace Tabletop
 
             app.UseAuthentication();
 
+            app.MapControllers();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
 
