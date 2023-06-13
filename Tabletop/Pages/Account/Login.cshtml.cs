@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.DirectoryServices.Protocols;
-using System.Net;
 using System.Security.Claims;
 using System.Web;
 using Tabletop.Core.Models;
@@ -67,108 +65,6 @@ namespace Tabletop.Pages.Account
                     if (result is PasswordVerificationResult.Failed)
                     {
                         user = null;
-                    }
-                }
-                else
-                {
-                    // Wenn kein lokales Konto gefunden wurde, dann prüfen wir das Active-Directory
-                    if (AppdatenService.IsLdapLoginEnabled)
-                    {
-                        try
-                        {
-                            using var connection = new LdapConnection(AppdatenService.LdapServer);
-
-                            var networkCredential = new NetworkCredential(Input.Username, Input.Password, AppdatenService.LdapDomainServer);
-                            connection.SessionOptions.SecureSocketLayer = false; // Warnung kann ignoriert werden, ist ein Fehler vom Package
-                            connection.AuthType = AuthType.Negotiate;
-                            connection.Bind(networkCredential);
-
-                            var searchRequest = new SearchRequest
-                                (
-                                AppdatenService.LdapDistinguishedName,
-                $"(SAMAccountName={Input.Username})",
-                                SearchScope.Subtree, new string[]
-                                {
-                                "cn",
-                                "mail",
-                                "givenName",
-                                "sn",
-                                "objectGUID"
-                                });
-
-                            SearchResponse directoryResponse = (SearchResponse)connection.SendRequest(searchRequest);
-
-                            SearchResultEntry searchResultEntry = directoryResponse.Entries[0];
-
-                            Dictionary<string, string> attributes = new Dictionary<string, string>();
-                            Guid? guid = null;
-                            foreach (DirectoryAttribute userReturnAttribute in searchResultEntry.Attributes.Values)
-                            {
-                                if (userReturnAttribute.Name == "objectGUID")
-                                {
-                                    byte[] guidByteArray = (byte[])userReturnAttribute.GetValues(typeof(byte[]))[0];
-                                    guid = new Guid(guidByteArray);
-                                    attributes.Add("guid", ((Guid)guid).ToString());
-                                }
-                                else
-                                {
-                                    attributes.Add(userReturnAttribute.Name, (string)userReturnAttribute.GetValues(typeof(string))[0]);
-                                }
-                            }
-
-                            if (!attributes.ContainsKey("mail"))
-                            {
-                                attributes.Add("mail", string.Empty);
-                            }
-
-                            if (!attributes.ContainsKey("sn"))
-                            {
-                                attributes.Add("sn", string.Empty);
-                            }
-
-                            if (!attributes.ContainsKey("givenName"))
-                            {
-                                attributes.Add("givenName", string.Empty);
-                            }
-
-                            if (guid is null)
-                            {
-                                throw new InvalidOperationException();
-                            }
-
-                            user = await _userService.GetAsync((Guid)guid, dbController);
-
-                            if (user is null)
-                            {
-                                user = new User
-                                {
-                                    Username = Input.Username.ToUpper(),
-                                    ActiveDirectoryGuid = (Guid)guid,
-                                    Email = attributes["mail"],
-                                    DisplayName = $"{attributes["givenName"]} {attributes["sn"]}",
-                                    Origin = "ad"
-                                };
-
-                                // Give the first user of the app all permissions
-                                if (!AppdatenService.FirstUserExists)
-                                {
-                                    foreach (var permission in AppdatenService.Permissions)
-                                    {
-                                        user.Permissions.Add(permission);
-                                    }
-                                }
-
-                                await _userService.CreateAsync(user, dbController);
-                                AppdatenService.FirstUserExists = true;
-                            }
-
-
-
-                        }
-                        catch (LdapException)
-                        {
-
-                        }
                     }
                 }
 

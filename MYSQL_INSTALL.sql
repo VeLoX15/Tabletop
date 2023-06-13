@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
 	`user_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
 	`display_name` VARCHAR(100) NOT NULL,
-	`active_directory_guid` VARCHAR(36),
-	`email` VARCHAR(255) NOT NULL,
+	`image` IMAGE,
 	`password` VARCHAR(255) NOT NULL,
 	`salt` VARCHAR(255) NOT NULL,
-	`origin` VARCHAR(5) NOT NULL,
+	`main_fraction_id` VARCHAR(50),
     `last_login` DATETIME NOT NULL,
 
 	PRIMARY KEY(`user_id`)
+	FOREIGN KEY (`main_fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 
 -- -----------------------------------------------------
@@ -44,18 +44,61 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_permissions` (
 );
 
 -- -----------------------------------------------------
+-- Table `tabletop`.`fractions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`fractions` 
+(
+    `fraction_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (`fraction_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`user_fractions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`fractions` 
+(
+    `user_id` INTEGER NOT NULL,
+	`fraction_id` INTEGER NOT NULL,
+
+    PRIMARY KEY (`user_id`),
+	PRIMARY KEY (`fraction_id`)
+); 
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`user_units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`user_units` 
+(
+    `user_id` INTEGER NOT NULL,
+	`unit_id` INTEGER NOT NULL,
+	`count` INTEGER NOT NULL,
+
+    PRIMARY KEY (`user_id`),
+	PRIMARY KEY (`unit_id`)
+); 
+
+-- -----------------------------------------------------
 -- Table `tabletop`.`units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
 (
     `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
-    `fraction` VARCHAR(50) NOT NULL,
+    `fraction_id` INTEGER NOT NULL,
     `description` VARCHAR(255) NOT NULL,
+	`mechanic` VAR(255) NOT NULL,
     `defense` INTEGER NOT NULL,
     `moving` INTEGER NOT NULL,
+	`primary_weapon_id` INTEGER NULL,
+	`secondary_weapon_id` INTEGER NULL,
 
-    PRIMARY KEY (`unit_id`)
+    PRIMARY KEY (`unit_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
+	FOREIGN KEY (`primary_weapon`) REFERENCES `tabletop`.`weapons`(`primary_weapon`),
+	FOREIGN KEY (`secondary_weapon`) REFERENCES `tabletop`.`weapons`(`secondary_weapon`)
 ); 
 
 -- -----------------------------------------------------
@@ -73,17 +116,3 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`weapons`
 
     PRIMARY KEY (`weapon_id`)
 ); 
-
--- -----------------------------------------------------
--- Table `tabletop`.`unit_weapons`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`unit_weapons`
-(
-	`unit_id` INTEGER NOT NULL,
-	`weapon_id` INTEGER NOT NULL,
-    `is_primary` TINYINT NOT NULL DEFAULT 0,
-
-	PRIMARY KEY(`unit_id`, `weapon_id`),
-	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`),
-	FOREIGN KEY (`weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
-);

@@ -1,14 +1,19 @@
+using Microsoft.AspNetCore.Components;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Components.Cards
 {
     public partial class UnitOverview
     {
-        private List<Unit> Units { get; set; }
+        [Parameter]
+        public List<Unit> Units { get; set; } = new();
+        [Parameter]
+        public EventCallback<Unit> OnUnitSelected { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        private async Task SelectUnit(Unit unit)
         {
-            
+            await OnUnitSelected.InvokeAsync(unit);
+            navigationManager.NavigateTo($"/Fractions/GAR/{unit.Name}");
         }
     }
 }

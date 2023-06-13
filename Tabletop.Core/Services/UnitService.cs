@@ -64,7 +64,7 @@ namespace Tabletop.Core.Services
             return unit;
         }
 
-        public async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = "SELECT * FROM `tabletop`.`units`";
 
@@ -133,6 +133,9 @@ namespace Tabletop.Core.Services
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            await _weaponService.UpdateAsync(input.PrimaryWeapon, dbController, cancellationToken);
+            await _weaponService.UpdateAsync(input.SecondaryWeapon, dbController, cancellationToken);
         }
     }
 }

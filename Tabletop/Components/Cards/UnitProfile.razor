@@ -1,0 +1,59 @@
+﻿@if (Unit != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div id="profil-wrapper">
+                    <div id="profil-description">
+                        <h1>@Unit.Name</h1>
+                        <p>@Unit.Description</p>
+                    </div>
+                    <div id="profil-image">
+                        <img src="" class="img-fluid">
+                    </div>
+                    <div id="profil-mechanic">
+                        <h2>Spielmechanik</h2>
+                        <p>@Unit.Mechanic</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div id="profil-values">
+                    <h2>Table of values</h2>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Av</th>
+                                <th>At</th>
+                                <th>V</th>
+                                <th>Q</th>
+                                <th>B</th>
+                                <th>Rv</th>
+                                <th>Rt</th>
+                                <th>W</th>
+                                <th>M</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>5</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>16</td>
+                                <td>40</td>
+                                <td>40</td>
+                                <td>1</td>
+                                <td>12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No unit selected.</p>
+}

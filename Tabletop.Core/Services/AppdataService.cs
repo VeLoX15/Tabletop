@@ -11,6 +11,10 @@ namespace Tabletop.Core.Services
 
         public static List<Permission> Permissions { get; set; } = new();
 
+        public static List<Unit> Units { get; set; } = new();
+
+        public static List<Weapon> Weapons { get; set; } = new();
+
         private static IConfiguration? _configuration;
 
         public static async Task InitAsync(IConfiguration configuration)
@@ -19,6 +23,9 @@ namespace Tabletop.Core.Services
             using IDbController dbController = new MySqlController(ConnectionString);
             Permissions = await PermissionService.GetAllAsync(dbController);
             FirstUserExists = await UserService.FirstUserExistsAsync(dbController);
+
+            Units = await UnitService.GetAllAsync(dbController);
+            Weapons = await WeaponService.GetAllAsync(dbController);
         }
 
 

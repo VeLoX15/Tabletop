@@ -9,9 +9,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT p.*
-    FROM user_permissions up
-    INNER JOIN permissions p ON (p.permission_id = up.permission_id)
-    WHERE user_id = @USER_ID";
+    FROM `tabletop`.`user_permissions` up
+    INNER JOIN `permissions` p ON (p.`permission_id` = up.`permission_id`)
+    WHERE `user_id` = @USER_ID";
 
             var list = await dbController.SelectDataAsync<Permission>(sql, new
             {
@@ -27,7 +27,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             // Step 1: Delete all permissions for the user.
-            string sql = "DELETE FROM user_permissions WHERE user_id = @USER_ID";
+            string sql = "DELETE FROM `tabletop`.`user_permissions` WHERE `user_id` = @USER_ID";
             await dbController.QueryAsync(sql, new
             {
                 USER_ID = user.UserId
@@ -36,7 +36,7 @@ namespace Tabletop.Core.Services
             // Step 2: Add all permissions from the object back.
             foreach (var permission in user.Permissions)
             {
-                sql = @"INSERT INTO user_permissions
+                sql = @"INSERT INTO `tabletop`.`user_permissions`
     (
     user_id,
     permission_id
@@ -57,7 +57,7 @@ namespace Tabletop.Core.Services
         }
         public static async Task<List<Permission>> GetAllAsync(IDbController dbController)
         {
-            string sql = "SELECT * FROM permissions";
+            string sql = "SELECT * FROM `tabletop`.`permissions`";
 
             var list = await dbController.SelectDataAsync<Permission>(sql);
             return list;

@@ -102,7 +102,7 @@ namespace Tabletop.Core.Services
             return result;
         }
 
-        public async Task<List<Weapon>> GetAllAsync(IDbController dbController)
+        public static async Task<List<Weapon>> GetAllAsync(IDbController dbController)
         {
             string sql = "SELECT * FROM `tabletop`.`weapons`";
 

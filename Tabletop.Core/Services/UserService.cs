@@ -16,15 +16,15 @@ namespace Tabletop.Core.Services
         public async Task CreateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = $@"INSERT INTO users
+            string sql = $@"INSERT INTO `tabletop`.`users`
     (
-    username,
-    display_name,
-    active_directory_guid,
-    email,
-    password,
-    salt,
-    origin
+    `username`,
+    `display_name`,
+    `active_directory_guid`,
+    `email`,
+    `password`,
+    `salt`,
+    `origin`
     )
     VALUES 
     (
@@ -45,7 +45,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM users WHERE user_id = @USER_ID";
+            string sql = "DELETE FROM `tabletop`.`users``WHERE `user_id` = @USER_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -56,7 +56,7 @@ namespace Tabletop.Core.Services
         public async Task<User?> GetAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM users WHERE user_id = @USER_ID";
+            string sql = @"SELECT * FROM `tabletop`.`users` WHERE `user_id` = @USER_ID";
 
             var user = await dbController.GetFirstAsync<User>(sql, new
             {
@@ -70,26 +70,11 @@ namespace Tabletop.Core.Services
 
             return user;
         }
-        public async Task<User?> GetAsync(Guid guid, IDbController dbController, CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM users WHERE active_directory_guid = @ACTIVE_DIRECTORY_GUID AND origin = 'ad'";
 
-            var user = await dbController.GetFirstAsync<User>(sql, new
-            {
-                ACTIVE_DIRECTORY_GUID = guid
-            }, cancellationToken);
-
-            if (user is not null)
-            {
-                user.Permissions = await _permissionService.GetUserPermissionsAsync(user.UserId, dbController, cancellationToken);
-            }
-            return user;
-        }
         public async Task<User?> GetAsync(string username, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM users WHERE UPPER(username) = UPPER(@USERNAME) AND origin = 'local'";
+            string sql = @"SELECT * FROM `tabletop`.`users` WHERE UPPER(username) = UPPER(@USERNAME)";
 
             var user = await dbController.GetFirstAsync<User>(sql, new
             {
@@ -108,9 +93,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.Append("SELECT * FROM users WHERE 1 = 1");
+            sqlBuilder.Append("SELECT * FROM `tabletop`.`users` WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@$"  ORDER BY user_id DESC");
+            sqlBuilder.AppendLine(@$"  ORDER BY `user_id` DESC");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
@@ -121,7 +106,7 @@ namespace Tabletop.Core.Services
             // Berechtigungen müssen noch geladen werden
             List<Permission> permissions = await PermissionService.GetAllAsync(dbController);
 
-            sql = "SELECT * FROM user_permissions";
+            sql = "SELECT * FROM `tabletop`.`user_permissions`";
             List<UserPermission> user_permissions = await dbController.SelectDataAsync<UserPermission>(sql, null, cancellationToken);
 
             foreach (var user in list)
@@ -173,7 +158,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) FROM users WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT COUNT(*) FROM `tabletop`.`users` WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
 
             string sql = sqlBuilder.ToString();
@@ -186,10 +171,9 @@ namespace Tabletop.Core.Services
         public async Task UpdateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"UPDATE users SET
-username = @USERNAME,
-display_name = @DISPLAY_NAME,
-email = @EMAIL
+            string sql = @"UPDATE `tabletop`.`users` SET
+`username` = @USERNAME,
+`display_name` = @DISPLAY_NAME
 WHERE user_id = @USER_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
@@ -198,7 +182,7 @@ WHERE user_id = @USER_ID";
         }
         public static async Task<bool> FirstUserExistsAsync(IDbController dbController)
         {
-            string sql = "SELECT * FROM users";
+            string sql = "SELECT * FROM `tabletop`.`users`";
 
             var tmp = await dbController.GetFirstAsync<object>(sql);
 

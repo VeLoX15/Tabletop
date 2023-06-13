@@ -1,14 +1,16 @@
-﻿<div class="container">
+﻿@inject NavigationManager navigationManager
+
+<div class="container">
     <div class="row">
-        @foreach(var item in Units)
+        @foreach(var unit in Units)
         {
             <div class="col-lg-4 col-md-6">
-                <div class="card">
-                    <img src="../img/fractions/gar/41ranger.png" class="card-img-top" alt="Clone Trooper">
+                <div class="card" @onclick="() => SelectUnit(unit)">
+                    <img src="" class="card-img-top" alt="@unit.Name">
                     <div class="card-body">
-                        <h3 class="card-title">41. Ranger Platoon</h3>
-                        <p class="card-text">Beschreibung des 41. Ranger Platoon.</p>
-                        <a href="gar-41rangerplatoon.php" class="btn btn-primary">Mehr erfahren</a>
+                        <h3 class="card-title">@unit.Name</h3>
+                        <p class="card-text">@unit.Description</p>
+                        <a href="/Fractions/GAR/@unit.Name" class="btn btn-primary">More</a>
                     </div>
                 </div>
             </div>    
