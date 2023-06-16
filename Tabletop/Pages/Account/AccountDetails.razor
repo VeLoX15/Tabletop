@@ -33,6 +33,7 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-4">
         @if (Option == 0)
         {
             <div class="table-responsive">
@@ -52,7 +53,7 @@
         }
         else if (Option == 1)
         {
-            <div class="form-group col-md-4">
+            <div class="form-group">
                 <label for="fractions">Fractions</label>
                 <InputSelect id="fractions" @bind-Value="SelectedFraction" class="form-control">
                     @foreach (Fraction item in Fractions)
@@ -70,5 +71,6 @@
         {
 
         }
+        </div>
     </div>
 }
