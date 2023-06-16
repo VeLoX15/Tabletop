@@ -18,20 +18,57 @@
                         </a>
                     </div>
                     <div class="profile-name">
-                        <h2>@CurrentUser.Username</h2>
+                        <h2>@CurrentUser.Username (@CurrentUser.DisplayName)</h2>
                     </div>
 
                     <div class="fb-profile-block-menu">
                         <div class="block-menu">
                             <ul>
-                                <li><a href="">Information</a></li>
-                                <li><a href="">Fractions</a></li>
-                                <li><a href="">Friends</a></li>
+                                <li><a @onclick="() => Menu(0)">Information</a></li>
+                                <li><a @onclick="() => Menu(1)">Fractions</a></li>
+                                <li><a @onclick="() => Menu(2)">Friends</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @if (Option == 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-lg">
+                    <tbody>
+                        <tr>
+                            <td class="text-bold-500">Name</td>
+                            <td>@CurrentUser.DisplayName</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold-500">Username</td>
+                            <td>@CurrentUser.Username</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (Option == 1)
+        {
+            <div class="form-group col-md-4">
+                <label for="fractions">Fractions</label>
+                <InputSelect id="fractions" @bind-Value="SelectedFraction" class="form-control">
+                    @foreach (Fraction item in Fractions)
+                    {
+                        <option value="@item.FractionId">@item.Name</option>
+                    }
+                </InputSelect>
+            </div>
+        }
+        else if (Option == 2)
+        {
+
+        }
+        else
+        {
+
+        }
     </div>
 }

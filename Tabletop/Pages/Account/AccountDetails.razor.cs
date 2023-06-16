@@ -1,7 +1,11 @@
+using DbController.MySql;
+using DbController;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using Tabletop.Core.Models;
+using Tabletop.Core.Services;
+using System.Collections.Generic;
 
 namespace Tabletop.Pages.Account
 {
@@ -27,6 +31,21 @@ namespace Tabletop.Pages.Account
                     CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
                 }
             }
+        }
+
+        public int Option { get; set; } = 1;
+        public int SelectedFraction { get; set; } = 1;
+        public List<Fraction> Fractions { get; set; } = new();
+
+        protected Task Menu(int option)
+        {
+            Option = option;
+            return Task.CompletedTask;
+        }
+
+        protected override void OnInitialized()
+        {
+            Fractions = AppdataService.Fractions.ToList();
         }
     }
 }

@@ -102,6 +102,7 @@
                 white-space: nowrap;
                 color: #4b4f56;
                 text-transform: capitalize;
+                cursor: pointer;
             }
 
             .block-menu ul li:first-child a {
