@@ -5,15 +5,17 @@ using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public static class AppdatenService
+    public static class AppdataService
     {
         public static bool FirstUserExists { get; set; } = false;
 
         public static List<Permission> Permissions { get; set; } = new();
 
         public static List<Unit> Units { get; set; } = new();
-
         public static List<Weapon> Weapons { get; set; } = new();
+        public static List<Fraction> Fractions { get; set; } = new();
+        public static List<Gamemode> Gamemodes { get; set; } = new();
+
 
         private static IConfiguration? _configuration;
 
@@ -26,6 +28,8 @@ namespace Tabletop.Core.Services
 
             Units = await UnitService.GetAllAsync(dbController);
             Weapons = await WeaponService.GetAllAsync(dbController);
+            Fractions = await FractionService.GetAllAsync(dbController);
+            Gamemodes = await GamemodeService.GetAllAsync(dbController);
         }
 
 
@@ -78,34 +82,8 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        /// <summary>
-        /// Gets the corresponding item for the specified ID.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="id"></param>
-        /// <returns>When found this method returns an item of type <see cref="T"/>, otherwise it returns null.</returns>
-        public static T? Get<T>(int id) where T : class, IDbModel, new()
-        {
-            if (id is 0)
-            {
-                return null;
-            }
-
-            List<T> list = GetList<T>();
-
-            T? item = list.FirstOrDefault(x => x.Id == id);
-
-            return item;
-        }
-
         public static string ConnectionString => _configuration?["ConnectionString"] ?? string.Empty;
-        public static bool IsLdapLoginEnabled => _configuration?.GetSection("LdapSettings").GetValue<bool>("ENABLE_LDAP_LOGIN") ?? false;
         public static bool IsLocalLoginEnabled => _configuration?.GetSection("LdapSettings").GetValue<bool>("ENABLE_LOCAL_LOGIN") ?? false;
-        public static string LdapServer => _configuration?["LdapSettings:LDAP_SERVER"] ?? string.Empty;
-        public static string LdapDomainServer => _configuration?["LdapSettings:DOMAIN_SERVER"] ?? string.Empty;
-        public static string LdapDistinguishedName => _configuration?["LdapSettings:DistinguishedName"] ?? string.Empty;
-
-        public static Dictionary<string, string> MimeTypes => _configuration?.GetSection("MimeTypes").GetChildren().ToDictionary(x => x.Key, x => x.Value!) ?? new Dictionary<string, string>();
         public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
     }
 }

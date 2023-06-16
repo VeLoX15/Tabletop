@@ -10,7 +10,7 @@ namespace Tabletop.Core.Services
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT p.*
     FROM `tabletop`.`user_permissions` up
-    INNER JOIN `permissions` p ON (p.`permission_id` = up.`permission_id`)
+    INNER JOIN `tabletop`.`permissions` p ON (p.`permission_id` = up.`permission_id`)
     WHERE `user_id` = @USER_ID";
 
             var list = await dbController.SelectDataAsync<Permission>(sql, new

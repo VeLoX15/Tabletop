@@ -22,9 +22,14 @@ namespace Tabletop.Core.Models
         public int PrimaryWeaponId { get; set; }
         [CompareField("secondary_weapon_id")]
         public int SecondaryWeaponId { get; set; }
+        [CompareField("image")]
+        public byte[]? Image { get; set; }
+
+        public string ConvertedImage { get; set; } = string.Empty;
 
         public Weapon PrimaryWeapon { get; set; } = new();
         public Weapon SecondaryWeapon { get; set; } = new();
+        public Fraction Fraction { get; set; } = new();
 
         public Dictionary<string, object?> GetParameters()
         {

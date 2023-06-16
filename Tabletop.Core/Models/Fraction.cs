@@ -8,8 +8,16 @@ namespace Tabletop.Core.Models
         public int FractionId { get; set; }
         [CompareField("name")]
         public string Name { get; set; } = string.Empty;
+        [CompareField("short_name")]
+        public string ShortName { get; set; } = string.Empty;
         [CompareField("description")]
         public string Description { get; set; } = string.Empty;
+        [CompareField("mechanic")]
+        public string Mechanic { get; set; } = string.Empty;
+        [CompareField("image")]
+        public byte[]? Image { get; set; }
+
+        public string ConvertedImage { get; set; } = string.Empty;
 
         public Dictionary<string, object?> GetParameters()
         {
@@ -17,7 +25,10 @@ namespace Tabletop.Core.Models
             {
                 { "FRACTION_ID", FractionId },
                 { "NAME", Name },
-                { "DESCRIPTION", Description }
+                { "SHORT_NAME", ShortName },
+                { "DESCRIPTION", Description },
+                { "MECHANIC", Mechanic },
+                { "IMAGE", Image },
             };
         }
     }

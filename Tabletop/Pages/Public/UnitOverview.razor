@@ -1,0 +1,25 @@
+﻿@page "/Fractions/{fractionName}"
+@inject NavigationManager navigationManager
+<PageTitle>Tablebricks - @FractionName</PageTitle>
+<h3>@FractionName</h3>
+
+<div class="container">
+    <hr />
+    <div class="row">
+        @foreach (var unit in List)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                <div class="card h-100">
+                    <a href="/Fractions/@unit.Fraction.ShortName/@unit.UnitId">
+                        <img src="@unit.ConvertedImage" class="card-img-top" alt="@unit.Name">
+                    </a>
+                    <div class="card-body">
+                        <h3 class="card-title">@unit.Name</h3>
+                        <p class="card-text">@unit.Description</p>
+                        <a href="/Fractions/@unit.Fraction.ShortName/@unit.UnitId" class="btn btn-primary">More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

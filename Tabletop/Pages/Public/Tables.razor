@@ -1,0 +1,77 @@
+﻿@page "/Tables"
+<PageTitle>Tablebricks - Damage Table</PageTitle>
+<h3>Damage Table</h3>
+
+<div class="container">
+    <hr />
+    <div class="row">
+        <div class="col-md-7">
+            <div>
+                <h2>Infantry</h2>
+                <table class="table mb-0 table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Damage</th>
+                            <th>D1</th>
+                            <th>D2</th>
+                            <th>D3</th>
+                            <th>D4</th>
+                            <th>D5</th>
+                            <th>D6</th>
+                            <th>D7</th>
+                            <th>D8</th>
+                            <th>D9</th>
+                            <th>D10</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <tr>
+                                <th>A@(i)</th>
+                                @for (int j = 1; j <= 10; j++)
+                                {
+                                    <td>@Calculation.AttackValueTranslator(i, j)</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div>
+                <h2>Vehicle</h2>
+                <table class="table mb-0 table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Damage</th>
+                            <th>D1</th>
+                            <th>D2</th>
+                            <th>D3</th>
+                            <th>D4</th>
+                            <th>D5</th>
+                            <th>D6</th>
+                            <th>D7</th>
+                            <th>D8</th>
+                            <th>D9</th>
+                            <th>D10</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <tr>
+                                <th>A@(i)</th>
+                                @for (int j = 1; j <= 10; j++)
+                                {
+                                    <td>@Calculation.AttackValueTranslator(i, j)</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

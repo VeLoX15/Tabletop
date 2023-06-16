@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj": {}
+    "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
+    "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj",
+        "projectUniqueName": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj",
         "projectName": "Tabletop.Core",
-        "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj",
-        "packagesPath": "C:\\Users\\tomsa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\obj\\",
+        "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj",
+        "packagesPath": "C:\\Users\\Tom\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tomsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tom\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -58,7 +58,7 @@
             },
             "Microsoft.AspNetCore.Components.Authorization": {
               "target": "Package",
-              "version": "[7.0.5, )"
+              "version": "[7.0.7, )"
             },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
@@ -85,17 +85,17 @@
         }
       }
     },
-    "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj": {
+    "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+        "projectUniqueName": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
         "projectName": "Tabletop",
-        "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
-        "packagesPath": "C:\\Users\\tomsa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\obj\\",
+        "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+        "packagesPath": "C:\\Users\\Tom\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tomsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tom\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -109,8 +109,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
-                "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
+              "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
+                "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
               }
             }
           }
@@ -135,11 +135,11 @@
             },
             "Microsoft.AspNetCore.Components.Forms": {
               "target": "Package",
-              "version": "[7.0.5, )"
+              "version": "[7.0.7, )"
             },
             "System.DirectoryServices.Protocols": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[7.0.1, )"
             },
             "vNext.BlazorComponents.FluentValidation": {
               "target": "Package",

@@ -1,10 +1,10 @@
 ﻿using Tabletop.Core.Models;
 
-namespace Tabletop.Core.Calculator
+namespace Tabletop.Core.Calculators
 {
     public class Calculation
     {
-        public int Force(Unit unit)
+        public static int Force(Unit unit)
         {
             return (unit.PrimaryWeapon.Attack * unit.PrimaryWeapon.Quality * (unit.PrimaryWeapon.Range / 10) * unit.PrimaryWeapon.Dices) + (unit.Defense * 50 + unit.Moving * 4) * 2;
         }
@@ -41,17 +41,17 @@ namespace Tabletop.Core.Calculator
         //    return x;
         //}
 
-        public (int, int) AttackValueTranslator(Unit attacker, Unit defender)
+        public static (int, int) AttackValueTranslator(int attacker, int defender)
         {
             int x = 5;
 
-            if (attacker.PrimaryWeapon.Attack > defender.Defense)
+            if (attacker > defender)
             {
-                x -= attacker.PrimaryWeapon.Attack - defender.Defense;
+                x -= attacker - defender;
             }
-            else if (attacker.PrimaryWeapon.Attack < defender.Defense)
+            else if (attacker < defender)
             {
-                x += defender.Defense - attacker.PrimaryWeapon.Attack;
+                x += defender - attacker;
             }
             if (x > 8)
             {

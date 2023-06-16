@@ -36,6 +36,8 @@ namespace Tabletop
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UnitService>();
             builder.Services.AddScoped<WeaponService>();
+            builder.Services.AddScoped<GamemodeService>();
+            builder.Services.AddScoped<FractionService>();
 
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);
 
@@ -47,7 +49,7 @@ namespace Tabletop
             var services = serviceScope.ServiceProvider;
 
 
-            await AppdatenService.InitAsync(builder.Configuration);
+            await AppdataService.InitAsync(builder.Configuration);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

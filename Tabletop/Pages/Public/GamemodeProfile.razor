@@ -1,0 +1,20 @@
+﻿@page "/Gamemodes/{gamemodeName}"
+<PageTitle>Tablebricks - @Gamemode.Name</PageTitle>
+<h3>@Gamemode.Name</h3>
+
+<div class="container">
+    <div class="col-lg-4 col-md-6">
+        <div class="card h-100">
+            <img src="@Gamemode.ConvertedImage" class="card-img-top" alt="@Gamemode.Name">
+            <div class="card-body">
+                <div>
+                    <h1>@Gamemode.Name</h1>
+                    <p>@Gamemode.Description</p>
+                </div>
+                <div>
+                    <p>@Gamemode.Mechanic</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

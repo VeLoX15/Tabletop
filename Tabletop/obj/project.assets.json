@@ -237,11 +237,11 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Authorization/7.0.5": {
+      "Microsoft.AspNetCore.Authorization/7.0.7": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Metadata": "7.0.5",
-          "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
+          "Microsoft.AspNetCore.Metadata": "7.0.7",
+          "Microsoft.Extensions.Logging.Abstractions": "7.0.1",
           "Microsoft.Extensions.Options": "7.0.1"
         },
         "compile": {
@@ -255,11 +255,11 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Components/7.0.5": {
+      "Microsoft.AspNetCore.Components/7.0.7": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "7.0.5",
-          "Microsoft.AspNetCore.Components.Analyzers": "7.0.5"
+          "Microsoft.AspNetCore.Authorization": "7.0.7",
+          "Microsoft.AspNetCore.Components.Analyzers": "7.0.7"
         },
         "compile": {
           "lib/net7.0/Microsoft.AspNetCore.Components.dll": {
@@ -272,17 +272,17 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Components.Analyzers/7.0.5": {
+      "Microsoft.AspNetCore.Components.Analyzers/7.0.7": {
         "type": "package",
         "build": {
           "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets": {}
         }
       },
-      "Microsoft.AspNetCore.Components.Authorization/7.0.5": {
+      "Microsoft.AspNetCore.Components.Authorization/7.0.7": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "7.0.5",
-          "Microsoft.AspNetCore.Components": "7.0.5"
+          "Microsoft.AspNetCore.Authorization": "7.0.7",
+          "Microsoft.AspNetCore.Components": "7.0.7"
         },
         "compile": {
           "lib/net7.0/Microsoft.AspNetCore.Components.Authorization.dll": {
@@ -295,10 +295,10 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Components.Forms/7.0.5": {
+      "Microsoft.AspNetCore.Components.Forms/7.0.7": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Components": "7.0.5"
+          "Microsoft.AspNetCore.Components": "7.0.7"
         },
         "compile": {
           "lib/net7.0/Microsoft.AspNetCore.Components.Forms.dll": {
@@ -523,7 +523,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Metadata/7.0.5": {
+      "Microsoft.AspNetCore.Metadata/7.0.7": {
         "type": "package",
         "compile": {
           "lib/net7.0/Microsoft.AspNetCore.Metadata.dll": {
@@ -709,7 +709,7 @@
           }
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/7.0.0": {
+      "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -980,7 +980,7 @@
           "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
-      "System.DirectoryServices.Protocols/7.0.0": {
+      "System.DirectoryServices.Protocols/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net7.0/System.DirectoryServices.Protocols.dll": {
@@ -1409,7 +1409,7 @@
           "DbController.MySql": "2.2.0",
           "DbController.TypeHandler": "2.2.0",
           "FluentValidation": "11.5.2",
-          "Microsoft.AspNetCore.Components.Authorization": "7.0.5",
+          "Microsoft.AspNetCore.Components.Authorization": "7.0.7",
           "Microsoft.AspNetCore.Identity": "2.2.0"
         },
         "compile": {
@@ -1674,10 +1674,10 @@
         "microsoft.aspnetcore.authentication.core.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Authorization/7.0.5": {
-      "sha512": "17BgaYa1QB8mOERZ/TSNwsWHrh65iU61VrsqivbZc+VUqnACtPCPbP0MFl/7CznXWCOXQZ59QRB6A5t0skyo2g==",
+    "Microsoft.AspNetCore.Authorization/7.0.7": {
+      "sha512": "1w7+mJU4atTeHqd2P53WrAsSnifm/YV8/nDWL16QyfGRTQiyezvQKMbM3qof9QPGeqMfjQPbaphaIYDSqYPAig==",
       "type": "package",
-      "path": "microsoft.aspnetcore.authorization/7.0.5",
+      "path": "microsoft.aspnetcore.authorization/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1689,14 +1689,14 @@
         "lib/net7.0/Microsoft.AspNetCore.Authorization.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.Authorization.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.Authorization.xml",
-        "microsoft.aspnetcore.authorization.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.authorization.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.authorization.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Components/7.0.5": {
-      "sha512": "9xYFXpfEI2H5W3lVSBjzMPK/kGVdMKI49laoUqkjjILMGHdMcnk7ckB7D4SbkzVUWa2rHNXn7H5oiYiL62blTw==",
+    "Microsoft.AspNetCore.Components/7.0.7": {
+      "sha512": "AVoTnHtkemVtw2ufE6pRKCGlcaJNLk+eSqmnU5Rot6qcsDfHnrf6latpfeMFz5jvOZdoAJ9PKp9r84O+zn9YPA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.components/7.0.5",
+      "path": "microsoft.aspnetcore.components/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1704,14 +1704,14 @@
         "THIRD-PARTY-NOTICES.txt",
         "lib/net7.0/Microsoft.AspNetCore.Components.dll",
         "lib/net7.0/Microsoft.AspNetCore.Components.xml",
-        "microsoft.aspnetcore.components.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.components.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.components.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Components.Analyzers/7.0.5": {
-      "sha512": "jjweXKrkmQ9E2MWyHCuGHAk4I7mIY6WCjq35iRbJWl2nW8G2t41hWrEwUXip5qeL5YzAaiucPMPkHwgc1NH4jA==",
+    "Microsoft.AspNetCore.Components.Analyzers/7.0.7": {
+      "sha512": "gNJ4W8YvkfgcrPUNxsplpYVuE3jtRTYKjV7EDUBg1GV0Xkg7KbhXjakeIEuLl5EzvifyhDDTf/XQZlWkWTB9xg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.components.analyzers/7.0.5",
+      "path": "microsoft.aspnetcore.components.analyzers/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1720,14 +1720,14 @@
         "analyzers/dotnet/cs/Microsoft.AspNetCore.Components.Analyzers.dll",
         "build/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets",
         "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets",
-        "microsoft.aspnetcore.components.analyzers.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.components.analyzers.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.components.analyzers.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Components.Authorization/7.0.5": {
-      "sha512": "PoZ96emiHObTuJpfvOcFR1dIE6yA1oIGZM6HJXYJZR+vT/Pi12iYFJOT1Z4F+CdWUT0WqaW0rNw20VoDvPM+9Q==",
+    "Microsoft.AspNetCore.Components.Authorization/7.0.7": {
+      "sha512": "RQKQa+cZ0gY5ybPIuHRJv2fqqKFqWx3rD3ECzmEr/czLZMfiP4/GhrstKCoc0o/TBn/1ybwJZAgYcSgmL8JzYg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.components.authorization/7.0.5",
+      "path": "microsoft.aspnetcore.components.authorization/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1735,14 +1735,14 @@
         "THIRD-PARTY-NOTICES.txt",
         "lib/net7.0/Microsoft.AspNetCore.Components.Authorization.dll",
         "lib/net7.0/Microsoft.AspNetCore.Components.Authorization.xml",
-        "microsoft.aspnetcore.components.authorization.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.components.authorization.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.components.authorization.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Components.Forms/7.0.5": {
-      "sha512": "CphmoPsk7zMeQnQOXdE8z6/WQ5npzt1UG++7YYq54MlMJYlIp8M+5fiR3CniNarThnewnAcG2iDywFQuk8JPIg==",
+    "Microsoft.AspNetCore.Components.Forms/7.0.7": {
+      "sha512": "V4kKSogvFgdXveDopY8/b/lKFsIJEBlaWL38VtUD+QAi3iZhcyFoggzHmXqGUEtibsGtqkl+L0xTAu4L8siSgA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.components.forms/7.0.5",
+      "path": "microsoft.aspnetcore.components.forms/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1750,7 +1750,7 @@
         "THIRD-PARTY-NOTICES.txt",
         "lib/net7.0/Microsoft.AspNetCore.Components.Forms.dll",
         "lib/net7.0/Microsoft.AspNetCore.Components.Forms.xml",
-        "microsoft.aspnetcore.components.forms.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.components.forms.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.components.forms.nuspec"
       ]
     },
@@ -1914,10 +1914,10 @@
         "microsoft.aspnetcore.identity.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Metadata/7.0.5": {
-      "sha512": "S+EJS5RwVfrgBEyYKvNfMVQPH8CNIRhIH5UkGKalwIcppiYpi6k8pv7GDqjLiKLVa06LY+kNftXfUM5PwW7z/w==",
+    "Microsoft.AspNetCore.Metadata/7.0.7": {
+      "sha512": "cbSFS7rnPIrwIpTO71AHxF+ToTHvvN6Yq0NzoAeGhf3m6eKO1eyeVv/p9YKp/9zSr3udA5uGYTp/ycaVGV3p5w==",
       "type": "package",
-      "path": "microsoft.aspnetcore.metadata/7.0.5",
+      "path": "microsoft.aspnetcore.metadata/7.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1929,7 +1929,7 @@
         "lib/net7.0/Microsoft.AspNetCore.Metadata.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.Metadata.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.Metadata.xml",
-        "microsoft.aspnetcore.metadata.7.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.metadata.7.0.7.nupkg.sha512",
         "microsoft.aspnetcore.metadata.nuspec"
       ]
     },
@@ -2095,10 +2095,10 @@
         "microsoft.extensions.logging.nuspec"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/7.0.0": {
-      "sha512": "kmn78+LPVMOWeITUjIlfxUPDsI0R6G0RkeAMBmQxAJ7vBJn4q2dTva7pWi65ceN5vPGjJ9q/Uae2WKgvfktJAw==",
+    "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
+      "sha512": "pkeBFx0vqMW/A3aUVHh7MPu3WkBhaVlezhSZeb1c9XD0vUReYH1TLFSy5MxJgZfmz5LZzYoErMorlYZiwpOoNA==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/7.0.0",
+      "path": "microsoft.extensions.logging.abstractions/7.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2160,7 +2160,7 @@
         "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2561,10 +2561,10 @@
         "version.txt"
       ]
     },
-    "System.DirectoryServices.Protocols/7.0.0": {
-      "sha512": "QNC4ab+Gc3p3uLixavxxD0h5FOxrs2cT3hez4DSMckBU8lgREjrEB5a8reJypkSVlhFyUQ5YfpMJODdeSCYp2g==",
+    "System.DirectoryServices.Protocols/7.0.1": {
+      "sha512": "t9hsL+UYRzNs30pnT2Tdx6ngX8McFUjru0a0ekNgu/YXfkXN+dx5OvSEv0/p7H2q3pdJLH7TJPWX7e55J8QB9A==",
       "type": "package",
-      "path": "system.directoryservices.protocols/7.0.0",
+      "path": "system.directoryservices.protocols/7.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2592,7 +2592,7 @@
         "runtimes/win/lib/net6.0/System.DirectoryServices.Protocols.xml",
         "runtimes/win/lib/net7.0/System.DirectoryServices.Protocols.dll",
         "runtimes/win/lib/net7.0/System.DirectoryServices.Protocols.xml",
-        "system.directoryservices.protocols.7.0.0.nupkg.sha512",
+        "system.directoryservices.protocols.7.0.1.nupkg.sha512",
         "system.directoryservices.protocols.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3684,26 +3684,26 @@
     "net7.0": [
       "Blazor.Pagination >= 2.0.2",
       "FluentValidation.DependencyInjectionExtensions >= 11.5.2",
-      "Microsoft.AspNetCore.Components.Forms >= 7.0.5",
-      "System.DirectoryServices.Protocols >= 7.0.0",
+      "Microsoft.AspNetCore.Components.Forms >= 7.0.7",
+      "System.DirectoryServices.Protocols >= 7.0.1",
       "Tabletop.Core >= 1.0.0",
       "vNext.BlazorComponents.FluentValidation >= 1.1.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tomsa\\.nuget\\packages\\": {}
+    "C:\\Users\\Tom\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "projectUniqueName": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
       "projectName": "Tabletop",
-      "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
-      "packagesPath": "C:\\Users\\tomsa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomsa\\Source\\Repos\\Tabletop\\Tabletop\\obj\\",
+      "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "packagesPath": "C:\\Users\\Tom\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tomsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tom\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3717,8 +3717,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
-              "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
+            "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
+              "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
             }
           }
         }
@@ -3743,11 +3743,11 @@
           },
           "Microsoft.AspNetCore.Components.Forms": {
             "target": "Package",
-            "version": "[7.0.5, )"
+            "version": "[7.0.7, )"
           },
           "System.DirectoryServices.Protocols": {
             "target": "Package",
-            "version": "[7.0.0, )"
+            "version": "[7.0.1, )"
           },
           "vNext.BlazorComponents.FluentValidation": {
             "target": "Package",

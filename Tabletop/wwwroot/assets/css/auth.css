@@ -1,1 +1,24 @@
-body{background-color:var(--bs-body-bg)}#auth{height:100vh;overflow-x:hidden}#auth #auth-right{height:100%;background:url(../static/images/bg/4853433.png),linear-gradient(90deg,#2d499d,#3f5491)}#auth #auth-left{padding:5rem 8rem}#auth #auth-left .auth-title{font-size:4rem;margin-bottom:1rem}#auth #auth-left .auth-subtitle{font-size:1.7rem;line-height:2.5rem;color:#a8aebb}#auth #auth-left .auth-logo{margin-bottom:7rem}#auth #auth-left .auth-logo img{height:2rem}@media screen and (max-width: 1399.9px){#auth #auth-left{padding:3rem}}@media screen and (max-width: 767px){#auth #auth-left{padding:5rem}}@media screen and (max-width: 576px){#auth #auth-left{padding:5rem 3rem}}html[data-bs-theme=dark] #auth-right{background:url(../../images/bg/4853433.png),linear-gradient(90deg,#2d499d,#3f5491)}
+.login-background {
+    background: url("/assets/img/background/login.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    overflow: hidden;
+}
+
+.loginbox {
+    width: 320px;
+    height: auto;
+    background: #2e2e2e;
+    opacity: 0.9;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

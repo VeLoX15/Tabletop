@@ -7,10 +7,12 @@ namespace Tabletop.Core.Services
 {
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
+        private readonly FractionService _fractionService;
         private readonly WeaponService _weaponService;
 
-        public UnitService(WeaponService weaponService)
+        public UnitService(FractionService fractionService, WeaponService weaponService)
         {
+            _fractionService = fractionService;
             _weaponService = weaponService;
         }
 
@@ -57,8 +59,9 @@ namespace Tabletop.Core.Services
 
             if (unit is not null)
             {
-                //unit.PrimaryWeapon = await _weaponService.GetPrimaryWeaponAsync(unit.UnitId, dbController);
-                //unit.SecondaryWeapon = await _weaponService.GetSecondaryWeaponAsync(unit.UnitId, dbController);
+                unit.Fraction = await _fractionService.GetAsync(unit.FractionId, dbController) ?? new();
+                unit.PrimaryWeapon = await _weaponService.GetAsync(unit.PrimaryWeaponId, dbController) ?? new();
+                unit.SecondaryWeapon = await _weaponService.GetAsync(unit.SecondaryWeaponId, dbController) ?? new();
             }
 
             return unit;
@@ -69,6 +72,42 @@ namespace Tabletop.Core.Services
             string sql = "SELECT * FROM `tabletop`.`units`";
 
             var list = await dbController.SelectDataAsync<Unit>(sql);
+
+            if (list.Any())
+            {
+                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
+                sql = $"SELECT * FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
+                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
+
+                foreach (var item in list)
+                {
+                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
+                }
+            }
+
+            if (list.Any())
+            {
+                IEnumerable<int> weaponIds = list.Select(x => x.PrimaryWeaponId);
+                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
+                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
+
+                foreach (var item in list)
+                {
+                    item.PrimaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.PrimaryWeaponId) ?? new();
+                }
+            }
+
+            if (list.Any())
+            {
+                IEnumerable<int> weaponIds = list.Select(x => x.SecondaryWeaponId);
+                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
+                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
+
+                foreach (var item in list)
+                {
+                    item.SecondaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.SecondaryWeaponId) ?? new();
+                }
+            }
 
             return list;
         }

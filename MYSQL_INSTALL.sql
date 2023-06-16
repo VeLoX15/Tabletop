@@ -9,14 +9,12 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
 	`user_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
 	`display_name` VARCHAR(100) NOT NULL,
-	`image` IMAGE,
 	`password` VARCHAR(255) NOT NULL,
 	`salt` VARCHAR(255) NOT NULL,
-	`main_fraction_id` VARCHAR(50),
-    `last_login` DATETIME NOT NULL,
+    `last_login` DATETIME,
+	`image` MEDIUMBLOB NULL,
 
 	PRIMARY KEY(`user_id`)
-	FOREIGN KEY (`main_fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 
 -- -----------------------------------------------------
@@ -50,9 +48,76 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`fractions`
 (
     `fraction_id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
+	`short_name` VARCHAR(50) NOT NULL,
+    `description` TEXT NOT NULL,
+	`image` MEDIUMBLOB NULL,
 
     PRIMARY KEY (`fraction_id`)
+); 
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`weapons`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`weapons` 
+(
+    `weapon_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `description` TEXT NOT NULL,
+    `attack` INTEGER NOT NULL,
+    `quality` INTEGER NOT NULL,
+    `range` INTEGER NOT NULL,
+    `dices` INTEGER NOT NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`weapon_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
+(
+    `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `fraction_id` INTEGER NOT NULL,
+    `description` TEXT NOT NULL,
+	`mechanic` TEXT NOT NULL,
+    `defense` INTEGER NOT NULL,
+    `moving` INTEGER NOT NULL,
+	`primary_weapon_id` INTEGER NULL,
+	`secondary_weapon_id` INTEGER NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`unit_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
+	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
+	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`gamemodes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`gamemodes` 
+(
+    `gamemode_id` INTEGER NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
+    `description` TEXT NOT NULL,
+	`mechanic` TEXT NOT NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`gamemode_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`user_units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`user_units` 
+(
+    `user_id` INTEGER NOT NULL,
+	`unit_id` INTEGER NOT NULL,
+	`count` INTEGER NOT NULL,
+
+    PRIMARY KEY (`user_id`, `unit_id`)
 );
 
 -- -----------------------------------------------------
@@ -65,54 +130,4 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`fractions`
 
     PRIMARY KEY (`user_id`),
 	PRIMARY KEY (`fraction_id`)
-); 
-
--- -----------------------------------------------------
--- Table `tabletop`.`user_units`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`user_units` 
-(
-    `user_id` INTEGER NOT NULL,
-	`unit_id` INTEGER NOT NULL,
-	`count` INTEGER NOT NULL,
-
-    PRIMARY KEY (`user_id`),
-	PRIMARY KEY (`unit_id`)
-); 
-
--- -----------------------------------------------------
--- Table `tabletop`.`units`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
-(
-    `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `fraction_id` INTEGER NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
-	`mechanic` VAR(255) NOT NULL,
-    `defense` INTEGER NOT NULL,
-    `moving` INTEGER NOT NULL,
-	`primary_weapon_id` INTEGER NULL,
-	`secondary_weapon_id` INTEGER NULL,
-
-    PRIMARY KEY (`unit_id`),
-	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
-	FOREIGN KEY (`primary_weapon`) REFERENCES `tabletop`.`weapons`(`primary_weapon`),
-	FOREIGN KEY (`secondary_weapon`) REFERENCES `tabletop`.`weapons`(`secondary_weapon`)
-); 
-
--- -----------------------------------------------------
--- Table `tabletop`.`weapons`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`weapons` 
-(
-    `weapon_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
-    `attack` INTEGER NOT NULL,
-    `quality` INTEGER NOT NULL,
-    `range` INTEGER NOT NULL,
-    `dices` INTEGER NOT NULL,
-
-    PRIMARY KEY (`weapon_id`)
-); 
+);

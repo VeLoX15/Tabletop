@@ -1,0 +1,57 @@
+﻿@page "/Fractions/{fractionName}/{unitId:int}"
+<PageTitle>Tablebricks - Fractions</PageTitle>
+@if (Unit != null)
+{
+    <h3>@Unit.Name</h3>
+
+    <div class="container">
+        <hr />
+        <div class="row">
+            <div class="col-lg-6">
+                <div>
+                    <div>
+                        <h1>@Unit.Name</h1>
+                        <p>@Unit.Description</p>
+                    </div>
+                    <div>
+                        <img src="" class="img-fluid">
+                    </div>
+                    <div>
+                        <h2>Game mechanics</h2>
+                        <p>@Unit.Mechanic</p>
+                    </div>
+                    <h2>Table of values</h2>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>A</th>
+                                <th>D</th>
+                                <th>Q</th>
+                                <th>M</th>
+                                <th>R</th>
+                                <th>D</th>
+                                <th>P</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Unit.PrimaryWeapon.Attack</td>
+                                <td>@Unit.Defense</td>
+                                <td>@Unit.PrimaryWeapon.Quality</td>
+                                <td>@Unit.Moving</td>
+                                <td>@Unit.PrimaryWeapon.Range</td>
+                                <td>@Unit.PrimaryWeapon.Dices</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No unit selected.</p>
+}
+

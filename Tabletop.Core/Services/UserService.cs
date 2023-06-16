@@ -20,21 +20,15 @@ namespace Tabletop.Core.Services
     (
     `username`,
     `display_name`,
-    `active_directory_guid`,
-    `email`,
     `password`,
-    `salt`,
-    `origin`
+    `salt`
     )
     VALUES 
     (
     @USERNAME,
     @DISPLAY_NAME,
-    @ACTIVE_DIRECTORY_GUID,
-    @EMAIL,
     @PASSWORD,
-    @SALT,
-    @ORIGIN
+    @SALT
     ); {dbController.GetLastIdSql()}";
 
             input.UserId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -139,7 +133,6 @@ namespace Tabletop.Core.Services
                 sb.AppendLine(@" AND 
 (
         UPPER(display_name) LIKE @SEARCHPHRASE
-    OR  UPPER(email) LIKE @SEARCHPHRASE
     OR  UPPER(username) LIKE @SEARCHPHRASE
 )");
             }

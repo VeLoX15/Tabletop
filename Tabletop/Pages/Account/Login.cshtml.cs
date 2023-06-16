@@ -50,8 +50,8 @@ namespace Tabletop.Pages.Account
             {
 
                 // Erst prüfen wir gegen die Datenbank
-                IDbController dbController = new MySqlController(AppdatenService.ConnectionString);
-                User? user = AppdatenService.IsLocalLoginEnabled ? await _userService.GetAsync(Input.Username, dbController) : null;
+                IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                User? user = AppdataService.IsLocalLoginEnabled ? await _userService.GetAsync(Input.Username, dbController) : null;
 
                 // Lokale Konten müssen als ersten geprüft werden.
                 if (user is not null)
@@ -94,7 +94,7 @@ namespace Tabletop.Pages.Account
                 }
                 else
                 {
-                    if (!AppdatenService.IsLdapLoginEnabled && !AppdatenService.IsLocalLoginEnabled)
+                    if (!AppdataService.IsLocalLoginEnabled)
                     {
                         ModelState.AddModelError("login-error", "Es wurde kein Provider zum einloggen gefunden. Bitte wenden Sie sich an Ihren Administrator.");
                     }

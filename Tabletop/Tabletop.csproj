@@ -9,8 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Blazor.Pagination" Version="2.0.2" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.5" />
-    <PackageReference Include="System.DirectoryServices.Protocols" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.7" />
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="7.0.1" />
     <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 
@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Admin\" />
     <Folder Include="wwwroot\assets\img\logo\" />
   </ItemGroup>
 
