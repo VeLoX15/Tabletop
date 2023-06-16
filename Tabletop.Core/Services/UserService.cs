@@ -21,14 +21,18 @@ namespace Tabletop.Core.Services
     `username`,
     `display_name`,
     `password`,
-    `salt`
+    `salt`,
+    `last_login`,
+    `image`
     )
     VALUES 
     (
     @USERNAME,
     @DISPLAY_NAME,
     @PASSWORD,
-    @SALT
+    @SALT,
+    @LAST_LOGIN,
+    @IMAGE
     ); {dbController.GetLastIdSql()}";
 
             input.UserId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);

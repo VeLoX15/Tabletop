@@ -10,15 +10,16 @@ namespace Tabletop.Core.Models
         public string Username { get; set; } = string.Empty;
         [CompareField("display_name")]
         public string DisplayName { get; set; } = string.Empty;
-        [CompareField("image")]
-        public byte[] Image { get; set; } = new byte[0];
         [CompareField("password")]
         public string Password { get; set; } = string.Empty;
         [CompareField("salt")]
         public string Salt { get; set; } = string.Empty;
         [CompareField("last_login")]
         public DateTime LastLogin { get; set; }
+        [CompareField("image")]
+        public byte[]? Image { get; set; }
 
+        public string ConvertedImage { get; set; } = string.Empty;
 
 
         public List<Permission> Permissions { get; set; } = new();

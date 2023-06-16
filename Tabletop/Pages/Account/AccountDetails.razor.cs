@@ -20,6 +20,12 @@ namespace Tabletop.Pages.Account
                 _user = (await AuthState).User;
 
                 CurrentUser = await authService.GetUserAsync();
+
+                if (CurrentUser?.Image != null)
+                {
+                    string base64String = Convert.ToBase64String(CurrentUser.Image);
+                    CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
+                }
             }
         }
     }
