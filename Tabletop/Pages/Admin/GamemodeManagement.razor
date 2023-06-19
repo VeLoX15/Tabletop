@@ -1,0 +1,130 @@
+﻿@page "/Administration/Gamemodes"
+@inherits ManagementBasePage<Gamemode, GamemodeService>
+@attribute [Authorize(Roles = Roles.VIEW_GAMEMODES)]
+<PageTitle>Tablebricks - Gamemode Mangement</PageTitle>
+<h3>Gamemode Mangement</h3>
+
+<AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
+    <Authorized>
+        <div class="toolbar">
+            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="bi bi-plus-lg"></i></button>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<div class="col-lg-3 col-sm-12 order-lg-3">
+    <div class="card">
+        <div class="card-header">
+            <h4>Filter</h4>
+        </div>
+        <div class="card-content" style="padding: 0 1.3rem;">
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                    <label for="usermanagement-filter-searchphrase">Search</label>
+                </div>
+
+                <div class="toolbar">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+<div class="col-lg-9 col-sm-12">
+
+    <div class="card">
+        <div class="card-content">
+            <!-- Table with no outer spacing -->
+            <div class="table-responsive">
+                <table class="table mb-0 table-lg">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Data" Context="user">
+                            <tr>
+                                <td>@user.Name</td>
+                                <td class="text-right">
+                                    <AuthorizeView Roles="@(Roles.DELETE_GAMEMODES)">
+                                        <Authorized>
+                                            <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = user">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </span>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="@(Roles.EDIT_GAMEMODES)">
+                                        <Authorized>
+                                            <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(user)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </span>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+@if (Input is not null)
+{
+    <Modal Title="@String.Format("New gamemode", Input.Name)"
+       OnClosed="() => Input = null"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
+
+        <EditForm Model="Input" @ref="_form">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Name" class="form-control" id="gamemode-name" placeholder="Name" />
+                        <label for="gamemode-name">Name</label>
+                        <ValidationMessage For="() => Input.Name" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputTextArea @bind-Value="Input.Description" class="form-control" id="gamemode-description" placeholder="Description" />
+                        <label for="gamemode-description">Description</label>
+                        <ValidationMessage For="() => Input.Description" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputTextArea @bind-Value="Input.Mechanic" class="form-control" id="gamemode-mechanic" placeholder="Mechanic" />
+                        <label for="gamemode-mechanic">Mechanic</label>
+                        <ValidationMessage For="() => Input.Mechanic" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+        </div>
+    </Modal>
+}
+
+@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="Delete"
+              OnClosed="() => SelectedForDeletion = null"
+              OnConfirmed="DeleteAsync">
+        <p>@String.Format($@"Should the gamemode '{0}' really be deleted?", SelectedForDeletion.Name)</p>
+    </ConfirmModal>
+}

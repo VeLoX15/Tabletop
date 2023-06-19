@@ -51,6 +51,18 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
+        public async Task DeleteFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "DELETE FROM `tabletop`.`user_friends` WHERE `user_id` = @USER_ID AND `friend_id` = @FRIEND_ID";
+
+            await dbController.QueryAsync(sql, new
+            {
+                USER_ID = userId,
+                FRIEND_ID = friendId
+            }, cancellationToken);
+        }
+
         public async Task<User?> GetAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -115,8 +127,6 @@ namespace Tabletop.Core.Services
                 user.Permissions = permissions.Where(x => permission_ids.Contains(x.PermissionId)).ToList();
             }
 
-
-
             return list;
         }
 
@@ -165,6 +175,22 @@ namespace Tabletop.Core.Services
             return result;
         }
 
+        public async Task<List<User>> GetUserFriendsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"SELECT u.user_id, u.username, u.display_name, u.image
+FROM tabletop.users AS u
+JOIN tabletop.user_friends AS uf ON u.user_id = uf.friend_id
+WHERE uf.user_id = @USER_ID";
+
+            var list = await dbController.SelectDataAsync<User>(sql, new
+            {
+                USER_ID = userId
+            }, cancellationToken);
+
+            return list;
+        }
+
         public async Task UpdateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -184,6 +210,27 @@ WHERE user_id = @USER_ID";
             var tmp = await dbController.GetFirstAsync<object>(sql);
 
             return tmp != null;
+        }
+
+        public async Task CreateUserFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"INSERT INTO `tabletop`.`user_friends`
+    (
+    user_id,
+    friend_id
+    )
+    VALUES
+    (
+    @USER_ID,
+    @FRIEND_ID
+    )";
+
+            await dbController.QueryAsync(sql, new
+            {
+                USER_ID = userId,
+                FRIEND_ID = friendId
+            }, cancellationToken);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tabletop.Core.Models
 {
-    public class Gamemode
+    public class Gamemode : IDbModel
     {
         [CompareField("gamemode_id")]
         public int GamemodeId { get; set; }
@@ -16,6 +16,8 @@ namespace Tabletop.Core.Models
         public byte[]? Image { get; set; }
 
         public string ConvertedImage { get; set; } = string.Empty;
+
+        public int Id => GamemodeId;
 
         public Dictionary<string, object?> GetParameters()
         {

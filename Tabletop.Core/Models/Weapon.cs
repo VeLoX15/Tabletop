@@ -2,7 +2,7 @@
 
 namespace Tabletop.Core.Models
 {
-    public class Weapon
+    public class Weapon : IDbModel
     {
         [CompareField("weapon_id")]
         public int WeaponId { get; set; }
@@ -18,6 +18,8 @@ namespace Tabletop.Core.Models
         public int Range { get; set; }
         [CompareField("dices")]
         public int Dices { get; set; }
+
+        public int Id => WeaponId;
 
         public Dictionary<string, object?> GetParameters()
         {

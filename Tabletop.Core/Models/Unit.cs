@@ -2,7 +2,7 @@
 
 namespace Tabletop.Core.Models
 {
-    public class Unit
+    public class Unit : IDbModel
     {
         [CompareField("unit_id")]
         public int UnitId { get; set; }
@@ -31,6 +31,11 @@ namespace Tabletop.Core.Models
         public Weapon SecondaryWeapon { get; set; } = new();
         public Fraction Fraction { get; set; } = new();
 
+        [CompareField("quantity")]
+        public int Quantity { get; set; }
+
+        public int Id => UnitId;
+
         public Dictionary<string, object?> GetParameters()
         {
             return new Dictionary<string, object?>
@@ -43,7 +48,8 @@ namespace Tabletop.Core.Models
                 { "DEFENSE", Defense },
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },
-                { "SECONDARY_WEAPON_ID", SecondaryWeaponId }
+                { "SECONDARY_WEAPON_ID", SecondaryWeaponId },
+                { "QUANTITY", Quantity }
             };
         }
     }

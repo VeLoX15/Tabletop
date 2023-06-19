@@ -9,10 +9,13 @@ namespace Tabletop.Pages.Public
         [Parameter]
         public string FractionName { get; set; } = string.Empty;
         List<Unit> List { get; set; } = new();
+        Fraction Fraction { get; set; } = new();
 
         protected override void OnInitialized()
         {
-            List = AppdataService.Units.Where(x => x.Fraction.ShortName == FractionName).ToList();
+            Fraction = AppdataService.Fractions.FirstOrDefault(x => x.ShortName == FractionName) ?? new();
+
+            List = AppdataService.Units.Where(x => x.FractionId == Fraction.FractionId).ToList();
 
             foreach (var unit in List)
             {

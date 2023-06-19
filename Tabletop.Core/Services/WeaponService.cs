@@ -9,6 +9,7 @@ namespace Tabletop.Core.Services
     {
         public async Task CreateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = $@"INSERT INTO `tabletop`.`weapons`
                 (
                 `name`,
@@ -28,42 +29,45 @@ namespace Tabletop.Core.Services
                 @DICES
                 ); {dbController.GetLastIdSql()}";
 
-            input.WeaponId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
+            input.WeaponId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
         public async Task DeleteAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = "DELETE FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, new
             {
                 WEAPON_ID = input.WeaponId,
-            });
+            }, cancellationToken);
         }
 
         public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
 
             var weapon = await dbController.GetFirstAsync<Weapon>(sql, new
             {
                 WEAPON_ID = weaponId
-            });
+            }, cancellationToken);
 
             return weapon;
         }
 
         public async Task<List<Weapon>> GetAsync(WeaponFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
             sb.AppendLine("SELECT * FROM `tabletop`.`weapons` WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `weapon_id` DESC");
+            sb.AppendLine(@$"  ORDER BY `name` ASC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
 
-            List<Weapon> list = await dbController.SelectDataAsync<Weapon>(sql, GetFilterParameter(filter));
+            List<Weapon> list = await dbController.SelectDataAsync<Weapon>(sql, GetFilterParameter(filter), cancellationToken);
 
             return list;
         }
@@ -78,7 +82,7 @@ namespace Tabletop.Core.Services
 
         public string GetFilterWhere(WeaponFilter filter)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
@@ -91,13 +95,14 @@ namespace Tabletop.Core.Services
 
         public async Task<int> GetTotalAsync(WeaponFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
             sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`weapons` WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
 
-            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter));
+            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
 
             return result;
         }
@@ -113,6 +118,7 @@ namespace Tabletop.Core.Services
 
         public async Task UpdateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = @"UPDATE `tabletop`.`weapons` SET
                 `name` = @NAME,
                 `description` = @DESCRIPTION,
@@ -122,7 +128,7 @@ namespace Tabletop.Core.Services
                 `dices` = @DICES
                 WHERE `weapon_id` = @WEAPON_ID";
 
-            await dbController.QueryAsync(sql, input.GetParameters());
+            await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
         }
     }
 }

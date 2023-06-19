@@ -1,9 +1,11 @@
 ﻿using DbController;
+using System.Text;
+using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class GamemodeService : IModelService<Gamemode, int>
+    public class GamemodeService : IModelService<Gamemode, int, GamemodeFilter>
     {
         public async Task CreateAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
         {
@@ -66,6 +68,61 @@ namespace Tabletop.Core.Services
                 WHERE `gamemode_id` = @GAMEMODE_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        }
+
+        public async Task<List<Gamemode>> GetAsync(GamemodeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            StringBuilder sqlBuilder = new();
+            sqlBuilder.Append("SELECT * FROM `tabletop`.`gamemodes` WHERE 1 = 1");
+            sqlBuilder.AppendLine(GetFilterWhere(filter));
+            sqlBuilder.AppendLine(@$"  ORDER BY `name` ASC");
+            sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
+
+            // Zum Debuggen schreiben wir den Wert einmal als Variabel
+            string sql = sqlBuilder.ToString();
+
+            List<Gamemode> list = await dbController.SelectDataAsync<Gamemode>(sql, GetFilterParameter(filter), cancellationToken);
+
+            return list;
+        }
+
+        public async Task<int> GetTotalAsync(GamemodeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            StringBuilder sqlBuilder = new();
+            sqlBuilder.AppendLine("SELECT COUNT(*) FROM `tabletop`.`gamemodes` WHERE 1 = 1");
+            sqlBuilder.AppendLine(GetFilterWhere(filter));
+
+            string sql = sqlBuilder.ToString();
+
+            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
+
+            return result;
+        }
+
+        public string GetFilterWhere(GamemodeFilter filter)
+        {
+            StringBuilder sb = new();
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
+            {
+                sb.AppendLine(@" AND 
+(
+        UPPER(name) LIKE @SEARCHPHRASE
+)");
+            }
+
+            string sql = sb.ToString();
+            return sql;
+        }
+
+        public Dictionary<string, object?> GetFilterParameter(GamemodeFilter filter)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+            };
         }
     }
 }

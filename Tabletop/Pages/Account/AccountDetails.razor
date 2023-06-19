@@ -1,9 +1,9 @@
-﻿@page "/Account/Details"
+﻿@page "/Account/Details/"
 @attribute [Authorize]
 @inject AuthService authService
-<PageTitle>Accountdetails</PageTitle>
-<h3>Accountdetails</h3>
-
+@inject UnitService unitservice
+@inject UserService userService
+<PageTitle>Tablebricks - Account</PageTitle>
 
 @if (CurrentUser is not null)
 {
@@ -13,7 +13,7 @@
                 <div class="fb-profile-block">
                     <div class="fb-profile-block-thumb cover-container"></div>
                     <div class="profile-img">
-                        <a href="#">
+                        <a>
                             <img src="@CurrentUser.ConvertedImage" alt="" title="Logo">
                         </a>
                     </div>
@@ -34,43 +34,172 @@
             </div>
         </div>
         <div class="col-lg-4">
-        @if (Option == 0)
-        {
-            <div class="table-responsive">
-                <table class="table table-lg">
-                    <tbody>
-                        <tr>
-                            <td class="text-bold-500">Name</td>
-                            <td>@CurrentUser.DisplayName</td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold-500">Username</td>
-                            <td>@CurrentUser.Username</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        }
-        else if (Option == 1)
-        {
-            <div class="form-group">
-                <label for="fractions">Fractions</label>
-                <InputSelect id="fractions" @bind-Value="SelectedFraction" class="form-control">
-                    @foreach (Fraction item in Fractions)
-                    {
-                        <option value="@item.FractionId">@item.Name</option>
-                    }
-                </InputSelect>
-            </div>
-        }
-        else if (Option == 2)
-        {
+            @if (Option == 0)
+            {
+                <div class="mt-3">
+                    <h5>Description</h5>
+                    <p>@CurrentUser.Description</p>
+                </div>
+            }
+            else if (Option == 1)
+            {
+                <div class="form-group mt-3">
+                    <h5>Fraction</h5>
+                    <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectUnits" class="form-control">
+                        @foreach (Fraction item in Fractions)
+                        {
+                            <option value="@item.FractionId">@item.Name</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-lg">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        @if (Units.Count > 0)
+                        {
+                            <tbody>
+                                @foreach (Unit item in Units)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.Quantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            }
+            else if (Option == 2)
+            {
+                <div class="row">
+                    <div class="col-lg-15">
+                        <div class="table-responsive">
+                            <table class="table table-lg">
+                                <thead>
+                                    <tr>
+                                        <th>Your Friends</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="col-lg-3 col-md-12">
+                                                <div>
+                                                    <button type="button" class="btn btn-success" @onclick="HandleClick"><i class="bi bi-plus-lg"></i></button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (User item in Friends)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a>
+                                                    <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="" title="Logo">
+                                                </a>
+                                            </td>
+                                            <td>@item.Username (@item.DisplayName)</td>
+                                            <td>
+                                                <span class="aktion-icon" role="button" @onclick="() => DeleteAsync(item.UserId)">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-        }
-        else
-        {
+            }
+            else
+            {
 
-        }
+            }
         </div>
     </div>
 }
+
+@if (IsSearching)
+{
+    <Modal Title="Find Friends"
+       OnClosed="() => IsSearching = false"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Filter</h4>
+                    </div>
+                    <div class="card-content" style="padding: 0 1.3rem;">
+                        <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                            <div class="form-floating mb-3">
+                                <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                                <label for="usermanagement-filter-searchphrase">Search</label>
+                            </div>
+
+                            <div class="toolbar">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-responsive">
+                            <table class="table mb-0 table-lg">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Virtualize Items="Users" Context="user">
+                                        <tr>
+                                            <td>@user.DisplayName</td>
+                                            <td>@user.Username</td>
+                                            <td class="text-right">
+                                                @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser.Id)
+                                                {
+                                                    <span class="aktion-icon" role="button" @onclick="() => AddFriend(user.Id)">
+                                                        <i class="bi bi-plus-lg"></i>
+                                                    </span>                                           
+                                                }
+                                            </td>
+                                        </tr>
+                                    </Virtualize>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </Modal>
+}
+
+@*@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="Delete"
+              OnClosed="() => SelectedForDeletion = null"
+              OnConfirmed="DeleteAsync">
+        <p>@String.Format($@"Should the user '{0}' really be deleted?", SelectedForDeletion.DisplayName)</p>
+    </ConfirmModal>
+}*@

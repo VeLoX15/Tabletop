@@ -7,17 +7,16 @@ namespace Tabletop.Core.Services
 {
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
-        private readonly FractionService _fractionService;
         private readonly WeaponService _weaponService;
 
-        public UnitService(FractionService fractionService, WeaponService weaponService)
+        public UnitService(WeaponService weaponService)
         {
-            _fractionService = fractionService;
             _weaponService = weaponService;
         }
 
         public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = $@"INSERT INTO `tabletop`.`units` 
                 (
                 `name`,
@@ -35,33 +34,34 @@ namespace Tabletop.Core.Services
                 @MOVING
                 ); {dbController.GetLastIdSql()}";
 
-            input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
+            input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
         public async Task DeleteAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = "DELETE FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, new
             {
                 UNIT_ID = input.UnitId,
-            });
+            }, cancellationToken);
         }
 
         public async Task<Unit?> GetAsync(int unitId, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT * FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
 
             var unit = await dbController.GetFirstAsync<Unit>(sql, new
             {
                 UNIT_ID = unitId
-            });
+            }, cancellationToken);
 
             if (unit is not null)
             {
-                unit.Fraction = await _fractionService.GetAsync(unit.FractionId, dbController) ?? new();
-                unit.PrimaryWeapon = await _weaponService.GetAsync(unit.PrimaryWeaponId, dbController) ?? new();
-                unit.SecondaryWeapon = await _weaponService.GetAsync(unit.SecondaryWeaponId, dbController) ?? new();
+                unit.PrimaryWeapon = await _weaponService.GetAsync(unit.PrimaryWeaponId, dbController, cancellationToken) ?? new();
+                unit.SecondaryWeapon = await _weaponService.GetAsync(unit.SecondaryWeaponId, dbController, cancellationToken) ?? new();
             }
 
             return unit;
@@ -69,21 +69,10 @@ namespace Tabletop.Core.Services
 
         public static async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string sql = "SELECT * FROM `tabletop`.`units`";
 
-            var list = await dbController.SelectDataAsync<Unit>(sql);
-
-            if (list.Any())
-            {
-                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
-                sql = $"SELECT * FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
-                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
-                }
-            }
+            var list = await dbController.SelectDataAsync<Unit>(sql, cancellationToken: cancellationToken);
 
             if (list.Any())
             {
@@ -114,15 +103,16 @@ namespace Tabletop.Core.Services
 
         public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
             sb.AppendLine("SELECT * FROM `tabletop`.`units`  WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `unit_id` DESC");
+            sb.AppendLine(@$"  ORDER BY `name` ASC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
 
-            List<Unit> list = await dbController.SelectDataAsync<Unit>(sql, GetFilterParameter(filter));
+            List<Unit> list = await dbController.SelectDataAsync<Unit>(sql, GetFilterParameter(filter), cancellationToken);
 
             return list;
         }
@@ -137,7 +127,7 @@ namespace Tabletop.Core.Services
 
         public string GetFilterWhere(UnitFilter filter)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
@@ -150,15 +140,33 @@ namespace Tabletop.Core.Services
 
         public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
             sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`units`  WHERE 1 = 1");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
 
-            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter));
+            int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
 
             return result;
+        }
+
+        public async Task<List<Unit>> GetUserUnitsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"
+        SELECT uu.quantity, u.*
+        FROM `tabletop`.`user_units` uu
+        INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = uu.`unit_id`)
+        WHERE uu.`user_id` = @USER_ID";
+
+            var list = await dbController.SelectDataAsync<Unit>(sql, new
+            {
+                USER_ID = userId
+            }, cancellationToken);
+
+            return list;
         }
 
         public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)

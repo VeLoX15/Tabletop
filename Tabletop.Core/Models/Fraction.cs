@@ -2,7 +2,7 @@
 
 namespace Tabletop.Core.Models
 {
-    public class Fraction
+    public class Fraction : IDbModel
     {
         [CompareField("fraction_id")]
         public int FractionId { get; set; }
@@ -18,6 +18,8 @@ namespace Tabletop.Core.Models
         public byte[]? Image { get; set; }
 
         public string ConvertedImage { get; set; } = string.Empty;
+
+        public int Id => FractionId;
 
         public Dictionary<string, object?> GetParameters()
         {

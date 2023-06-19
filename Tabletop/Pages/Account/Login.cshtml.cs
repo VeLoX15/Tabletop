@@ -56,9 +56,8 @@ namespace Tabletop.Pages.Account
                 // Lokale Konten müssen als ersten geprüft werden.
                 if (user is not null)
                 {
-                    PasswordHasher<User> hasher = new PasswordHasher<User>();
-
-                    string passwordHashed = hasher.HashPassword(user, Input.Password + user.Salt);
+                    PasswordHasher<User> hasher = new();
+                    _ = hasher.HashPassword(user, Input.Password + user.Salt);
 
                     PasswordVerificationResult result = hasher.VerifyHashedPassword(user, user.Password, Input.Password + user.Salt);
                     // Das Handling läuft später auf Basis des Objektes ab.
@@ -96,11 +95,11 @@ namespace Tabletop.Pages.Account
                 {
                     if (!AppdataService.IsLocalLoginEnabled)
                     {
-                        ModelState.AddModelError("login-error", "Es wurde kein Provider zum einloggen gefunden. Bitte wenden Sie sich an Ihren Administrator.");
+                        ModelState.AddModelError("login-error", "Provider was not found. Please contact an administrator.");
                     }
                     else
                     {
-                        ModelState.AddModelError("login-error", "Username oder Passwort ist falsch.");
+                        ModelState.AddModelError("login-error", "Username or Password are wrong.");
                     }
                 }
             }
@@ -136,7 +135,7 @@ namespace Tabletop.Pages.Account
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; } = String.Empty;
-        [Display(Name = "Eingeloggt bleiben")]
+        [Display(Name = "Stay logged in")]
         public bool RememberMe { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace Tabletop.Core.Models
         public string Username { get; set; } = string.Empty;
         [CompareField("display_name")]
         public string DisplayName { get; set; } = string.Empty;
+        [CompareField("description")]
+        public string Description { get; set; } = string.Empty;
         [CompareField("password")]
         public string Password { get; set; } = string.Empty;
         [CompareField("salt")]
@@ -23,6 +25,8 @@ namespace Tabletop.Core.Models
 
 
         public List<Permission> Permissions { get; set; } = new();
+        public List<Fraction> Fractions { get; set; } = new();
+        public List<Unit> Units { get; set; } = new();
         public int Id => UserId;
 
         public Dictionary<string, object?> GetParameters()
