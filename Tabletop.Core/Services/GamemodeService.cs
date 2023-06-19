@@ -13,15 +13,13 @@ namespace Tabletop.Core.Services
                 (
                 `name`,
                 `description`,
-                `mechanic`,
-                `image`
+                `mechanic`
                 )
                 VALUES
                 (
                 @NAME,
                 @DESCRIPTION,
-                @MECHANIC,
-                @IMAGE
+                @MECHANIC
                 ); {dbController.GetLastIdSql()}";
 
             input.GamemodeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());

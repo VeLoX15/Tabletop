@@ -20,16 +20,18 @@ namespace Tabletop.Core.Services
             string sql = $@"INSERT INTO `tabletop`.`units` 
                 (
                 `name`,
-                `fraction`,
+                `fraction_id`,
                 `description`,
+                `mechanic`,
                 `defense`,
                 `moving`
                 )
                 VALUES
                 (
                 @NAME,
-                @FRACTION,
+                @FRACTION_ID,
                 @DESCRIPTION,
+                @MECHANIC,
                 @DEFENSE,
                 @MOVING
                 ); {dbController.GetLastIdSql()}";
@@ -173,8 +175,9 @@ namespace Tabletop.Core.Services
         {
             string sql = @"UPDATE `tabletop`.`units` SET
                 `name` = @NAME,
-                `fraction` = @FRACTION,
+                `fraction_id` = @FRACTION_ID,
                 `description` = @DESCRIPTION,
+                `mechanic` = @MECHANIC,
                 `defense` = @DEFENSE,
                 `moving` = @MOVING
                 WHERE `unit_id` = @UNIT_ID";

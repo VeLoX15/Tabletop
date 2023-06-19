@@ -27,7 +27,7 @@ namespace Tabletop.Core.Models
                 { "NAME", Name },
                 { "DESCRIPTION", Description },
                 { "MECHANIC", Mechanic },
-                { "IMAGE", Image },
+                { "IMAGE", Image }
             };
         }
     }

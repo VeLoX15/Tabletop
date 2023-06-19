@@ -100,7 +100,7 @@
 
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.ShortName" class="form-control" id="fraction-shortname" placeholder="Short Name" />
-                        <label for="fraction-shortname">Name</label>
+                        <label for="fraction-shortname">Short Name</label>
                         <ValidationMessage For="() => Input.ShortName" />
                     </div>
 
@@ -108,12 +108,6 @@
                         <InputTextArea @bind-Value="Input.Description" class="form-control" id="fraction-description" placeholder="Description" />
                         <label for="fraction-description">Description</label>
                         <ValidationMessage For="() => Input.Description" />
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <InputTextArea @bind-Value="Input.Mechanic" class="form-control" id="fraction-mechanic" placeholder="Mechanic" />
-                        <label for="fraction-mechanic">Mechanic</label>
-                        <ValidationMessage For="() => Input.Mechanic" />
                     </div>
                 </div>
             </div>

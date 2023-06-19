@@ -12,8 +12,6 @@ namespace Tabletop.Core.Models
         public string ShortName { get; set; } = string.Empty;
         [CompareField("description")]
         public string Description { get; set; } = string.Empty;
-        [CompareField("mechanic")]
-        public string Mechanic { get; set; } = string.Empty;
         [CompareField("image")]
         public byte[]? Image { get; set; }
 
@@ -29,8 +27,7 @@ namespace Tabletop.Core.Models
                 { "NAME", Name },
                 { "SHORT_NAME", ShortName },
                 { "DESCRIPTION", Description },
-                { "MECHANIC", Mechanic },
-                { "IMAGE", Image },
+                { "IMAGE", Image }
             };
         }
     }

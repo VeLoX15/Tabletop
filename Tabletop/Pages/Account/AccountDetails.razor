@@ -195,6 +195,44 @@
     </Modal>
 }
 
+@if ()
+{
+    <Modal Title="Add to Units"
+       OnClosed="() => Unit = null"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
+
+        <EditForm Model="Unit" @ref="_form">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <label for="weapon-name">Name</label>
+                        <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectUnits" class="form-control">
+                            @foreach (Fraction item in Fractions)
+                            {
+                                <option value="@item.FractionId">@item.Name</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputNumber @bind-Value="Unit.Quantity" class="form-control" id="weapon-description" placeholder="Description" />
+                        <label for="weapon-description">Description</label>
+                        <ValidationMessage For="() => Unit.Quantity" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+        </div>
+    </Modal>
+}
+
 @*@if (SelectedForDeletion is not null)
 {
     <ConfirmModal Title="Delete"

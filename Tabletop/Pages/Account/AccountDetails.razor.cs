@@ -46,6 +46,7 @@ namespace Tabletop.Pages.Account
         public List<Fraction> Fractions { get; set; } = new(); 
         public List<Unit> UserUnits { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
+        public Unit Unit { get; set; } = new();
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
         private int _page = 1;

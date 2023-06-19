@@ -13,17 +13,13 @@ namespace Tabletop.Core.Services
                 (
                 `name`,
                 `short_name`,
-                `description`,
-                `mechanic`,
-                `image`
+                `description`
                 )
                 VALUES
                 (
                 @NAME,
-                @SHORT_NAME
-                @DESCRIPTION,
-                @MECHANIC,
-                @IMAGE
+                @SHORT_NAME,
+                @DESCRIPTION
                 ); {dbController.GetLastIdSql()}";
 
             input.FractionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
