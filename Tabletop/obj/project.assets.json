@@ -3691,19 +3691,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tomsa\\.nuget\\packages\\": {}
+    "C:\\Users\\Tom\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "projectUniqueName": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
       "projectName": "Tabletop",
-      "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
-      "packagesPath": "C:\\Users\\tomsa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\obj\\",
+      "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "packagesPath": "C:\\Users\\Tom\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tomsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tom\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3717,8 +3717,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
-              "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
+            "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
+              "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
             }
           }
         }

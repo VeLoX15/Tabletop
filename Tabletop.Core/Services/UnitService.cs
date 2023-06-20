@@ -8,10 +8,12 @@ namespace Tabletop.Core.Services
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
         private readonly WeaponService _weaponService;
+        private readonly FractionService _fractionService;
 
-        public UnitService(WeaponService weaponService)
+        public UnitService(WeaponService weaponService, FractionService fractionService)
         {
             _weaponService = weaponService;
+            _fractionService = fractionService;
         }
 
         public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -100,6 +102,18 @@ namespace Tabletop.Core.Services
                 }
             }
 
+            if (list.Any())
+            {
+                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
+                sql = $"SELECT `name` FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
+                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
+
+                foreach (var item in list)
+                {
+                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
+                }
+            }
+
             return list;
         }
 
@@ -115,6 +129,18 @@ namespace Tabletop.Core.Services
             string sql = sb.ToString();
 
             List<Unit> list = await dbController.SelectDataAsync<Unit>(sql, GetFilterParameter(filter), cancellationToken);
+
+            if (list.Any())
+            {
+                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
+                sql = $"SELECT `fraction_id`, `name` FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
+                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
+
+                foreach (var item in list)
+                {
+                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
+                }
+            }
 
             return list;
         }
