@@ -12,6 +12,8 @@ namespace Tabletop.Core.Models
         public string DisplayName { get; set; } = string.Empty;
         [CompareField("description")]
         public string Description { get; set; } = string.Empty;
+        [CompareField("main_fraction_id")]
+        public int MainFractionId { get; set; }
         [CompareField("password")]
         public string Password { get; set; } = string.Empty;
         [CompareField("salt")]
@@ -36,10 +38,12 @@ namespace Tabletop.Core.Models
                 { "USER_ID", UserId },
                 { "USERNAME", Username },
                 { "DISPLAY_NAME", DisplayName },
-                { "IMAGE", Image },
+                { "DESCRIPTION", Description },
+                { "MAIN_FRACTION_ID", MainFractionId },
                 { "PASSWORD", Password },
                 { "SALT", Salt },
-                { "LAST_LOGIN", LastLogin }
+                { "LAST_LOGIN", LastLogin },
+                { "IMAGE", Image }
             };
         }
     }

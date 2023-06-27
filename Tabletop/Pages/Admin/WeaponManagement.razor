@@ -1,13 +1,13 @@
 ﻿@page "/Administration/Weapons"
 @inherits ManagementBasePage<Weapon, WeaponService>
 @attribute [Authorize(Roles = Roles.VIEW_WEAPONS)]
-<PageTitle>Tablebricks - Weapon Mangement</PageTitle>
-<h3>Weapon Mangement</h3>
+<PageTitle>Tablebricks - Weapons (Management)</PageTitle>
+<h3>Weapon Management</h3>
 
 <AuthorizeView Roles="@(Roles.ADD_WEAPONS)">
     <Authorized>
         <div class="toolbar">
-            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="bi bi-plus-lg"></i></button>
+            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="fa-solid fa-plus"></i></button>
         </div>
     </Authorized>
 </AuthorizeView>
@@ -53,14 +53,14 @@
                                     <AuthorizeView Roles="@(Roles.DELETE_WEAPONS)">
                                         <Authorized>
                                             <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = user">
-                                                <i class="bi bi-trash-fill"></i>
+                                                <i class="fa-solid fa-trash-can"></i>
                                             </span>
                                         </Authorized>
                                     </AuthorizeView>
                                     <AuthorizeView Roles="@(Roles.EDIT_WEAPONS)">
                                         <Authorized>
                                             <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(user)">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </span>
                                         </Authorized>
                                     </AuthorizeView>

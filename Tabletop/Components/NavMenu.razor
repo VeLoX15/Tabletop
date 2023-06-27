@@ -5,7 +5,7 @@
 <ul class="menu">
     <li class="sidebar-item">
         <NavLink href="/" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-            <i class="bi bi-house-fill"></i>
+            <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </NavLink>
     </li>
@@ -15,40 +15,46 @@
 
 
 
-            <li class="sidebar-item">
+    <li class="sidebar-item">
         <NavLink href="/Rules" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-            <i class="bi bi-book-fill"></i>
-                    <span>Rules</span>
-                </NavLink>
-            </li>
+            <i class="fa-solid fa-book-journal-whills"></i>
+            <span>Rules</span>
+        </NavLink>
+    </li>
 
-            <li class="sidebar-item">
-        <NavLink href="/fractions" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-star-fill"></i>
-                    <span>Fractions</span>
-                </NavLink>
-            </li>
+    <li class="sidebar-item">
+        <NavLink href="/Fractions" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+            <i class="fa-brands fa-galactic-senate"></i>
+            <span>Fractions</span>
+        </NavLink>
+    </li>
 
-            <li class="sidebar-item">
+    <li class="sidebar-item">
         <NavLink href="/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-            <i class="bi bi-dice-5-fill"></i>
-                    <span>Gamemodes</span>
-                </NavLink>
-            </li>
+            <i class="fa-solid fa-dice-five"></i>
+            <span>Game Modes</span>
+        </NavLink>
+    </li>
 
-            <li class="sidebar-item">
+    <li class="sidebar-item">
         <NavLink href="/Tables" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-            <i class="bi bi-table"></i>
-                    <span>Table Values</span>
-                </NavLink>
-            </li>
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Table Values</span>
+        </NavLink>
+    </li>
+
+    <AuthorizeView>
+        <Authorized>
+            <li class="sidebar-title">Calculator</li>
 
             <li class="sidebar-item">
-        <NavLink href="/Social-Media" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-chat-dots-fill"></i>
-                    <span>Social Media</span>
+                <NavLink href="/Calculator/Probability" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-percent"></i>
+                    <span>Probability</span>
                 </NavLink>
             </li>
+        </Authorized>
+    </AuthorizeView>
 
     <AuthorizeView Roles="@($"{Roles.VIEW_USERS}, {Roles.VIEW_UNITS}, {Roles.VIEW_WEAPONS}, {Roles.VIEW_FRACTIONS}, {Roles.VIEW_GAMEMODES}")">
         <Authorized>
@@ -60,7 +66,7 @@
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Administration/Users" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-people-fill"></i>
+                    <i class="fa-solid fa-users"></i>
                     <span>Users</span>
                 </NavLink>
             </li>
@@ -71,7 +77,7 @@
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Administration/Units" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-people-fill"></i>
+                    <i class="fa-solid fa-person-rifle"></i>
                     <span>Units</span>
                 </NavLink>
             </li>
@@ -82,7 +88,7 @@
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Administration/Weapons" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-people-fill"></i>
+                    <i class="fa-solid fa-gun"></i>
                     <span>Weapons</span>
                 </NavLink>
             </li>
@@ -93,7 +99,7 @@
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Administration/Fractions" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-people-fill"></i>
+                    <i class="fa-brands fa-galactic-senate"></i>
                     <span>Fractions</span>
                 </NavLink>
             </li>
@@ -104,41 +110,41 @@
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Administration/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="bi bi-people-fill"></i>
-                    <span>Gamemodes</span>
+                    <i class="fa-solid fa-dice-five"></i>
+                    <span>Game Modes</span>
                 </NavLink>
             </li>
         </Authorized>
     </AuthorizeView>
 
-    <li class="sidebar-title">Profile</li>
-        <AuthorizeView>
-            <Authorized>
-                <li class="sidebar-item">
-                <NavLink href="/Account/Details" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                        <i class="bi bi-person-fill"></i>
-                        <span>Account</span>
-                    </NavLink>
-                </li>
+    <li class="sidebar-title">Account</li>
+    <AuthorizeView>
+        <Authorized>
+            <li class="sidebar-item">
+                <NavLink href="/Account/Profile" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </NavLink>
+            </li>
 
-                <li class="sidebar-item">
-                    <form method="post" action="/Account/Logout">
-                        <button type="submit" class="btn btn-danger btn-block text-left sidebar-link logout-button">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                </li>
-            </Authorized>
-            <NotAuthorized>
-                <li class="sidebar-item">
+            <li class="sidebar-item">
+                <form method="post" action="/Account/Logout">
+                    <button type="submit" class="btn btn-danger btn-block text-left sidebar-link logout-button">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </li>
+        </Authorized>
+        <NotAuthorized>
+            <li class="sidebar-item">
                 <NavLink href="/Account/Login" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                        <i class="bi bi-person-fill"></i>
-                        <span>Login</span>
-                    </NavLink>
-                </li>
-            </NotAuthorized>
-        </AuthorizeView>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Login</span>
+                </NavLink>
+            </li>
+        </NotAuthorized>
+    </AuthorizeView>
 
 </ul>
 

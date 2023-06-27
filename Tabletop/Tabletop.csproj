@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\assets\css\fontawesome\" />
     <Folder Include="wwwroot\assets\img\logo\" />
   </ItemGroup>
 

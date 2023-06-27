@@ -57,7 +57,7 @@ namespace Tabletop.Pages.Admin
                 await Service.DeleteAsync(SelectedForDeletion, dbController);
                 await dbController.CommitChangesAsync();
                 AppdataService.DeleteRecord(SelectedForDeletion);
-                await JSRuntime.ShowToastAsync(ToastType.success, "Delete Massage");
+                await JSRuntime.ShowToastAsync(ToastType.success, "Delete item");
                 SelectedForDeletion = null;
             }
             catch (Exception ex)
@@ -65,7 +65,7 @@ namespace Tabletop.Pages.Admin
                 await dbController.RollbackChangesAsync();
                 if (ex.HResult == -2147467259)
                 {
-                    await JSRuntime.ShowToastAsync(ToastType.error, "Delete Error");
+                    await JSRuntime.ShowToastAsync(ToastType.error, "Delete error");
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace Tabletop.Pages.Admin
                 }
 
 
-                await JSRuntime.ShowToastAsync(ToastType.success, "Save Massage");
+                await JSRuntime.ShowToastAsync(ToastType.success, $"Save item");
 
                 Input = null;
             }

@@ -1,7 +1,7 @@
 ﻿@page "/Fractions/{fractionName}/{unitId:int}"
-<PageTitle>Tablebricks - Fractions</PageTitle>
 @if (Unit != null)
 {
+    <PageTitle>Tablebricks - @Unit.Name</PageTitle>
     <h3>@Unit.Name</h3>
 
     <div class="container">
@@ -51,6 +51,7 @@
 }
 else
 {
+    <PageTitle>Tablebricks - Unit not found</PageTitle>
     <p>No unit selected.</p>
 }
 

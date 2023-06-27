@@ -17,23 +17,27 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = $@"INSERT INTO `tabletop`.`users`
-    (
-    `username`,
-    `display_name`,
-    `password`,
-    `salt`,
-    `last_login`,
-    `image`
-    )
-    VALUES 
-    (
-    @USERNAME,
-    @DISPLAY_NAME,
-    @PASSWORD,
-    @SALT,
-    @LAST_LOGIN,
-    @IMAGE
-    ); {dbController.GetLastIdSql()}";
+                (
+                `username`,
+                `display_name`,
+                `description`,
+                `main_fraction_id`
+                `password`,
+                `salt`,
+                `last_login`,
+                `image`
+                )
+                VALUES 
+                (
+                @USERNAME,
+                @DISPLAY_NAME,
+                @DESCRIPTION,
+                @MAIN_FRACTION_ID,
+                @PASSWORD,
+                @SALT,
+                @LAST_LOGIN,
+                @IMAGE
+                ); {dbController.GetLastIdSql()}";
 
             input.UserId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 

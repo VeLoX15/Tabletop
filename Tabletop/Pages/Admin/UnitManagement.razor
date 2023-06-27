@@ -1,13 +1,13 @@
 ﻿@page "/Administration/Units"
 @inherits ManagementBasePage<Unit, UnitService>
 @attribute [Authorize(Roles = Roles.VIEW_UNITS)]
-<PageTitle>Tablebricks - Unit Mangement</PageTitle>
-<h3>Unit Mangement</h3>
+<PageTitle>Tablebricks - Units (Management)</PageTitle>
+<h3>Unit Management</h3>
 
 <AuthorizeView Roles="@(Roles.ADD_UNITS)">
     <Authorized>
         <div class="toolbar">
-            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="bi bi-plus-lg"></i></button>
+            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="fa-solid fa-plus"></i></button>
         </div>
     </Authorized>
 </AuthorizeView>
@@ -55,14 +55,14 @@
                                         <AuthorizeView Roles="@(Roles.DELETE_UNITS)">
                                             <Authorized>
                                                 <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = user">
-                                                    <i class="bi bi-trash-fill"></i>
+                                                <i class="fa-solid fa-trash-can"></i>
                                                 </span>
                                             </Authorized>
                                         </AuthorizeView>
                                     <AuthorizeView Roles="@(Roles.EDIT_UNITS)">
                                         <Authorized>
                                             <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(user)">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </span>
                                         </Authorized>
                                     </AuthorizeView>

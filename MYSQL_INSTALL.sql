@@ -10,12 +10,14 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
 	`username` VARCHAR(50) NOT NULL,
 	`display_name` VARCHAR(100) NOT NULL,
 	`description` TEXT NOT NULL,
+	`main_fraction_id` INT NULL, 
 	`password` VARCHAR(255) NOT NULL,
 	`salt` VARCHAR(255) NOT NULL,
     `last_login` DATETIME,
 	`image` MEDIUMBLOB NULL,
 
-	PRIMARY KEY(`user_id`)
+	PRIMARY KEY(`user_id`),
+	FOREIGN KEY (`main_fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 
 -- -----------------------------------------------------
@@ -121,19 +123,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_units`
     PRIMARY KEY (`user_id`, `unit_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
 	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`user_fractions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`user_fractions` 
-(
-    `user_id` INTEGER NOT NULL,
-	`fraction_id` INTEGER NOT NULL,
-
-    PRIMARY KEY (`user_id`, `fraction_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
-	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 
 -- -----------------------------------------------------

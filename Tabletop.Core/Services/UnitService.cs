@@ -52,6 +52,18 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
+        public async Task DeleteUnitAsync(int userId, int unitId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "DELETE FROM `tabletop`.`user_units` WHERE `user_id` = @USER_ID AND `unit_id` = @UNIT_ID";
+
+            await dbController.QueryAsync(sql, new
+            {
+                USER_ID = userId,
+                UNIT_ID = unitId
+            }, cancellationToken);
+        }
+
         public async Task<Unit?> GetAsync(int unitId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -195,6 +207,37 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
 
             return list;
+        }
+
+        public async Task CreateUserUnitAsync(User user, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "DELETE FROM `tabletop`.`user_units` WHERE `user_id` = @USER_ID AND `unit_id` = @UNIT_ID";
+            await dbController.QueryAsync(sql, new
+            {
+                USER_ID = user.UserId,
+                UNIT_ID = unit.UnitId,
+            }, cancellationToken);
+
+            sql = @"INSERT INTO `tabletop`.`user_units`
+                (
+                `user_id`,
+                `unit_id`,
+                `quantity`
+                )
+                VALUES
+                (
+                @USER_ID,
+                @UNIT_ID,
+                @QUANTITY
+                )";
+
+            await dbController.QueryAsync(sql, new
+            {
+                USER_ID = user.UserId,
+                UNIT_ID = unit.UnitId,
+                QUANTITY = unit.Quantity
+            }, cancellationToken);
         }
 
         public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)

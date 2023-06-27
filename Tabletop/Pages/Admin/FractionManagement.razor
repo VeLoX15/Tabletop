@@ -1,13 +1,13 @@
 ﻿@page "/Administration/Fractions"
 @inherits ManagementBasePage<Fraction, FractionService>
 @attribute [Authorize(Roles = Roles.VIEW_UNITS)]
-<PageTitle>Tablebricks - Fraction Mangement</PageTitle>
-<h3>Fraction Mangement</h3>
+<PageTitle>Tablebricks - Fractions (Management)</PageTitle>
+<h3>Fraction Management</h3>
 
 <AuthorizeView Roles="@(Roles.ADD_FRACTIONS)">
     <Authorized>
         <div class="toolbar">
-            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="bi bi-plus-lg"></i></button>
+            <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="fa-solid fa-plus"></i></button>
         </div>
     </Authorized>
 </AuthorizeView>
@@ -53,14 +53,14 @@
                                     <AuthorizeView Roles="@(Roles.DELETE_FRACTIONS)">
                                         <Authorized>
                                             <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = user">
-                                                <i class="bi bi-trash-fill"></i>
+                                                <i class="fa-solid fa-trash-can"></i>
                                             </span>
                                         </Authorized>
                                     </AuthorizeView>
                                     <AuthorizeView Roles="@(Roles.EDIT_FRACTIONS)">
                                         <Authorized>
                                             <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(user)">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </span>
                                         </Authorized>
                                     </AuthorizeView>

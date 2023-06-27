@@ -8,6 +8,7 @@ using Tabletop.Core.Services;
 using Blazor.Pagination;
 using Tabletop.Core.Filters;
 using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Tabletop.Pages.Account
 {
@@ -33,8 +34,13 @@ namespace Tabletop.Pages.Account
                     CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
                 }
 
+                if (CurrentUser?.MainFractionId > 0)
+                {
+                    SelectedFraction = CurrentUser.MainFractionId;
+                }
+
                 await LoadContent();
-                await SelectUnits();
+                await SelectFractionUnitsByUser();
 
                 _loggedInUser = await authService.GetUserAsync();
                 await LoadAsync();
@@ -42,11 +48,14 @@ namespace Tabletop.Pages.Account
         }
 
         public int Option { get; set; }
-        public int SelectedFraction { get; set; }
-        public List<Fraction> Fractions { get; set; } = new(); 
+        public int SelectedFraction { get; set; } = 1;
+        public List<Fraction> Fractions { get; set; } = new();
         public List<Unit> UserUnits { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
         public Unit Unit { get; set; } = new();
+        public int Quantity { get; set; }
+        public int FractionId { get; set; }
+        public int UnitId { get; set; }
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
         private int _page = 1;
@@ -55,8 +64,9 @@ namespace Tabletop.Pages.Account
         {
             Limit = AppdataService.PageLimit
         };
-        public Permission? SelectedPermission { get; set; }
+
         public bool IsSearching { get; set; } = false;
+        public bool AddUnit { get; set; } = false;
         public List<User> Users { get; set; } = new();
         public List<User> Friends { get; set; } = new();
 
@@ -68,9 +78,15 @@ namespace Tabletop.Pages.Account
             Users = await userService.GetAsync(Filter, dbController);
         }
 
-        protected Task HandleClick()
+        protected Task SwitchFriendModal()
         {
             IsSearching = true;
+            return Task.CompletedTask;
+        }
+
+        protected Task SwitchUnitModal()
+        {
+            AddUnit = true;
             return Task.CompletedTask;
         }
 
@@ -85,13 +101,22 @@ namespace Tabletop.Pages.Account
             if (CurrentUser != null)
             {
                 Fractions = AppdataService.Fractions.ToList();
+                Units = AppdataService.Units.ToList();
 
+                await FriendReloading();
+                await UnitReloading();
+            }
+        }
+
+        protected async Task FriendReloading()
+        {
+            if (CurrentUser != null)
+            {
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                UserUnits = await unitservice.GetUserUnitsAsync(CurrentUser.Id, dbController);
 
                 Friends = await userService.GetUserFriendsAsync(CurrentUser.Id, dbController);
 
-                foreach(User item in Friends)
+                foreach (User item in Friends)
                 {
                     if (item?.Image != null)
                     {
@@ -102,33 +127,73 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        protected async Task SelectUnits()
+        protected async Task UnitReloading()
         {
-            Units = UserUnits.Where(x => x.FractionId == SelectedFraction).ToList();
-            await LoadContent();
-        }
-
-        protected async Task AddFriend(int friendId)
-        {
-            if(CurrentUser != null)
+            if (CurrentUser != null)
             {
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                await userService.CreateUserFriendAsync(CurrentUser.Id, friendId, dbController);
+                UserUnits = await unitService.GetUserUnitsAsync(CurrentUser.Id, dbController);
             }
         }
 
+        protected async Task SelectFractionUnitsByUser()
+        {
+            await LoadContent();
+        }
+
+        protected async Task AddFriendAsync(int friendId)
+        {
+            if (CurrentUser != null)
+            {
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                await userService.CreateUserFriendAsync(CurrentUser.Id, friendId, dbController);
+                await FriendReloading();
+                await JSRuntime.ShowToastAsync(ToastType.success, "Add new friend");
+            }
+        }
+
+        protected async Task AddUnitAsync()
+        {
+            if (CurrentUser is not null)
+            {
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+
+                Unit unit = new()
+                {
+                    UnitId = UnitId,
+                    Quantity = Quantity
+                };
+
+                CurrentUser.Units.Add(unit);
+                await unitService.CreateUserUnitAsync(CurrentUser, unit, dbController);
+                await UnitReloading();
+                await JSRuntime.ShowToastAsync(ToastType.success, "Add new unit");
+            }
+        }
 
 #nullable disable
         [Inject] public IJSRuntime JSRuntime { get; set; }
 #nullable enable
 
-        protected virtual async Task DeleteAsync(int friendId)
+        protected virtual async Task DeleteFriendAsync(int friendId)
         {
             if (CurrentUser != null)
             {
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 await userService.DeleteFriendAsync(CurrentUser.Id, friendId, dbController);
-                await JSRuntime.ShowToastAsync(ToastType.success, "Delete Massage");
+                await FriendReloading();
+                await JSRuntime.ShowToastAsync(ToastType.success, "Delete friend");
+            }
+        }
+
+        protected virtual async Task DeleteUnitAsync(int unitId)
+        {
+            if (CurrentUser != null)
+            {
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                await unitService.DeleteUnitAsync(CurrentUser.Id, unitId, dbController);
+                await UnitReloading();
+                await JSRuntime.ShowToastAsync(ToastType.success, "Delete unit");
             }
         }
     }
