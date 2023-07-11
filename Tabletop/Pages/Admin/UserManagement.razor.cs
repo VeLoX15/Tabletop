@@ -7,6 +7,7 @@ using Tabletop.Core.Models;
 using Tabletop.Core.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
+using Tabletop.Pages.Public;
 
 namespace Tabletop.Pages.Admin
 {
@@ -19,10 +20,12 @@ namespace Tabletop.Pages.Admin
             Limit = AppdataService.PageLimit
         };
         public Permission? SelectedPermission { get; set; }
+        public List<Fraction> Fractions { get; set; } = new();
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
         protected override async Task OnParametersSetAsync()
         {
+            Fractions = AppdataService.Fractions;
             _loggedInUser = await authService.GetUserAsync();
             await LoadAsync();
         }

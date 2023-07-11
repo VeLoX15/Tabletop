@@ -21,7 +21,7 @@ namespace Tabletop.Core.Services
                 `username`,
                 `display_name`,
                 `description`,
-                `main_fraction_id`
+                `main_fraction_id`,
                 `password`,
                 `salt`,
                 `last_login`,

@@ -1,4 +1,4 @@
-﻿@page "/Account/Profile/"
+﻿@page "/Account/Profile"
 @attribute [Authorize]
 @inject AuthService authService
 @inject UnitService unitService
@@ -10,112 +10,111 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="fb-profile-block">
-                    <div class="fb-profile-block-thumb cover-container"></div>
+                <div class="profile-block">
+                    <div class="profile-block-thumb profile-banner rounded"></div>
                     <div class="profile-img">
                         <a>
-                            <img src="@CurrentUser.ConvertedImage" alt="" title="Logo">
+                            <img src="@CurrentUser.ConvertedImage" alt="Logo" title="Logo">
                         </a>
                     </div>
                     <div class="profile-name">
                         <h2>@CurrentUser.Username (@CurrentUser.DisplayName)</h2>
                     </div>
-
-                    <div class="fb-profile-block-menu">
-                        <div class="block-menu">
-                            <ul>
-                                <li><a @onclick="() => Menu(0)">Information</a></li>
-                                <li><a @onclick="() => Menu(1)">Fractions</a></li>
-                                <li><a @onclick="() => Menu(2)">Friends</a></li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            @if (Option == 0)
-            {
-                <div class="mt-3">
-                    <h5>Description</h5>
+        <div class="row pt-4">
+            <div class="col-lg-6">
+                <div class="card p-3 pb-3">
+                    <div class="row">
+                        <div class="form-group col">
+                            <h4>About me</h4>
+                        </div>
+                        <div class="col-auto text-end">
+                            <button type="button" class="btn" @onclick="SwitchEditProfile"><i class="fa-solid fa-user-pen"></i></button>
+                        </div>
+                    </div>
                     <p>@CurrentUser.Description</p>
                 </div>
-            }
-            else if (Option == 1)
-            {
-                <div class="form-group mt-3">
-                    <div class="form-floating mb-3">
-                        <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectFractionUnitsByUser" class="form-control">
-                            @foreach (Fraction item in Fractions)
-                            {
-                                <option value="@item.FractionId">@item.Name</option>
-                            }
-                        </InputSelect>
-                        <label for="fractions">Choose Fraction</label>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12">
-                    <div>
-                        <button type="button" class="btn btn-success" @onclick="SwitchUnitModal"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-lg">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Quantity</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
-                            {
+
+                <div class="card p-3">
+                    <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead>
                                 <tr>
-                                    <td>@item.Name</td>
-                                    <td>@item.Quantity</td>
-                                    <td>
-                                        <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </span>
-                                    </td>
+                                    <th class="ps-0">
+                                        <h4>You Follow</h4>
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        <div>
+                                            <div>
+                                                <button type="button" class="btn btn-success" @onclick="SwitchFriendModal"><i class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (User item in Friends)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a>
+                                                <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="" title="Logo">
+                                            </a>
+                                        </td>
+                                        <td>@item.Username (@item.DisplayName)</td>
+                                        <td>
+                                            <span class="aktion-icon" role="button" @onclick="() => DeleteFriendAsync(item.UserId)">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            }
-            else if (Option == 2)
-            {
-                <div class="row">
-                    <div class="col-lg-15">
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="p-3">
+                        <div class="row">
+                            <div class="form-group col">
+                                <h4>Your Armies</h4>
+                            </div>
+                            <div class="col-auto text-end">
+                                <button type="button" class="btn btn-success" @onclick="SwitchUnitModal"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-floating">
+                            <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectFractionUnitsByUser" class="form-control">
+                                @foreach (Fraction item in Fractions)
+                                {
+                                    <option value="@item.FractionId">@item.Name</option>
+                                }
+                            </InputSelect>
+                            <label for="fractions">Choose Fraction</label>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Your Friends</th>
+                                        <th>Unit</th>
+                                        <th>Quantity</th>
                                         <th></th>
-                                        <th>
-                                            <div class="col-lg-3 col-md-12">
-                                                <div>
-                                                    <button type="button" class="btn btn-success" @onclick="SwitchFriendModal"><i class="fa-solid fa-plus"></i></button>
-                                                </div>
-                                            </div>
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (User item in Friends)
+                                    @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
                                     {
                                         <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.Quantity</td>
                                             <td>
-                                                <a>
-                                                    <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="" title="Logo">
-                                                </a>
-                                            </td>
-                                            <td>@item.Username (@item.DisplayName)</td>
-                                            <td>
-                                                <span class="aktion-icon" role="button" @onclick="() => DeleteFriendAsync(item.UserId)">
+                                                <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </span>
                                             </td>
@@ -126,20 +125,15 @@
                         </div>
                     </div>
                 </div>
-
-            }
-            else
-            {
-
-            }
+            </div>
         </div>
     </div>
 }
 
-@if (IsSearching)
+@if (AddFriendModal)
 {
-    <Modal Title="Find Friends"
-       OnClosed="() => IsSearching = false"
+    <Modal Title="Find other players"
+       OnClosed="() => AddFriendModal = false"
        ModalSize="ModalSize.LG"
        HideFooter="true">
 
@@ -205,10 +199,10 @@
     </Modal>
 }
 
-@if (AddUnit)
+@if (AddUnitModal)
 {
-    <Modal Title="Add to Units"
-       OnClosed="() => AddUnit = false"
+    <Modal Title="Edit your armies"
+       OnClosed="() => AddUnitModal = false"
        ModalSize="ModalSize.LG"
        HideFooter="true">
 
@@ -246,17 +240,48 @@
         </EditForm>
 
         <div class="toolbar">
-            @*            <button type="button" class="btn btn-danger" @onclick="">Cancel</button>*@
             <button type="button" class="btn btn-success" @onclick="() => AddUnitAsync()">Save</button>
         </div>
     </Modal>
 }
 
-@*@if (SelectedForDeletion is not null)
+@if (EditProfile && CurrentUser != null)
 {
-    <ConfirmModal Title="Delete"
-              OnClosed="() => SelectedForDeletion = null"
-              OnConfirmed="DeleteAsync">
-        <p>@String.Format($@"Should the user '{0}' really be deleted?", SelectedForDeletion.DisplayName)</p>
-    </ConfirmModal>
-}*@
+    <Modal Title="Edit your profile"
+       OnClosed="() => EditProfile = false"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
+
+        <EditForm Model="CurrentUser">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="CurrentUser.DisplayName" class="form-control" id="user-displayname" placeholder="Quantity" />
+                        <label for="user-displayname">Your Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="user-mainfraction" @bind-Value="CurrentUser.MainFractionId" class="form-control">
+                            @foreach (Fraction item in Fractions)
+                            {
+                                <option value="@item.FractionId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="user-mainfraction">Choose your Main Fraction</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
+                        <label for="user-description">Description</label>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-success" @onclick="() => EditProfileAsync()">Save</button>
+        </div>
+    </Modal>
+}

@@ -10,36 +10,36 @@ namespace Tabletop.Core.Calculators
         }
 
 
-        //public void Simulation(Unit attackerTyp, int numberOfAttackers, Unit defenderTyp, int numberOfDefenders, bool cover, int distance)
-        //{
-        //    Random r = new Random();
+        public void Simulation(Unit attackerTyp, int numberOfAttackers, Unit defenderTyp, int numberOfDefenders, bool cover, int distance)
+        {
+            Random r = new();
 
-        //    for (int i = 0; i < numberOfAttackers; i++)
-        //    {
-        //        int rInt = r.Next(0, 100);
-        //        double x = Probability(attackerTyp, defenderTyp, cover, distance);
-        //    }
+            for (int i = 0; i < numberOfAttackers; i++)
+            {
+                int randNum = r.Next(0, 100);
+                double x = Probability(attackerTyp, defenderTyp, cover, distance);
+            }
 
 
-        //}
+        }
 
-        //public double Probability(Unit attacker, Unit defender, bool cover, int distance)
-        //{
-        //    double x = 0;
-        //    var (value0, value1) = AttackValueTranslator(attacker, defender);
+        public double Probability(Unit attacker, Unit defender, bool cover, int distance)
+        {
+            double x = 0;
+            var (value0, value1) = AttackValueTranslator(attacker.PrimaryWeapon.Attack, defender.Defense);
 
-        //    x = ((double)attacker.Weapon.Quality / 8) * ((9 - (double)value0) / 8);
-        //    if (value1 != 0)
-        //    {
-        //        x *= ((9 - (double)value1) / 8);
-        //    }
-        //    if (cover)
-        //    {
-        //        x *= 0.375;
-        //    }
+            x = ((double)attacker.PrimaryWeapon.Quality / 8) * ((9 - (double)value0) / 8);
+            if (value1 != 0)
+            {
+                x *= ((9 - (double)value1) / 8);
+            }
+            if (cover)
+            {
+                x *= 0.375;
+            }
 
-        //    return x;
-        //}
+            return x;
+        }
 
         public static (int, int) AttackValueTranslator(int attacker, int defender)
         {

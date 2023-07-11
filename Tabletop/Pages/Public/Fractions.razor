@@ -1,20 +1,22 @@
 ﻿@page "/Fractions"
 @inject NavigationManager navigationManager
 <PageTitle>Tablebricks - Fractions</PageTitle>
-<h3>Fractions</h3>
-<p>Join one of the powerful armies in the galaxy and fight for supremacy in epic land battles.</p>
-
 <div class="container">
-    <hr />
+    <div class="card p-4">
+        <h2>Fractions</h2>
+        <p>Join one of the powerful armies in the galaxy and fight for supremacy in epic land battles.</p>
+    </div>
     <div class="row justify-content-center">
         @foreach (var fraction in List)
         {
-            <div class="col-lg-6">
+            <div class="col-lg-6 pb-4">
                 <div class="card h-100">
-                    <img src="@fraction.ConvertedImage" class="card-img-top">
+                    <a href="@($"/Fractions/{fraction.ShortName}")">
+                        <img src="@fraction.ConvertedImage" class="card-img-top">
+                    </a>
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@fraction.Name</h5>
-                        <p class="card-text">@fraction.Description</p>
+                        <h4 class="card-title">@fraction.Name</h4>
+                        <p class="card-text" style="text-align: justify">@fraction.Description</p>
                         <a href="@($"/Fractions/{fraction.ShortName}")" class="btn btn-primary mt-auto">More</a>
                     </div>
                 </div>

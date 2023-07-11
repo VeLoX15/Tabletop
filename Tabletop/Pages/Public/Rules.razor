@@ -1,34 +1,16 @@
 ﻿@page "/Rules"
 <PageTitle>Tablebricks - Rules</PageTitle>
-<h3>Rules</h3>
 
 <div class="container">
-    <hr />
+    <div class="card p-4">
+        <h2>Ruleset</h2>
+        <p>The ruleset contains general rules and description about the game</p>
+    </div>
     <div class="row">
-        <div class="col-md-8">
-            <div class="wiki-section">
-                <h1>Regelwerk</h1>
-                <p>Das Regelwerk umfasst alle allgemeinen Regeln über Tablebricks.</p>
-                <a href="#Inhaltsverzeichnis" class="btn btn-primary">Inhaltsverzeichnis</a>
-            </div>
-            <div class="wiki-section">
-                <h2>Inhaltsverzeichnis</h2>
-                <ul>
-                    <li><a href="#Spielfläche">Spielfläche</a></li>
-                    <li><a href="#Spielvorbereitung">Spielvorbereitung</a></li>
-                    <li><a href="#Spielbeginn">Spielbeginn</a></li>
-                    <li><a href="#Steckbrief">Steckbrief</a></li>
-                    <li><a href="#Angriff">Angriff</a></li>
-                    <li><a href="#Verteidigung">Verteidigung</a></li>
-                    <li><a href="#Qualität">Qualität</a></li>
-                    <li><a href="#Bewegung">Bewegung</a></li>
-                    <li><a href="#Reichweite">Reichweite</a></li>
-                    <li><a href="#Macht">Macht</a></li>
-                </ul>
-            </div>
-            <div class="wiki-section">
-                <h2>Spielfläche</h2>
-                <p>
+        <div class="col-lg-10">
+            <div class="card p-4">
+                <h4>Spielfläche</h4>
+                <p style="text-align: justify">
                     Zu Beginn legt man eine bestimmte Spielfläche fest, dass kann zum Beispiel ein Tisch oder ähnliches sein.
                     Dieser wird dann von den Spielern möglichst großflächig von Spielplatten bestückt.
                     Freie Bereiche gehören ebenfalls zum Spielfeld.
@@ -36,7 +18,72 @@
                     Wenn die Spielfläche fertig gestellt ist und es von den Spielern keine Einwände gibt, kann das Spiel beginnen.
                 </p>
             </div>
-            <!-- Weitere Abschnitte hier einfügen -->
+            <div class="card p-4">
+                <h4>Spielvorbereitung</h4>
+                <p style="text-align: justify">
+                    Nach dem die Spielfläche aufgebaut wurde, wird entschieden, welcher Spieler wo beginnt.
+                    Dazu wird versucht mit einem W8 die größte mögliche Augenzahl zu werfen.
+                    Der Spieler mit der höheren Würfelwert darf entscheiden, zu welcher Seite er seine Armeeaufstellung tätigt.
+                    Jetzt wo den Spielern bewusst ist, von welcher Seite sie beginnen, können sie sich Gedanken zur Strategie machen.
+                    Jeder Spieler bekommt eine Armeeaufstellungskarte und definiert darin seine Einheiten, die für die Partie eingesetzt werden.
+                    Wenn beide Spieler fertig sind, werden die Aufstellungskarten aufgedeckt.
+                    Die Aufstellungskarten dienen ebenfalls dazu, dem Gegenspieler nachzuvollziehen, welche Einheiten unter dem Machtpunktelimit mitzuführen sind und um das unerlaubte Ändern von Einheiten vorzubeugen.
+                </p>
+            </div>
+            <div class="card p-4">
+                <h4>Spielbeginn</h4>
+                <p style="text-align: justify">
+                    Wenn beide Armee an Ihren Aufstellungspunkten positioniert sind, kann das Spiel beginnen.
+                    Der Spieler welches die niedrigere Würfelwert aus der Spielvorbereitung hatte, darf die Partie beginnen.
+                </p>
+            </div>
+            <div class="card p-4">
+                <h4>Spielablauf</h4>
+                <div style="text-align: justify">
+                    <p>
+                        Der Spielablauf folgt immer nacheinander den zwei Spielphasen (Bewegungsphase und Angriffsphase). Dabei beziehen sich die Phasen auf die gesamte Armee. Das bedeutet, dass erst alle Einheiten die Bewegungsphase durchlaufen müssen, bevor die Angriffsphase folgt.
+                        Bewegungsphase
+                        Innerhalb der Bewegungsphase dürfen sich die Einheiten bis zum angegebenen Maximalwert (siehe Steckbrief der jeweiligen Einheit) frei bewegen. Mit einem Hilfsmittel, wie einem Gliedermaßstab kann die neue Position fair bestimmt werden. Dabei reicht es in der Regel aus, wenn der Truppführer die Bewegung ausführt und die dazugehörigen Einheiten nachziehen in einem Radium von 6cm.
+                    </p>
+                    <h5>Angriffsphasen</h5>
+                    Die Waffen sind Eins
+                    <ul>
+                        <li>
+                            <h6>Qualitätswurf</h6>
+                            <p>Der Qualitätswurf stellt die erste Phase eines Kampfes da und sagt aus, ob die Einheit das Ziel trifft</p>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <h6>Schadenswurf</h6>
+                            <p>Der Schadenswurf gibt an, ob das Ziel einen tödlichen Treffer erleidet</p>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <h6>Deckungswurf</h6>
+                            <p>Der Deckungswurf wird angewendet, wenn ein Ziel sich hinter einem Objekt befindet. Dabei ist noch relevant, wie optimal die Deckung ist. Hierbei unterscheidet man zwischen vier verschieden Deckungen</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="card p-4">
+                <h2 class="mb-4">Glossary</h2>
+                <ul class="list-unstyled">
+                    <li><a href="#Angriff">Angriff</a></li>
+                    <li><a href="#Bewegung">Bewegung</a></li>
+                    <li><a href="#Macht">Macht</a></li>
+                    <li><a href="#Qualität">Qualität</a></li>
+                    <li><a href="#Reichweite">Reichweite</a></li>
+                    <li><a href="#Spielbeginn">Spielbeginn</a></li>
+                    <li><a href="#Spielvorbereitung">Spielvorbereitung</a></li>
+                    <li><a href="#Spielfläche">Spielfläche</a></li>
+                    <li><a href="#Steckbrief">Steckbrief</a></li>
+                    <li><a href="#Verteidigung">Verteidigung</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

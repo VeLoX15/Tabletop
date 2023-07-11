@@ -47,17 +47,24 @@ INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`,
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (11, 'B2-series Super Battle Droid', 2, '', '', 4, 12, 9, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (12, 'BX-series Commando Droid', 2, '', '', 5, 16, 6, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (13, 'B2-HA series Super Battle Droid', 2, '', '', 4, 12, 9, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (14, 'B1-series Rocket Battle Droid', 2, '', '', 2, 22, 6, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (14, 'B1-series Jetpack Droid', 2, '', '', 2, 22, 6, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (15, 'Droideka', 2, '', '', 10, 22, 10, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (16, 'B1-series Sniper Droid', 2, '', '', 6, 17, 11, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (17, 'Imperial Strom Trooper', 3, '', '', 5, 16, 11, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (18, 'Imperial Snow Troopeer', 3, '', '', 6, 14, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (17, 'Imperial Storm Trooper', 3, '', '', 5, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (18, 'Imperial Snow Trooper', 3, '', '', 6, 14, 11, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (19, 'Imperial Death Trooper', 3, '', '', 7, 16, 11, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (20, 'Imperial Shore Trooper', 3, '', '', 5, 15, 11, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (21, 'Imperial Shock Trooper', 3, '', '', 6, 14, 11, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (22, 'Imperial Jet Trooper', 3, '', '', 7, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (22, 'Imperial Jetpack Trooper', 3, '', '', 7, 16, 11, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (23, 'Imperial Scout Trooper', 3, '', '', 4, 16, 11, NULL, NULL);
-# 23 records
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (24, 'Rebel Trooper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (25, 'Rebel Commando Trooper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (26, 'Rebel Fleet Trooper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (27, 'Rebel Snow Trooper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (28, 'Rebel Jetpack Trooper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (29, 'Rebel Sniper', 4, '', '', 4, 16, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `name`, `fraction_id`, `description`, `mechanic`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (30, 'Rebel Heavy Gunner', 4, '', '', 4, 16, 11, NULL, NULL);
+# 30 records
 
 #
 # Dumping data for table 'tabletop'.'gamemodes'

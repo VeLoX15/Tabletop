@@ -14,7 +14,7 @@ namespace Tabletop.Core.Calculators
         //        double x = Probability(attackerTyp, defenderTyp, cover, distance);
         //    }
 
-
+                
         //}
     }
 }

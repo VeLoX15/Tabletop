@@ -1,17 +1,19 @@
 ﻿@page "/Gamemodes"
 @inject NavigationManager navigationManager
 <PageTitle>Tablebricks - Game Modes</PageTitle>
-<h3>Game Modes</h3>
 
 <div class="container">
-    <hr />
+    <div class="card p-4">
+        <h2>Game Modes</h2>
+        <p>Fight for victory in different game modes and bring your faction to success in the galaxy.</p>
+    </div>
     <div class="row justify-content-center">
         @foreach (var gamemode in List)
         {
-            <div class="col-lg-6">
+            <div class="col-lg-6 pb-4">
                 <div class="card h-100">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@gamemode.Name</h5>
+                        <h4 class="card-title">@gamemode.Name</h4>
                         <p class="card-text">@gamemode.Description</p>
                         <a href="@($"/Gamemodes/{gamemode.Name}")" class="btn btn-primary mt-auto">Learn more</a>
                     </div>

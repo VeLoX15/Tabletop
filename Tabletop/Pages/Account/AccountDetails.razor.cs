@@ -8,7 +8,6 @@ using Tabletop.Core.Services;
 using Blazor.Pagination;
 using Tabletop.Core.Filters;
 using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Tabletop.Pages.Account
 {
@@ -47,7 +46,6 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        public int Option { get; set; }
         public int SelectedFraction { get; set; } = 1;
         public List<Fraction> Fractions { get; set; } = new();
         public List<Unit> UserUnits { get; set; } = new();
@@ -65,8 +63,9 @@ namespace Tabletop.Pages.Account
             Limit = AppdataService.PageLimit
         };
 
-        public bool IsSearching { get; set; } = false;
-        public bool AddUnit { get; set; } = false;
+        public bool AddFriendModal { get; set; } = false;
+        public bool AddUnitModal { get; set; } = false;
+        public bool EditProfile { get; set; } = false;
         public List<User> Users { get; set; } = new();
         public List<User> Friends { get; set; } = new();
 
@@ -80,19 +79,19 @@ namespace Tabletop.Pages.Account
 
         protected Task SwitchFriendModal()
         {
-            IsSearching = true;
+            AddFriendModal = true;
             return Task.CompletedTask;
         }
 
         protected Task SwitchUnitModal()
         {
-            AddUnit = true;
+            AddUnitModal = true;
             return Task.CompletedTask;
         }
 
-        protected Task Menu(int option)
+        protected Task SwitchEditProfile()
         {
-            Option = option;
+            EditProfile = true;
             return Task.CompletedTask;
         }
 
@@ -148,7 +147,7 @@ namespace Tabletop.Pages.Account
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 await userService.CreateUserFriendAsync(CurrentUser.Id, friendId, dbController);
                 await FriendReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Add new friend");
+                await JSRuntime.ShowToastAsync(ToastType.success, "Friend has been added");
             }
         }
 
@@ -167,7 +166,17 @@ namespace Tabletop.Pages.Account
                 CurrentUser.Units.Add(unit);
                 await unitService.CreateUserUnitAsync(CurrentUser, unit, dbController);
                 await UnitReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Add new unit");
+                await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been added");
+            }
+        }
+
+        protected async Task EditProfileAsync()
+        {
+            if (CurrentUser != null)
+            {
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                await userService.UpdateAsync(CurrentUser, dbController);
+                await JSRuntime.ShowToastAsync(ToastType.success, "Profile has been edited");
             }
         }
 
@@ -182,7 +191,7 @@ namespace Tabletop.Pages.Account
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 await userService.DeleteFriendAsync(CurrentUser.Id, friendId, dbController);
                 await FriendReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Delete friend");
+                await JSRuntime.ShowToastAsync(ToastType.success, "Friend has been deleted");
             }
         }
 
@@ -193,7 +202,7 @@ namespace Tabletop.Pages.Account
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 await unitService.DeleteUnitAsync(CurrentUser.Id, unitId, dbController);
                 await UnitReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Delete unit");
+                await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been deleted");
             }
         }
     }

@@ -1,16 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
+@inject AuthService authService
 @using System.Runtime.InteropServices
 
 <PageTitle>Tablebricks</PageTitle>
 
-<div id="app" class="test">
+<div id="app" class="app-background">
     <div id="sidebar" class="@(ShowMenu ? "active" : string.Empty)">
         <div class="sidebar-wrapper active">
             <div class="sidebar-header position-relative">
                 <div class="d-flex justify-content-between align-items-center">
-
-                    <div role="button" class="sidebar-toggler  x">
+                    <div role="button" class="sidebar-toggler x">
                         <span class="sidebar-hide d-xl-none d-block" @onclick="TriggerMenuAsync"><i class="bi bi-x-lg"></i></span>
                     </div>
                 </div>
@@ -20,13 +20,28 @@
             </div>
         </div>
     </div>
-    <div id="main">
+    <div id="main" class="pb-0">
 
-        <header class="mb-3 d-block d-xl-none">
-            <span role="button" @onclick="TriggerMenuAsync" class="burger-btn d-block d-xl-none menu-button">
-                <i class="bi bi-list"></i>
-            </span>
+        <header class="mb-3 d-flex align-items-center justify-content-between d-block d-xl-none">
+            <div></div>
+            <div class="text-center">
+                <span role="button" @onclick="TriggerMenuAsync" class="pt-3 mt-1 burger-btn d-block d-xl-none menu-button">
+                    <i class="fa-solid fa-bars" style="color: #ffffff;"></i>
+                </span>
+                <a href="/" class="text-decoration-none">
+                    <h1 style="color: white; margin-bottom: 0;">TABLEBRICKS</h1>
+                </a>
+            </div>
+            <div style="display: flex; align-items: center;">
+                @if (CurrentUser != null)
+                {
+                    <a href="/Account/Profile">
+                        <img src="@CurrentUser?.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo" title="Logo">
+                    </a>
+                }
+            </div>
         </header>
+
 
         <div class="page-content background">
             <section class="row">
@@ -34,14 +49,14 @@
             </section>
         </div>
 
-        <footer class="footer py-5">
+        <footer class="footer card p-4 mb-3">
             <div class="container-fluid">
                 <div class="row">
                     <div class="row">
                         <div class="col-lg-3">
                             <h5>About Us</h5>
                             <div class="text-left">
-                                <p class="text-justify text-break">We have created a fan-made tabletop game inspired by LEGO Star Wars. For more information, please visit our website and check out our social media channels.</p>
+                                <p style="text-align: justify">We have created a fan-made tabletop game inspired by LEGO Star Wars. For more information, please visit our website and check out our social media channels.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
@@ -61,7 +76,7 @@
                             </ul>
                         </div>
                         <div class="col-lg-2">
-                            <div class="text-center">
+                            <div class="text-center pt-5 pb-5">
                                 <p class="text-right">
                                     @DateTime.Now.Year &copy; Tablebricks
                                 </p>
@@ -96,5 +111,17 @@
         ShowMenu = !ShowMenu;
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        CurrentUser = await authService.GetUserAsync();
+
+        if (CurrentUser?.Image != null)
+        {
+            string base64String = Convert.ToBase64String(CurrentUser.Image);
+            CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
+        }
+    }
+
     public bool ShowMenu { get; set; }
+    public User? CurrentUser { get; set; }
 }
