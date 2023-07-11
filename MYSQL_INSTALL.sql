@@ -3,6 +3,20 @@ CREATE SCHEMA IF NOT EXISTS `tabletop` DEFAULT CHARACTER SET latin2;
 USE `tabletop`;
 
 -- -----------------------------------------------------
+-- Table `tabletop`.`fractions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`fractions` 
+(
+    `fraction_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+	`short_name` VARCHAR(50) NOT NULL,
+    `description` TEXT NOT NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`fraction_id`)
+); 
+
+-- -----------------------------------------------------
 -- Table `tabletop`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
@@ -43,20 +57,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_permissions` (
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`permission_id`) REFERENCES `tabletop`.`permissions`(`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- -----------------------------------------------------
--- Table `tabletop`.`fractions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`fractions` 
-(
-    `fraction_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-	`short_name` VARCHAR(50) NOT NULL,
-    `description` TEXT NOT NULL,
-	`image` MEDIUMBLOB NULL,
-
-    PRIMARY KEY (`fraction_id`)
-); 
 
 -- -----------------------------------------------------
 -- Table `tabletop`.`weapons`
