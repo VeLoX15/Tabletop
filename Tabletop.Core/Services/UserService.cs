@@ -200,7 +200,9 @@ WHERE uf.user_id = @USER_ID";
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"UPDATE `tabletop`.`users` SET
 `username` = @USERNAME,
-`display_name` = @DISPLAY_NAME
+`display_name` = @DISPLAY_NAME,
+`description` = @DESCRIPTION,
+`main_fraction_id` = @MAIN_FRACTION_ID
 WHERE user_id = @USER_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);

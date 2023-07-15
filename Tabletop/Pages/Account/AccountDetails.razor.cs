@@ -73,23 +73,28 @@ namespace Tabletop.Pages.Account
         {
             Filter.PageNumber = navigateToPage1 ? 1 : Page;
             using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-            TotalItems = await userService.GetTotalAsync(Filter, dbController);
-            Users = await userService.GetAsync(Filter, dbController);
+            if(Filter.SearchPhrase != string.Empty)
+            {
+                TotalItems = await userService.GetTotalAsync(Filter, dbController);
+                Users = await userService.GetAsync(Filter, dbController);
+            }
         }
 
-        protected Task SwitchFriendModal()
+        protected Task OpenFriendModal()
         {
             AddFriendModal = true;
+            Filter.SearchPhrase = string.Empty;
+            Users = new();
             return Task.CompletedTask;
         }
 
-        protected Task SwitchUnitModal()
+        protected Task OpenUnitModal()
         {
             AddUnitModal = true;
             return Task.CompletedTask;
         }
 
-        protected Task SwitchEditProfile()
+        protected Task OpenEditProfile()
         {
             EditProfile = true;
             return Task.CompletedTask;
