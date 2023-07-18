@@ -31,30 +31,23 @@
                             <h4>About me</h4>
                         </div>
                         <div class="col-auto text-end">
-                            <button type="button" class="btn" @onclick="SwitchEditProfile"><i class="fa-solid fa-user-pen"></i></button>
+                            <button type="button" class="btn pt-0" @onclick="OpenEditProfile"><i class="fa-solid fa-user-pen"></i></button>
                         </div>
                     </div>
                     <p>@CurrentUser.Description</p>
                 </div>
 
                 <div class="card p-3">
+                    <div class="row">
+                        <div class="form-group col">
+                            <h4>Your Follow</h4>
+                        </div>
+                        <div class="col-auto text-end">
+                            <button type="button" class="btn pt-0" @onclick="OpenFriendModal"><i class="fa-solid fa-user-plus"></i></button>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-lg">
-                            <thead>
-                                <tr>
-                                    <th class="ps-0">
-                                        <h4>You Follow</h4>
-                                    </th>
-                                    <th></th>
-                                    <th>
-                                        <div>
-                                            <div>
-                                                <button type="button" class="btn btn-success" @onclick="SwitchFriendModal"><i class="fa-solid fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
                             <tbody>
                                 @foreach (User item in Friends)
                                 {
@@ -86,7 +79,7 @@
                                 <h4>Your Armies</h4>
                             </div>
                             <div class="col-auto text-end">
-                                <button type="button" class="btn btn-success" @onclick="SwitchUnitModal"><i class="fa-solid fa-plus"></i></button>
+                                <button type="button" class="btn pt-0" @onclick="OpenUnitModal"><i class="fa-solid fa-person-circle-plus fa-lg"></i></button>
                             </div>
                         </div>
                         <div class="form-floating">
@@ -111,9 +104,9 @@
                                     @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
                                     {
                                         <tr>
-                                            <td>@item.Name</td>
-                                            <td>@item.Quantity</td>
-                                            <td>
+                                            <td >@item.Name</td>
+                                            <td class="align-items-center">@item.Quantity</td>
+                                            <td class="align-items-center">
                                                 <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </span>
@@ -168,21 +161,21 @@
                             <table class="table mb-0 table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
                                         <th>Username</th>
-                                        <th class="text-right">Action</th>
+                                        <th>Name</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <Virtualize Items="Users" Context="user">
                                         <tr>
-                                            <td>@user.DisplayName</td>
                                             <td>@user.Username</td>
+                                            <td>@user.DisplayName</td>
                                             <td class="text-right">
                                                 @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id)
                                                 {
                                                     <div>
-                                                        <button type="button" class="btn btn-success" @onclick="() => AddFriendAsync(user.Id)"><i class="fa-solid fa-plus"></i></button>
+                                                        <button type="button" class="btn" @onclick="() => AddFriendAsync(user.Id)"><i class="fa-solid fa-user-plus"></i></button>
                                                     </div>
                                                 }
                                             </td>

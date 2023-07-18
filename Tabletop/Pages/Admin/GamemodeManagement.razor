@@ -4,16 +4,20 @@
 <PageTitle>Tablebricks - Game Modes (Management)</PageTitle>
 
 <div class="container">
-    <div class="card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Game Mode Management</h2>
-            <AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
-                <Authorized>
-                    <button type="button" class="btn btn-success" @onclick="NewAsync"><i class="fa-solid fa-plus"></i></button>
-                </Authorized>
-            </AuthorizeView>
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Game Mode Management</h2>
+                <AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
+                    <Authorized>
+                        <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+            <div style="text-align: justify">
+                <p>In the Game Mode Management, there is an overview of all current game modes which can be edited or deleted. Moreover, new game modes can be created.</p>
+            </div>
         </div>
-        <p style="text-align: justify">In the Game Mode Management, there is an overview of all current game modes which can be edited or deleted. Moreover, new game modes can be created.</p>
     </div>
     <div class="row">
         <div class="col-lg-3 col-sm-12 order-lg-3">
@@ -37,7 +41,7 @@
             </div>
         </div>
         <div class="col-lg-9 col-sm-12">
-            <div class="card">
+            <div class="card p-4">
                 <div class="card-content">
                     <!-- Table with no outer spacing -->
                     <div class="table-responsive">
@@ -85,7 +89,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format($"Edit {0}", Input.Name)"
+    <Modal Title="@String.Format("Edit game mode: {0}", Input.Name)"
        OnClosed="() => Input = null"
        ModalSize="ModalSize.LG"
        HideFooter="true">
@@ -128,6 +132,6 @@
     <ConfirmModal Title="Delete"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
-        <p>@String.Format($@"Should the gamemode '{0}' really be deleted?", SelectedForDeletion.Name)</p>
+        <p>@String.Format("Should the gamemode '{0}' really be deleted?", SelectedForDeletion.Name)</p>
     </ConfirmModal>
 }
