@@ -1,4 +1,5 @@
-﻿using Tabletop.Core.Models;
+﻿using Tabletop.Core.Constants;
+using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Calculators
 {
@@ -9,21 +10,36 @@ namespace Tabletop.Core.Calculators
             return (unit.PrimaryWeapon.Attack * unit.PrimaryWeapon.Quality * (unit.PrimaryWeapon.Range / 10) * unit.PrimaryWeapon.Dices) + (unit.Defense * 50 + unit.Moving * 4) * 2;
         }
 
+        //public List<string> Simulation(Unit Unit1, int quantityUnit1, CoverTypes CoverUnit1, Unit Unit2, int quantityUnit2, CoverTypes CoverUnit2, int distance)
+        //{
+        //    Random r = new();
+        //    List<string> result = new();
 
-        public void Simulation(Unit attackerTyp, int numberOfAttackers, Unit defenderTyp, int numberOfDefenders, bool cover, int distance)
-        {
-            Random r = new();
-
-            for (int i = 0; i < numberOfAttackers; i++)
-            {
-                int randNum = r.Next(0, 100);
-                double x = Probability(attackerTyp, defenderTyp, cover, distance);
-            }
+        //    for (int i = 1; quantityUnit1 >= 0 || quantityUnit2 >= 0; i++)
+        //    {
+        //        if (i % 2 == 0)
+        //        {
+        //            for (int j = 1; j <= quantityUnit1; j++)
+        //            {
+        //                double x = Probability(Unit1, Unit2, CoverUnit1, distance);
 
 
-        }
+        //            }
+        //        }
+        //        else if (i % 2 == 1)
+        //        {
+        //            for (int j = 1; j <= quantityUnit2; j++)
+        //            {
+        //                double x = Probability(Unit1, Unit2, CoverUnit2, distance);
+        //            }
+        //        }
 
-        public double Probability(Unit attacker, Unit defender, bool cover, int distance)
+        //        result.Add("");
+        //    }
+        //    return result;
+        //}
+
+        public double Probability(Unit attacker, Unit defender, CoverTypes cover, int distance)
         {
             double x = 0;
             var (value0, value1) = AttackValueTranslator(attacker.PrimaryWeapon.Attack, defender.Defense);
@@ -33,7 +49,12 @@ namespace Tabletop.Core.Calculators
             {
                 x *= ((9 - (double)value1) / 8);
             }
-            if (cover)
+
+            if (Convert.ToInt32(cover) == 1)
+            {
+                x *= 0.285;
+            }
+            else if (Convert.ToInt32(cover) == 2)
             {
                 x *= 0.375;
             }

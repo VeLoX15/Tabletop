@@ -4,9 +4,11 @@
     <PageTitle>Tablebricks - @Unit.Name</PageTitle>
 
     <div class="container">
-        <div class="card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="mb-0">@Unit.Name</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="mb-0">@Unit.Name</h2>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -16,41 +18,43 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card p-4">
-                    <div style="text-align: justify">
-                        <div>
-                            <h4>Description</h4>
-                            <p>@Unit.Description</p>
+                <div class="card">
+                    <div class="card-body">
+                        <div style="text-align: justify">
+                            <div>
+                                <h4>Description</h4>
+                                <p>@Unit.Description</p>
+                            </div>
+                            <div>
+                                <h4>Mechanics</h4>
+                                <p>@Unit.Mechanic</p>
+                            </div>
+                            <h4>Values</h4>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>A</th>
+                                        <th>D</th>
+                                        <th>Q</th>
+                                        <th>M</th>
+                                        <th>R</th>
+                                        <th>D</th>
+                                        <th>F</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Unit.PrimaryWeapon.Attack</td>
+                                        <td>@Unit.Defense</td>
+                                        <td>@Unit.PrimaryWeapon.Quality</td>
+                                        <td>@Unit.Moving</td>
+                                        <td>@Unit.PrimaryWeapon.Range</td>
+                                        <td>@Unit.PrimaryWeapon.Dices</td>
+                                        <td>0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div>
-                            <h4>Mechanics</h4>
-                            <p>@Unit.Mechanic</p>
-                        </div>
-                        <h4>Values</h4>
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>A</th>
-                                    <th>D</th>
-                                    <th>Q</th>
-                                    <th>M</th>
-                                    <th>R</th>
-                                    <th>D</th>
-                                    <th>F</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>@Unit.PrimaryWeapon.Attack</td>
-                                    <td>@Unit.Defense</td>
-                                    <td>@Unit.PrimaryWeapon.Quality</td>
-                                    <td>@Unit.Moving</td>
-                                    <td>@Unit.PrimaryWeapon.Range</td>
-                                    <td>@Unit.PrimaryWeapon.Dices</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
