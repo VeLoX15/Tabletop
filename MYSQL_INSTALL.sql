@@ -164,8 +164,9 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`game_users`
 	`team` INTEGER NOT NULL,
 
     PRIMARY KEY (`game_id`, `user_id`),
-	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`)
+	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 
 -- -----------------------------------------------------

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Tabletop.Core.Extensions
+﻿namespace Tabletop.Core.Extensions
 {
     public static class StringExtensions
     {
@@ -23,7 +21,5 @@ namespace Tabletop.Core.Extensions
             var finalString = new string(stringChars);
             return finalString;
         }
-
-        public static bool IsEmail(string email) => Regex.IsMatch(email, @"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$");
     }
 }

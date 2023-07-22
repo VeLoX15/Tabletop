@@ -19,6 +19,7 @@ namespace Tabletop.Pages.Account
 
         public User? CurrentUser { get; set; }
         private ClaimsPrincipal? _user;
+
         protected override async Task OnParametersSetAsync()
         {
             if (AuthState is not null)

@@ -3,14 +3,14 @@
 
 <div class="container">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header ps-4">
             <h2>@Gamemode.Name</h2>
         </div>
         @if (Gamemode.ConvertedImage != string.Empty)
         {
             <img src="@Gamemode.ConvertedImage" class="card-img-top" alt="@Gamemode.Name">
         }
-        <div class="card-body">
+        <div class="card-body p-4">
             <div>
                 <h4>Description</h4>
                 <p style="text-align: justify">@Gamemode.Description</p>

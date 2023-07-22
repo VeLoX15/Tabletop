@@ -8,12 +8,10 @@ namespace Tabletop.Core.Services
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
         private readonly WeaponService _weaponService;
-        private readonly FractionService _fractionService;
 
-        public UnitService(WeaponService weaponService, FractionService fractionService)
+        public UnitService(WeaponService weaponService)
         {
             _weaponService = weaponService;
-            _fractionService = fractionService;
         }
 
         public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -252,9 +250,6 @@ namespace Tabletop.Core.Services
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
-
-            await _weaponService.UpdateAsync(input.PrimaryWeapon, dbController, cancellationToken);
-            await _weaponService.UpdateAsync(input.SecondaryWeapon, dbController, cancellationToken);
         }
     }
 }

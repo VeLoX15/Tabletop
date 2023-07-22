@@ -22,17 +22,18 @@
     </div>
     <div id="main" class="pb-0">
 
-        <header class="mb-3 d-flex align-items-center justify-content-between d-block d-xl-none">
-            <div></div>
-            <div class="text-center">
-                <span role="button" @onclick="TriggerMenuAsync" class="pt-3 mt-1 burger-btn d-block d-xl-none menu-button">
-                    <i class="fa-solid fa-bars" style="color: #ffffff;"></i>
+        <header class="d-flex align-items-center justify-content-between d-xl-none">
+            <div>
+                <span role="button" @onclick="TriggerMenuAsync" class="burger-btn d-block d-xl-none menu-button">
+                    <i class="fa-solid fa-bars text-white text-center"></i>
                 </span>
+            </div>
+            <div>
                 <a href="/" class="text-decoration-none">
-                    <h1 style="color: white; margin-bottom: 0;">TABLEBRICKS</h1>
+                    <h1 class="text-white mb-0">TABLEBRICKS</h1>
                 </a>
             </div>
-            <div style="display: flex; align-items: center;">
+            <div>
                 @if (CurrentUser != null)
                 {
                     <a href="/Account/Profile">
@@ -50,7 +51,7 @@
         </div>
 
         <footer class="footer card m-0 mb-3">
-            <div class="card-header">
+            <div class="card-header p-4">
                 <div class="row">
                     <div class="col-lg-4">
                         <h5>About Us</h5>
@@ -61,17 +62,18 @@
                     <div class="col-lg-3">
                         <h5>Contact</h5>
                         <ul class="list-unstyled">
-                            <li><i class="bi bi-geo-alt-fill"></i> Germany</li>
+                            <li>
+                                <i class="bi bi-geo-alt-fill"></i> 46282 Dorsten, Germany
+                            </li>
                             <li><i class="bi bi-envelope-fill"></i> support@tablebricks.com</li>
-                            <li><i class="bi bi-phone-fill"></i> </li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h5>Social Media</h5>
                         <ul class="list-inline">
-                            <li class="list-inline-item"><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                            <li class="list-inline-item"><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                            <li class="list-inline-item"><a href="https://github.com/VeLoX15/Tabletop"><i class="fa-brands fa-github"></i></a></li>
+                            <li class="list-inline-item"><a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="https://twitter.com"><i class="fa-brands fa-twitter"></i></a></li>
                         </ul>
                     </div>
                     <div class="col-lg-2">

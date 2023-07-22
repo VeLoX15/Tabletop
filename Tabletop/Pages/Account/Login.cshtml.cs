@@ -51,7 +51,7 @@ namespace Tabletop.Pages.Account
 
                 // Erst prüfen wir gegen die Datenbank
                 IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                User? user = AppdataService.IsLocalLoginEnabled ? await _userService.GetAsync(Input.Username, dbController) : null;
+                User? user = await _userService.GetAsync(Input.Username, dbController);
 
                 // Lokale Konten müssen als ersten geprüft werden.
                 if (user is not null)
@@ -89,18 +89,14 @@ namespace Tabletop.Pages.Account
                     };
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                    await _userService.UpdateLastLoginAsync(user, dbController);
+
                     return LocalRedirect(returnUrl);
                 }
                 else
                 {
-                    if (!AppdataService.IsLocalLoginEnabled)
-                    {
-                        ModelState.AddModelError("login-error", "Provider was not found. Please contact an administrator.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("login-error", "Username or Password are wrong.");
-                    }
+                    ModelState.AddModelError("login-error", "Username or Password are wrong.");
                 }
             }
             return Page();

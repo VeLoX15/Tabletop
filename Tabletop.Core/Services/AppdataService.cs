@@ -83,7 +83,6 @@ namespace Tabletop.Core.Services
         }
 
         public static string ConnectionString => _configuration?["ConnectionString"] ?? string.Empty;
-        public static bool IsLocalLoginEnabled => _configuration?.GetSection("LdapSettings").GetValue<bool>("ENABLE_LOCAL_LOGIN") ?? false;
         public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
     }
 }
