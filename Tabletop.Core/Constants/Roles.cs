@@ -22,7 +22,5 @@
         public const string DELETE_WEAPONS = "DELETE_WEAPONS";
         public const string DELETE_FRACTIONS = "DELETE_FRACTIONS";
         public const string DELETE_GAMEMODES = "DELETE_GAMEMODES";
-
-
     }
 }

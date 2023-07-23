@@ -34,6 +34,7 @@ namespace Tabletop.Core.Calculators
                 sb.AppendLine($"Round 0: {unit1.Name} ({quantityUnit1}) VS ({quantityUnit2}) {unit2.Name}");
                 log.Add(sb.ToString());
 
+                //Round
                 for (int i = 1; quantityUnit1 > 0 && quantityUnit2 > 0; i++)
                 {
                     sb = new();
@@ -41,8 +42,10 @@ namespace Tabletop.Core.Calculators
 
                     if (distance <= unit1.PrimaryWeapon.Range)
                     {
+                        //Quantity of units
                         for (int j = 1; j <= quantityUnit1; j++)
                         {
+                            //Number of dices
                             for (int k = 1; k <= unit1.PrimaryWeapon.Dices; k++)
                             {
                                 if (x > await RandomNumber())
@@ -55,8 +58,10 @@ namespace Tabletop.Core.Calculators
 
                     if (distance <= unit2.PrimaryWeapon.Range)
                     {
+                        //Quantity of units
                         for (int j = 1; j <= quantityUnit2; j++)
                         {
+                            //Number of dices
                             for (int k = 1; k <= unit2.PrimaryWeapon.Dices; k++)
                             {
                                 if (y > await RandomNumber())

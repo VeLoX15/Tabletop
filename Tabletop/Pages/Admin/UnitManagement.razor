@@ -11,6 +11,7 @@
                 <AuthorizeView Roles="@(Roles.ADD_UNITS)">
                     <Authorized>
                         <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                        <button type="button" class="btn" @onclick="UpdateAppdata"><i class="fa-solid fa-rotate-right"></i></button>
                     </Authorized>
                 </AuthorizeView>
             </div>

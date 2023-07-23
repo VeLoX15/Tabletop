@@ -24,7 +24,7 @@ namespace Tabletop.Core.Services
             _configuration = configuration;
             using IDbController dbController = new MySqlController(ConnectionString);
             Permissions = await PermissionService.GetAllAsync(dbController);
-            FirstUserExists = await UserService.FirstUserExistsAsync(dbController);
+            FirstUserExists = await UserService.FirstUserExistsAsync(dbController); 
 
             Units = await UnitService.GetAllAsync(dbController);
             Weapons = await WeaponService.GetAllAsync(dbController);
