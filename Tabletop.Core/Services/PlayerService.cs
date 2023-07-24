@@ -20,7 +20,7 @@ namespace Tabletop.Core.Services
                 @FRACTION_ID
                 ); {dbController.GetLastIdSql()}";
 
-            input.PlayerId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
+            input.PlayerId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
         public Task DeleteAsync(Player input, IDbController dbController, CancellationToken cancellationToken = default)

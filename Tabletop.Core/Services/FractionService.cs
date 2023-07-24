@@ -32,7 +32,7 @@ namespace Tabletop.Core.Services
             await dbController.QueryAsync(sql, new
             {
                 FRACTION_ID = input.FractionId,
-            });
+            }, cancellationToken);
         }
 
         public async Task<Fraction?> GetAsync(int fractionId, IDbController dbController, CancellationToken cancellationToken = default)

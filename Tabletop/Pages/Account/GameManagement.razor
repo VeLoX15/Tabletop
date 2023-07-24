@@ -64,6 +64,7 @@
                                             <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(game)">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </span>
+                                            <a href="@($"/Account/Games/{game.Id}")" class="btn btn-primary mt-auto">More</a>
                                         </td>
                                     </tr>
                                 </Virtualize>
@@ -97,11 +98,23 @@
                         <label for="game-name">Name</label>
                         <ValidationMessage For="() => Input.Name" />
                     </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-unit" @bind-Value="Input.GamemodeId" class="form-control">
+                            @foreach (Gamemode item in AppdataService.Gamemodes)
+                            {
+                                <option value="@item.GamemodeId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-unit">Choose Gamemode</label>
+                    </div>
+
                     <div class="form-floating mb-3">
                         <InputNumber @bind-Value="Input.Rounds" class="form-control" id="game-rounds" placeholder="Rounds" />
                         <label for="game-rounds">Rounds</label>
                         <ValidationMessage For="() => Input.Rounds" />
                     </div>
+
                     <div class="form-floating mb-3">
                         <InputNumber @bind-Value="Input.Force" class="form-control" id="game-force" placeholder="Force" />
                         <label for="game-force">Force</label>

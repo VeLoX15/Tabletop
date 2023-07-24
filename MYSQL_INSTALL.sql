@@ -145,9 +145,11 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`games`
 (
     `game_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`gamemode_id` INTEGER NOT NULL,
+	`user_id` INTEGER NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
 	`rounds` INTEGER NOT NULL,
 	`force` INTEGER NOT NULL,
+	`date` DATETIME NOT NULL,
 
     PRIMARY KEY (`game_id`),
 	FOREIGN KEY (`gamemode_id`) REFERENCES `tabletop`.`gamemodes`(`gamemode_id`)

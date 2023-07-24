@@ -121,7 +121,7 @@ namespace Tabletop.Core.Services
                 `gamemode_id` = @GAMEMODE_ID,
                 `name` = @NAME,
                 `rounds` = @ROUNDS,
-                `force` = @FORCE.
+                `force` = @FORCE,
                 `date` = @DATE
                 WHERE `game_id` = @GAME_ID";
 
