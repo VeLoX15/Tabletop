@@ -5,14 +5,21 @@
 
 <div class="container">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header ps-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Game Mode Management</h2>
-                <AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
-                    <Authorized>
-                        <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
-                    </Authorized>
-                </AuthorizeView>
+                <div class="text-right">
+                    <AuthorizeView Roles="@(Roles.EDIT_GAMEMODES)">
+                        <Authorized>
+                            <button type="button" class="btn" @onclick="UpdateAppdata"><i class="fa-solid fa-rotate-right fa-xl"></i></button>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
+                        <Authorized>
+                            <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
             </div>
             <div style="text-align: justify">
                 <p>In the Game Mode Management, there is an overview of all current game modes which can be edited or deleted. Moreover, new game modes can be created.</p>

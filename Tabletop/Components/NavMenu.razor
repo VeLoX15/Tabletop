@@ -128,6 +128,13 @@
             </li>
 
             <li class="sidebar-item">
+                <NavLink href="/Account/Games" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Games</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
                 <form method="post" action="/Account/Logout">
                     <button type="submit" class="btn btn-danger btn-block text-left sidebar-link logout-button">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -135,6 +142,7 @@
                     </button>
                 </form>
             </li>
+
         </Authorized>
         <NotAuthorized>
             <li class="sidebar-item">

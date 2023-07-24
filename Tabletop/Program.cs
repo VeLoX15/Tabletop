@@ -38,6 +38,7 @@ namespace Tabletop
             builder.Services.AddScoped<WeaponService>();
             builder.Services.AddScoped<GamemodeService>();
             builder.Services.AddScoped<FractionService>();
+            builder.Services.AddScoped<GameService>();
 
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);
 

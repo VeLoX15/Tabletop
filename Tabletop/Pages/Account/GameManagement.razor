@@ -1,0 +1,128 @@
+﻿@page "/Account/Games"
+@attribute [Authorize]
+@inherits ManagementBasePage<Game, GameService>
+<PageTitle>Tablebricks - Games (History)</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header ps-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Game History</h2>
+                <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+            </div>
+            <div style="text-align: justify">
+                <p>In the User Management, there is an overview of all current users which can be edited or deleted. Moreover, new users can be created.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-sm-12 order-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Filter</h4>
+                </div>
+                <div class="card-content" style="padding: 0 1.3rem;">
+                    <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                            <label for="usermanagement-filter-searchphrase">Search</label>
+                        </div>
+
+                        <div class="toolbar">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-sm-12">
+
+            <div class="card p-4">
+                <div class="card-content">
+                    <!-- Table with no outer spacing -->
+                    <div class="table-responsive">
+                        <table class="table mb-0 table-lg">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Game Mode</th>
+                                    <th>Date</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <Virtualize Items="Data" Context="game">
+                                    <tr>
+                                        <td>@game.Name</td>
+                                        <td>@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == game.GamemodeId)?.Name</td>
+                                        <td>@game.Date</td>
+                                        <td class="text-right">
+                                            <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = game">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </span>
+                                            <span class="aktion-icon" role="button" @onclick="async () => await EditAsync(game)">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </Virtualize>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@if (Input is not null)
+{
+    <Modal Title="@String.Format("Edit game: {0}", Input.Name)"
+           OnClosed="() => Input = null"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <EditForm Model="Input" @ref="_form">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Name" class="form-control" id="game-name" placeholder="Name" />
+                        <label for="game-name">Name</label>
+                        <ValidationMessage For="() => Input.Name" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputNumber @bind-Value="Input.Rounds" class="form-control" id="game-rounds" placeholder="Rounds" />
+                        <label for="game-rounds">Rounds</label>
+                        <ValidationMessage For="() => Input.Rounds" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputNumber @bind-Value="Input.Force" class="form-control" id="game-force" placeholder="Force" />
+                        <label for="game-force">Force</label>
+                        <ValidationMessage For="() => Input.Force" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+        </div>
+    </Modal>
+}
+
+@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="Delete"
+                  OnClosed="() => SelectedForDeletion = null"
+                  OnConfirmed="DeleteAsync">
+        <p>@String.Format("Should the game '{0}' really be deleted?", SelectedForDeletion.Name)</p>
+    </ConfirmModal>
+}

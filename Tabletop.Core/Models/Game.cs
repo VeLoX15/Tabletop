@@ -8,10 +8,14 @@ namespace Tabletop.Core.Models
         public int GameId { get; set; }
         [CompareField("gamemode_id")]
         public int GamemodeId { get; set; }
+        [CompareField("name")]
+        public string Name { get; set; } = string.Empty;
         [CompareField("rounds")]
         public int Rounds { get; set; }
         [CompareField("force")]
         public int Force { get; set; }
+        [CompareField("date")]
+        public DateTime Date { get; set; }
 
         public List<Player> Players { get; set; } = new();
 
@@ -24,8 +28,10 @@ namespace Tabletop.Core.Models
             {
                 { "GAME_ID", GameId },
                 { "GAMEMODE_ID", GamemodeId },
+                { "NAME", Name },
                 { "ROUNDS", Rounds },
-                { "FORCE", Force }
+                { "FORCE", Force },
+                { "DATE", Date }
             };
         }
     }
