@@ -53,7 +53,7 @@ namespace Tabletop.Pages.Admin
         protected async Task UpdateAppdata()
         {
             using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-            AppdataService.Units = await UnitService.GetAllAsync(dbController);
+            AppdataService.Gamemodes = await GamemodeService.GetAllAsync(dbController);
             await JSRuntime.ShowToastAsync(ToastType.success, "App data for game modes reloaded");
         }
     }

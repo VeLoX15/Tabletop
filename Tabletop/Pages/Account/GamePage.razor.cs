@@ -11,15 +11,6 @@ namespace Tabletop.Pages.Account
     {
         [Parameter]
         public int GameId { get; set; }
-
         public Game? Game { get; set; }
-
-        protected override void OnInitialized()
-        {
-            using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-            var game = gameService.GetAsync(GameId, dbController);
-
-            Game = game;
-        }
     }
 }
