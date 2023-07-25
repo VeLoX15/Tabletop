@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`gamemodes` 
 (
-    `gamemode_id` INTEGER NOT NULL,
+    `gamemode_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
     `description` TEXT NOT NULL,
 	`mechanic` TEXT NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 -- -----------------------------------------------------
 -- Table `tabletop`.`game_players`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`game_users` 
+CREATE TABLE IF NOT EXISTS `tabletop`.`game_players` 
 (
 	`game_id` INTEGER NOT NULL,
 	`player_id` INTEGER NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`game_users`
 -- -----------------------------------------------------
 -- Table `tabletop`.`player_units`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`game_user_unit` 
+CREATE TABLE IF NOT EXISTS `tabletop`.`player_units` 
 (
 	`player_id` INTEGER NOT NULL,
 	`unit_id` INTEGER NOT NULL,

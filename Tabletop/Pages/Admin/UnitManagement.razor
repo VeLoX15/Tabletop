@@ -116,6 +116,16 @@
                     </div>
 
                     <div class="form-floating mb-3">
+                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
+                            @foreach (Fraction item in AppdataService.Fractions)
+                            {
+                                <option value="@item.FractionId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-fraction">Choose Fraction</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
                         <InputTextArea @bind-Value="Input.Description" class="form-control" id="unit-description" placeholder="Description" />
                         <label for="unit-description">Description</label>
                         <ValidationMessage For="() => Input.Description" />
@@ -137,6 +147,27 @@
                         <InputNumber @bind-Value="Input.Moving" class="form-control" id="unit-moving" placeholder="Moving" />
                         <label for="unit-moving">Moving</label>
                         <ValidationMessage For="() => Input.Moving" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-weapon" @bind-Value="Input.PrimaryWeaponId" class="form-control">
+                            @foreach (Weapon item in AppdataService.Weapons)
+                            {
+                                <option value="@item.WeaponId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-weapon">Choose Primary Weapon</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-weapon" @bind-Value="Input.SecondaryWeaponId" class="form-control">
+                            <option value="0">None</option>
+                            @foreach (Weapon item in AppdataService.Weapons)
+                            {
+                                <option value="@item.WeaponId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-weapon">Choose Secondary Weapon</label>
                     </div>
                 </div>
             </div>
