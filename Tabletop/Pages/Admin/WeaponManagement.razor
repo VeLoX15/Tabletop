@@ -104,7 +104,6 @@
 
         <EditForm Model="Input" @ref="_form">
             <FluentValidationValidator />
-            <ValidationSummary />
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
@@ -120,13 +119,23 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Input.Attack" class="form-control" id="weapon-attack" placeholder="Attack" />
+                        <InputSelect id="weapon-attack" @bind-Value="Input.Attack" class="form-control">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
                         <label for="weapon-attack">Attack</label>
                         <ValidationMessage For="() => Input.Attack" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Input.Quality" class="form-control" id="weapon-quality" placeholder="Quality" />
+                        <InputSelect id="weapon-quality" @bind-Value="Input.Quality" class="form-control">
+                            @for (int i = 1; i <= 8; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
                         <label for="weapon-quality">Quality</label>
                         <ValidationMessage For="() => Input.Quality" />
                     </div>
@@ -138,8 +147,13 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Input.Dices" class="form-control" id="weapon-dices" placeholder="Dices" />
-                        <label for="weapon-dices">Dices</label>
+                        <InputSelect id="weapon-dices" @bind-Value="Input.Dices" class="form-control">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="weapon-dices">Dice</label>
                         <ValidationMessage For="() => Input.Dices" />
                     </div>
                 </div>

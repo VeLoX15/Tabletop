@@ -9,55 +9,45 @@ namespace Tabletop.Core.Validator
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithMessage("")
-                .MaximumLength(20)
-                .WithMessage("Name must contain only 20 characters.");
+                .WithMessage("The field must be filled")
+                .MaximumLength(50)
+                .WithMessage("Name must contain only 50 characters.");
 
             RuleFor(x => x.Description)
-                .NotEmpty()
-                .WithMessage("")
-                .MaximumLength(255)
-                .WithMessage("Description must contain only 255 characters.");
+                .MaximumLength(400)
+                .WithMessage("Description must contain only 400 characters.");
 
             RuleFor(x => x.Attack)
                 .NotEmpty()
-                .WithMessage("")
-                .NotNull()
-                .WithMessage("")
+                .WithMessage("The field must be filled.")
                 .LessThan(11)
-                .WithMessage("")
+                .WithMessage("The field may be a maximum of 10")
                 .GreaterThan(0)
-                .WithMessage("Attack value must be between 1 and 10");
+                .WithMessage("The field must not be greater than 0");
 
             RuleFor(x => x.Quality)
                 .NotEmpty()
-                .WithMessage("")
-                .NotNull()
-                .WithMessage("")
+                .WithMessage("The field must be filled")
                 .LessThan(11)
-                .WithMessage("")
+                .WithMessage("The field may be a maximum of 10")
                 .GreaterThan(0)
-                .WithMessage("Defense value must be between 1 and 10");
+                .WithMessage("The field must not be greater than 0");
 
             RuleFor(x => x.Range)
                 .NotEmpty()
-                .WithMessage("")
-                .NotNull()
-                .WithMessage("")
-                .LessThan(120)
-                .WithMessage("")
+                .WithMessage("The field must be filled")
+                .LessThan(150)
+                .WithMessage("The field may be a maximum of 150")
                 .GreaterThan(0)
-                .WithMessage("Range value must be between 1 and 120");
+                .WithMessage("The field must not be greater than 0");
 
             RuleFor(x => x.Dices)
                 .NotEmpty()
-                .WithMessage("")
-                .NotNull()
-                .WithMessage("")
+                .WithMessage("The field must be filled")
                 .LessThan(11)
-                .WithMessage("")
+                .WithMessage("The field may be a maximum of 10")
                 .GreaterThan(0)
-                .WithMessage("Dices must be between 1 and 10");
+                .WithMessage("The field must not be greater than 0");
         }
     }
 }
