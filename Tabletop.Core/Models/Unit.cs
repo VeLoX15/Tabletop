@@ -40,7 +40,7 @@ namespace Tabletop.Core.Models
         {
             return new Dictionary<string, object?>
             {
-                { "USER_ID", UnitId },
+                { "UNIT_ID", UnitId },
                 { "NAME", Name },
                 { "FRACTION_ID", FractionId },
                 { "DESCRIPTION", Description },
