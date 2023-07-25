@@ -361,4 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Tabletop/obj/Debug/net7.0/project.razor.vs.json
+
+# Cache
+/Tabletop/obj
