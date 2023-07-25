@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`gamemodes` 
 (
-    `gamemode_id` INTEGER NOT NULL,
+    `gamemode_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50) NOT NULL,
     `description` TEXT NOT NULL,
 	`mechanic` TEXT NOT NULL,
@@ -136,4 +136,65 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_friends`
     PRIMARY KEY (`user_id`, `friend_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
 	FOREIGN KEY (`friend_id`) REFERENCES `tabletop`.`users`(`user_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`games`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`games` 
+(
+    `game_id` INTEGER NOT NULL AUTO_INCREMENT,
+	`gamemode_id` INTEGER NOT NULL,
+	`user_id` INTEGER NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
+	`rounds` INTEGER NOT NULL,
+	`force` INTEGER NOT NULL,
+	`date` DATETIME NOT NULL,
+
+    PRIMARY KEY (`game_id`),
+	FOREIGN KEY (`gamemode_id`) REFERENCES `tabletop`.`gamemodes`(`gamemode_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`players`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`players` 
+(
+	`player_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+	`game_id` INTEGER NOT NULL,
+	`fraction_id` INTEGER NOT NULL,
+	`team` INTEGER NOT NULL,
+
+    PRIMARY KEY (`player_id`),
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
+	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`game_players`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`game_players` 
+(
+	`game_id` INTEGER NOT NULL,
+	`player_id` INTEGER NOT NULL,
+
+    PRIMARY KEY (`game_id`, `player_id`),
+	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`),
+	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`player_units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`player_units` 
+(
+	`player_id` INTEGER NOT NULL,
+	`unit_id` INTEGER NOT NULL,
+	`quantity` INTEGER NOT NULL,
+
+    PRIMARY KEY (`player_id`, `unit_id`),
+	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`),
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
 );

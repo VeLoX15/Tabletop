@@ -209,6 +209,18 @@ WHERE user_id = @USER_ID";
 
             await _permissionService.UpdateUserPermissionsAsync(input, dbController, cancellationToken);
         }
+
+        public async Task UpdateLastLoginAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            input.LastLogin = DateTime.Now;
+            string sql = @"UPDATE `tabletop`.`users` SET
+`last_login` = @LAST_LOGIN
+WHERE user_id = @USER_ID";
+
+            await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        }
+
         public static async Task<bool> FirstUserExistsAsync(IDbController dbController)
         {
             string sql = "SELECT * FROM `tabletop`.`users`";

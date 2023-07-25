@@ -4,12 +4,12 @@ using DbController.MySql;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Services;
 
-namespace Tabletop.Pages.Admin
+namespace Tabletop.Pages.Account
 {
-    public partial class FractionManagement : IHasPagination
+    public partial class GameManagement : IHasPagination
     {
         private int _page = 1;
-        public FractionFilter Filter { get; set; } = new()
+        public GameFilter Filter { get; set; } = new()
         {
             Limit = AppdataService.PageLimit
         };
@@ -48,13 +48,6 @@ namespace Tabletop.Pages.Admin
             Input = new();
 
             return Task.CompletedTask;
-        }
-
-        protected async Task UpdateAppdata()
-        {
-            using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-            AppdataService.Fractions = await FractionService.GetAllAsync(dbController);
-            await JSRuntime.ShowToastAsync(ToastType.success, "App data for fractions reloaded");
         }
     }
 }

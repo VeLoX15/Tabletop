@@ -49,5 +49,12 @@ namespace Tabletop.Pages.Admin
 
             return Task.CompletedTask;
         }
+
+        protected async Task UpdateAppdata()
+        {
+            using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+            AppdataService.Units = await UnitService.GetAllAsync(dbController);
+            await JSRuntime.ShowToastAsync(ToastType.success, "App data for units reloaded");
+        }
     }
 }

@@ -4,56 +4,100 @@
     <PageTitle>Tablebricks - @Unit.Name</PageTitle>
 
     <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="mb-0">@Unit.Name</h2>
-                </div>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div>
                 <div class="card">
-                    <img src="@Unit.ConvertedImage" class="rounded">
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card">
+                    <div class="card-header ps-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="mb-0">@Unit.Name</h2>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div style="text-align: justify">
-                            <div>
-                                <h4>Description</h4>
-                                <p>@Unit.Description</p>
+                            <div class="row">
+                                <div class="col-lg-4 text-center justify-content-center">
+                                    <img src="@Unit.ConvertedImage" class="rounded">
+                                </div>
+                                <div class="col-lg-8">
+                                    <div>
+                                        <h4>Description</h4>
+                                        <p>@Unit.Description</p>
+                                    </div>
+                                    <div>
+                                        <h4>Mechanics</h4>
+                                        <p>@Unit.Mechanic</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h4>Mechanics</h4>
-                                <p>@Unit.Mechanic</p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4>Unit values</h4>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>D</th>
+                                                <th>M</th>
+                                                <th>F</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Unit.Defense</td>
+                                                <td>@Unit.Moving</td>
+                                                <td>0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                @if (Unit.PrimaryWeapon.Id > 0)
+                                {
+                                    <div class="col-md-4">
+                                        <h4>@Unit.PrimaryWeapon.Name</h4>
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>A</th>
+                                                    <th>Q</th>
+                                                    <th>R</th>
+                                                    <th>D</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@Unit.PrimaryWeapon.Attack</td>
+                                                    <td>@Unit.PrimaryWeapon.Quality</td>
+                                                    <td>@Unit.PrimaryWeapon.Range</td>
+                                                    <td>@Unit.PrimaryWeapon.Dices</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                @if (Unit.SecondaryWeapon.Id > 0)
+                                {
+                                    <div class="col-md-4">
+                                        <h4>@Unit.SecondaryWeapon.Name</h4>
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>A</th>
+                                                    <th>Q</th>
+                                                    <th>R</th>
+                                                    <th>D</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@Unit.SecondaryWeapon.Attack</td>
+                                                    <td>@Unit.SecondaryWeapon.Quality</td>
+                                                    <td>@Unit.SecondaryWeapon.Range</td>
+                                                    <td>@Unit.SecondaryWeapon.Dices</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
                             </div>
-                            <h4>Values</h4>
-                            <table class="table">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>A</th>
-                                        <th>D</th>
-                                        <th>Q</th>
-                                        <th>M</th>
-                                        <th>R</th>
-                                        <th>D</th>
-                                        <th>F</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>@Unit.PrimaryWeapon.Attack</td>
-                                        <td>@Unit.Defense</td>
-                                        <td>@Unit.PrimaryWeapon.Quality</td>
-                                        <td>@Unit.Moving</td>
-                                        <td>@Unit.PrimaryWeapon.Range</td>
-                                        <td>@Unit.PrimaryWeapon.Dices</td>
-                                        <td>0</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

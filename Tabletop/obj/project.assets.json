@@ -3691,19 +3691,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tom\\.nuget\\packages\\": {}
+    "C:\\Users\\tomsa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "projectUniqueName": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
       "projectName": "Tabletop",
-      "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
-      "packagesPath": "C:\\Users\\Tom\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop\\obj\\",
+      "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\Tabletop.csproj",
+      "packagesPath": "C:\\Users\\tomsa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Tom\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tomsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3711,14 +3711,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
-              "projectPath": "C:\\Users\\Tom\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
+            "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj": {
+              "projectPath": "C:\\Users\\tomsa\\source\\repos\\Tabletop\\Tabletop.Core\\Tabletop.Core.csproj"
             }
           }
         }
@@ -3773,7 +3774,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

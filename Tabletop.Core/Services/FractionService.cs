@@ -22,7 +22,7 @@ namespace Tabletop.Core.Services
                 @DESCRIPTION
                 ); {dbController.GetLastIdSql()}";
 
-            input.FractionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
+            input.FractionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
         public async Task DeleteAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -32,7 +32,7 @@ namespace Tabletop.Core.Services
             await dbController.QueryAsync(sql, new
             {
                 FRACTION_ID = input.FractionId,
-            });
+            }, cancellationToken);
         }
 
         public async Task<Fraction?> GetAsync(int fractionId, IDbController dbController, CancellationToken cancellationToken = default)
@@ -42,7 +42,7 @@ namespace Tabletop.Core.Services
             var fraction = await dbController.GetFirstAsync<Fraction>(sql, new
             {
                 FRACTION_ID = fractionId
-            });
+            }, cancellationToken);
 
             return fraction;
         }
@@ -51,7 +51,7 @@ namespace Tabletop.Core.Services
         {
             string sql = "SELECT * FROM `tabletop`.`fractions`";
 
-            var list = await dbController.SelectDataAsync<Fraction>(sql);
+            var list = await dbController.SelectDataAsync<Fraction>(sql, cancellationToken: cancellationToken);
 
             return list;
         }

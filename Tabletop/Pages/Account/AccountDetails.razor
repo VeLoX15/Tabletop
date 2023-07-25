@@ -14,7 +14,7 @@
                     <div class="profile-block-thumb profile-banner rounded"></div>
                     <div class="profile-img">
                         <a>
-                            <img src="@CurrentUser.ConvertedImage" alt="Logo" title="Logo">
+                            <img src="@CurrentUser.ConvertedImage" alt="Logo">
                         </a>
                     </div>
                     <div class="profile-name">
@@ -25,9 +25,9 @@
         </div>
         <div class="row pt-4">
             <div class="col-lg-6">
-                <div class="card p-3 pb-3">
+                <div class="card p-4 pb-3">
                     <div class="row">
-                        <div class="form-group col">
+                        <div class="col">
                             <h4>About me</h4>
                         </div>
                         <div class="col-auto text-end">
@@ -37,10 +37,10 @@
                     <p>@CurrentUser.Description</p>
                 </div>
 
-                <div class="card p-3">
+                <div class="card p-4">
                     <div class="row">
-                        <div class="form-group col">
-                            <h4>Your Follow</h4>
+                        <div class="col">
+                            <h4>You Follow</h4>
                         </div>
                         <div class="col-auto text-end">
                             <button type="button" class="btn pt-0" @onclick="OpenFriendModal"><i class="fa-solid fa-user-plus"></i></button>
@@ -54,7 +54,7 @@
                                     <tr>
                                         <td>
                                             <a>
-                                                <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="" title="Logo">
+                                                <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo">
                                             </a>
                                         </td>
                                         <td>@item.Username (@item.DisplayName)</td>
@@ -73,7 +73,7 @@
 
             <div class="col-lg-6">
                 <div class="card">
-                    <div class="p-3">
+                    <div class="p-4">
                         <div class="row">
                             <div class="form-group col">
                                 <h4>Your Armies</h4>

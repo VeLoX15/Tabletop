@@ -89,7 +89,7 @@ textarea {
         }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1199px) {
     #main header {
         padding-bottom: 1.5em;
     }

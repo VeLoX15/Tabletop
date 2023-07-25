@@ -15,16 +15,15 @@ namespace Tabletop.Pages.Account
     {
 #nullable disable
         [CascadingParameter] private Task<AuthenticationState> AuthState { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
 #nullable enable
 
         public User? CurrentUser { get; set; }
-        private ClaimsPrincipal? _user;
+
         protected override async Task OnParametersSetAsync()
         {
             if (AuthState is not null)
             {
-                _user = (await AuthState).User;
-
                 CurrentUser = await authService.GetUserAsync();
 
                 if (CurrentUser?.Image != null)
@@ -41,7 +40,6 @@ namespace Tabletop.Pages.Account
                 await LoadContent();
                 await SelectFractionUnitsByUser();
 
-                _loggedInUser = await authService.GetUserAsync();
                 await LoadAsync();
             }
         }
@@ -57,7 +55,6 @@ namespace Tabletop.Pages.Account
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
         private int _page = 1;
-        private User? _loggedInUser;
         public UserFilter Filter { get; set; } = new()
         {
             Limit = AppdataService.PageLimit
@@ -184,10 +181,6 @@ namespace Tabletop.Pages.Account
                 await JSRuntime.ShowToastAsync(ToastType.success, "Profile has been edited");
             }
         }
-
-#nullable disable
-        [Inject] public IJSRuntime JSRuntime { get; set; }
-#nullable enable
 
         protected virtual async Task DeleteFriendAsync(int friendId)
         {

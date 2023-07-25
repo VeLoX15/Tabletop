@@ -24,7 +24,7 @@ namespace Tabletop.Core.Services
             _configuration = configuration;
             using IDbController dbController = new MySqlController(ConnectionString);
             Permissions = await PermissionService.GetAllAsync(dbController);
-            FirstUserExists = await UserService.FirstUserExistsAsync(dbController);
+            FirstUserExists = await UserService.FirstUserExistsAsync(dbController); 
 
             Units = await UnitService.GetAllAsync(dbController);
             Weapons = await WeaponService.GetAllAsync(dbController);
@@ -83,7 +83,6 @@ namespace Tabletop.Core.Services
         }
 
         public static string ConnectionString => _configuration?["ConnectionString"] ?? string.Empty;
-        public static bool IsLocalLoginEnabled => _configuration?.GetSection("LdapSettings").GetValue<bool>("ENABLE_LOCAL_LOGIN") ?? false;
         public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
     }
 }

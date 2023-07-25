@@ -1,12 +1,13 @@
 ﻿@page "/Administration/Users"
 @inject AuthService authService
+@inject UnitService unitService
 @inherits ManagementBasePage<User, UserService>
 @attribute [Authorize(Roles = Roles.VIEW_USERS)]
 <PageTitle>Tablebricks - Users (Management)</PageTitle>
 
 <div class="container">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header ps-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>User Management</h2>
                 <AuthorizeView Roles="@(Roles.ADD_USERS)">

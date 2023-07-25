@@ -8,12 +8,10 @@ namespace Tabletop.Core.Services
     public class UnitService : IModelService<Unit, int, UnitFilter>
     {
         private readonly WeaponService _weaponService;
-        private readonly FractionService _fractionService;
 
-        public UnitService(WeaponService weaponService, FractionService fractionService)
+        public UnitService(WeaponService weaponService)
         {
             _weaponService = weaponService;
-            _fractionService = fractionService;
         }
 
         public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -26,7 +24,9 @@ namespace Tabletop.Core.Services
                 `description`,
                 `mechanic`,
                 `defense`,
-                `moving`
+                `moving`,
+                `primary_weapon_id`,
+                `secondary_weapon_id`
                 )
                 VALUES
                 (
@@ -35,7 +35,9 @@ namespace Tabletop.Core.Services
                 @DESCRIPTION,
                 @MECHANIC,
                 @DEFENSE,
-                @MOVING
+                @MOVING,
+                @PRIMARY_WEAPON_ID,
+                @SECONDARY_WEAPON_ID
                 ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -248,13 +250,14 @@ namespace Tabletop.Core.Services
                 `description` = @DESCRIPTION,
                 `mechanic` = @MECHANIC,
                 `defense` = @DEFENSE,
-                `moving` = @MOVING
+                `moving` = @MOVING,
+                `primary_weapon_id` = @PRIMARY_WEAPON_ID,
+                `secondary_weapon_id` = @SECONDARY_WEAPON_ID
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
-            await _weaponService.UpdateAsync(input.PrimaryWeapon, dbController, cancellationToken);
-            await _weaponService.UpdateAsync(input.SecondaryWeapon, dbController, cancellationToken);
+
         }
     }
 }
