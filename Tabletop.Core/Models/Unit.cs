@@ -19,9 +19,9 @@ namespace Tabletop.Core.Models
         [CompareField("moving")]
         public int Moving { get; set; }
         [CompareField("primary_weapon_id")]
-        public int PrimaryWeaponId { get; set; }
+        public int? PrimaryWeaponId { get; set; }
         [CompareField("secondary_weapon_id")]
-        public int SecondaryWeaponId { get; set; }
+        public int? SecondaryWeaponId { get; set; }
         [CompareField("image")]
         public byte[]? Image { get; set; }
 

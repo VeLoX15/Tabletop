@@ -43,7 +43,7 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
-        public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController, CancellationToken cancellationToken = default)
+        public async Task<Weapon?> GetAsync(int? weaponId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
@@ -129,6 +129,11 @@ namespace Tabletop.Core.Services
                 WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        }
+
+        public Task<Weapon?> GetAsync(int identifier, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }
