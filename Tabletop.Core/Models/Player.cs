@@ -15,6 +15,7 @@ namespace Tabletop.Core.Models
         [CompareField("team")]
         public int Team { get; set; }
 
+        public User User { get; set; } = new();
         public List<Unit> StartUnits { get; set; } = new();
 
         public int Id => PlayerId;

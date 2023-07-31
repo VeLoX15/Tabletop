@@ -1,7 +1,9 @@
 using Blazor.Pagination;
 using DbController;
 using DbController.MySql;
+using Microsoft.AspNetCore.Components;
 using Tabletop.Core.Filters;
+using Tabletop.Core.Models;
 using Tabletop.Core.Services;
 
 namespace Tabletop.Pages.Account
@@ -13,6 +15,8 @@ namespace Tabletop.Pages.Account
         {
             Limit = AppdataService.PageLimit
         };
+
+        public Player? SelectedPlayer { get; set; }
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
         protected override async Task OnParametersSetAsync()

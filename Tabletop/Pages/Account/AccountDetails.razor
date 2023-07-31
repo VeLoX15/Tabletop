@@ -1,4 +1,5 @@
-﻿@page "/Account/Profile"
+﻿@page "/Account/Profile/{userName}"
+@page "/Account/Profile/"
 @attribute [Authorize]
 @inject AuthService authService
 @inject UnitService unitService
@@ -14,11 +15,11 @@
                     <div class="profile-block-thumb profile-banner rounded"></div>
                     <div class="profile-img">
                         <a>
-                            <img src="@CurrentUser.ConvertedImage" alt="Logo">
+                            <img src="@CurrentUser?.ConvertedImage" alt="Logo">
                         </a>
                     </div>
                     <div class="profile-name">
-                        <h2>@CurrentUser.Username (@CurrentUser.DisplayName)</h2>
+                        <h2>@CurrentUser?.Username (@CurrentUser?.DisplayName)</h2>
                     </div>
                 </div>
             </div>
@@ -30,11 +31,14 @@
                         <div class="col">
                             <h4>About me</h4>
                         </div>
-                        <div class="col-auto text-end">
-                            <button type="button" class="btn pt-0" @onclick="OpenEditProfile"><i class="fa-solid fa-user-pen"></i></button>
-                        </div>
+                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                        {
+                            <div class="col-auto text-end">
+                                <button type="button" class="btn pt-0" @onclick="OpenEditProfile"><i class="fa-solid fa-user-pen"></i></button>
+                            </div>
+                        }
                     </div>
-                    <p>@CurrentUser.Description</p>
+                    <p>@CurrentUser?.Description</p>
                 </div>
 
                 <div class="card p-4">
@@ -42,9 +46,12 @@
                         <div class="col">
                             <h4>You Follow</h4>
                         </div>
-                        <div class="col-auto text-end">
-                            <button type="button" class="btn pt-0" @onclick="OpenFriendModal"><i class="fa-solid fa-user-plus"></i></button>
-                        </div>
+                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                        {
+                            <div class="col-auto text-end">
+                                <button type="button" class="btn pt-0" @onclick="OpenFriendModal"><i class="fa-solid fa-user-plus"></i></button>
+                            </div>
+                        }
                     </div>
                     <div class="table-responsive">
                         <table class="table table-lg">
@@ -53,16 +60,19 @@
                                 {
                                     <tr>
                                         <td>
-                                            <a>
+                                            <a href="/Account/Profile/@item.Username">
                                                 <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo">
                                             </a>
                                         </td>
                                         <td>@item.Username (@item.DisplayName)</td>
-                                        <td>
-                                            <span class="aktion-icon" role="button" @onclick="() => DeleteFriendAsync(item.UserId)">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </span>
-                                        </td>
+                                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                                        {
+                                            <td>
+                                                <span class="aktion-icon" role="button" @onclick="() => DeleteFriendAsync(item.UserId)">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </span>
+                                            </td>
+                                        }
                                     </tr>
                                 }
                             </tbody>
@@ -78,9 +88,12 @@
                             <div class="form-group col">
                                 <h4>Your Armies</h4>
                             </div>
-                            <div class="col-auto text-end">
-                                <button type="button" class="btn pt-0" @onclick="OpenUnitModal"><i class="fa-solid fa-person-circle-plus fa-lg"></i></button>
-                            </div>
+                            @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                            {
+                                <div class="col-auto text-end">
+                                    <button type="button" class="btn pt-0" @onclick="OpenUnitModal"><i class="fa-solid fa-person-circle-plus fa-lg"></i></button>
+                                </div>
+                            }
                         </div>
                         <div class="form-floating">
                             <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectFractionUnitsByUser" class="form-control">
@@ -104,13 +117,16 @@
                                     @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
                                     {
                                         <tr>
-                                            <td >@item.Name</td>
+                                            <td>@item.Name</td>
                                             <td class="align-items-center">@item.Quantity</td>
-                                            <td class="align-items-center">
-                                                <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </span>
-                                            </td>
+                                            @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                                            {
+                                                <td class="align-items-center">
+                                                    <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </span>
+                                                </td>
+                                            }
                                         </tr>
                                     }
                                 </tbody>
@@ -122,13 +138,26 @@
         </div>
     </div>
 }
+else
+{
+    <PageTitle>Tablebricks - User not found</PageTitle>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Error</h2>
+                <p>User not found</p>
+            </div>
+        </div>
+    </div>
+}
 
 @if (AddFriendModal)
 {
     <Modal Title="Find other players"
-       OnClosed="() => AddFriendModal = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => AddFriendModal = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <div class="row">
             <div class="col-12">
@@ -195,9 +224,9 @@
 @if (AddUnitModal)
 {
     <Modal Title="Edit your armies"
-       OnClosed="() => AddUnitModal = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => AddUnitModal = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <EditForm Model="Unit">
             <FluentValidationValidator />
@@ -241,9 +270,9 @@
 @if (EditProfile && CurrentUser != null)
 {
     <Modal Title="Edit your profile"
-       OnClosed="() => EditProfile = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => EditProfile = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <EditForm Model="CurrentUser">
             <FluentValidationValidator />
@@ -269,6 +298,11 @@
                         <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
                         <label for="user-description">Description</label>
                     </div>
+
+@*                    <div class="form-floating mb-3">
+                        <InputFile @bind-Value="CurrentUser.ConvertedImage" @onclick="" class="form-control" id="user-description" placeholder="Quantity" />
+                        <label for="user-description">Description</label>
+                    </div>*@
                 </div>
             </div>
         </EditForm>

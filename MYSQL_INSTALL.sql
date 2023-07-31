@@ -173,19 +173,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 );
 
 -- -----------------------------------------------------
--- Table `tabletop`.`game_players`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`game_players` 
-(
-	`game_id` INTEGER NOT NULL,
-	`player_id` INTEGER NOT NULL,
-
-    PRIMARY KEY (`game_id`, `player_id`),
-	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`),
-	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`)
-);
-
--- -----------------------------------------------------
 -- Table `tabletop`.`player_units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`player_units` 

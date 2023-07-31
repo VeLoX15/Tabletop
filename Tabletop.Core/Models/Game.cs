@@ -19,6 +19,7 @@ namespace Tabletop.Core.Models
         [CompareField("date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
+        public User Host { get; set; } = new();
         public List<Player> Players { get; set; } = new();
 
         public int Id => GameId;

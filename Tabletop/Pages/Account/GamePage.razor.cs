@@ -10,13 +10,13 @@ namespace Tabletop.Pages.Account
     {
         [Parameter]
         public int GameId { get; set; }
-        public Game? Game { get; set; }
+        public Game? Input { get; set; }
 
-        //protected override void OnInitialized()
-        //{
-        //    using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+        protected override async Task OnParametersSetAsync()
+        {
+            using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
 
-        //    Games = gameService.GetAllAsync(dbController);
-        //}
+            Input = await gameService.GetAsync(GameId, dbController);
+        }
     }
 }

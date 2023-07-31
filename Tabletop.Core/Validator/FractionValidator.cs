@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Validator
 {
-    internal class FractionValidator
+    public class FractionValidator : AbstractValidator<Fraction>
     {
+        public FractionValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .WithMessage("The field must be filled")
+                .MaximumLength(50)
+                .WithMessage("Name must contain only 50 characters.");
+
+            RuleFor(x => x.ShortName)
+                .NotEmpty()
+                .WithMessage("The field must be filled")
+                .MaximumLength(3)
+                .WithMessage("Name must contain only 3 characters.");
+
+            RuleFor(x => x.Description)
+                .MaximumLength(1024)
+                .WithMessage("Description must contain only 400 characters.");
+        }
     }
 }

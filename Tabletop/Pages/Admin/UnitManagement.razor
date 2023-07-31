@@ -155,7 +155,7 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-weapon" @bind-Value="Input.PrimaryWeaponId" class="form-control">
-                            <option value="None"></option>
+                            <option value="">None</option>
                             @foreach (Weapon item in AppdataService.Weapons)
                             {
                                 <option value="@item.WeaponId">@item.Name</option>
@@ -166,7 +166,7 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-weapon" @bind-Value="Input.SecondaryWeaponId" class="form-control">
-                            <option value="None"></option>
+                            <option value="">None</option>
                             @foreach (Weapon item in AppdataService.Weapons)
                             {
                                 <option value="@item.WeaponId">@item.Name</option>

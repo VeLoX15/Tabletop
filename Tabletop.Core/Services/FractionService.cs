@@ -62,7 +62,6 @@ namespace Tabletop.Core.Services
                 `name` = @NAME,
                 `short_name` = @SHORT_NAME,    
                 `description` = @DESCRIPTION,
-                `mechanic` = @MECHANIC,
                 `image` = @IMAGE
                 WHERE `fraction_id` = @FRACTION_ID";
 

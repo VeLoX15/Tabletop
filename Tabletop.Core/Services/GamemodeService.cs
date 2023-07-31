@@ -22,7 +22,7 @@ namespace Tabletop.Core.Services
                 @MECHANIC
                 ); {dbController.GetLastIdSql()}";
 
-            input.GamemodeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters());
+            input.GamemodeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
         public async Task DeleteAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -32,7 +32,7 @@ namespace Tabletop.Core.Services
             await dbController.QueryAsync(sql, new
             {
                 GAMEMODE_ID = input.GamemodeId,
-            });
+            }, cancellationToken);
         }
 
         public async Task<Gamemode?> GetAsync(int gamemodeId, IDbController dbController, CancellationToken cancellationToken = default)
@@ -42,7 +42,7 @@ namespace Tabletop.Core.Services
             var gamemode = await dbController.GetFirstAsync<Gamemode>(sql, new
             {
                 GAMEMODE_ID = gamemodeId
-            });
+            }, cancellationToken);
 
             return gamemode;
         }
@@ -51,7 +51,7 @@ namespace Tabletop.Core.Services
         {
             string sql = "SELECT * FROM `tabletop`.`gamemodes`";
 
-            var list = await dbController.SelectDataAsync<Gamemode>(sql);
+            var list = await dbController.SelectDataAsync<Gamemode>(sql, cancellationToken: cancellationToken);
 
             return list;
         }

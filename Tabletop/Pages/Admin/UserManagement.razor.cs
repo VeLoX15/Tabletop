@@ -7,8 +7,6 @@ using Tabletop.Core.Models;
 using Tabletop.Core.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
-using Tabletop.Pages.Public;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Tabletop.Pages.Admin
 {

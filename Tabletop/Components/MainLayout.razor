@@ -34,10 +34,10 @@
                 </a>
             </div>
             <div>
-                @if (CurrentUser != null)
+                @if (_loggedInUser != null)
                 {
-                    <a href="/Account/Profile">
-                        <img src="@CurrentUser?.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo" title="Logo">
+                    <a href="/Account/Profile/">
+                        <img src="@_loggedInUser.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo" title="Logo">
                     </a>
                 }
             </div>
@@ -111,15 +111,15 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        CurrentUser = await authService.GetUserAsync();
+        _loggedInUser = await authService.GetUserAsync();
 
-        if (CurrentUser?.Image != null)
+        if (_loggedInUser?.Image != null)
         {
-            string base64String = Convert.ToBase64String(CurrentUser.Image);
-            CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
+            string base64String = Convert.ToBase64String(_loggedInUser.Image);
+            _loggedInUser.ConvertedImage = $"data:image/png;base64,{base64String}";
         }
     }
 
     public bool ShowMenu { get; set; }
-    public User? CurrentUser { get; set; }
+    private User? _loggedInUser;
 }

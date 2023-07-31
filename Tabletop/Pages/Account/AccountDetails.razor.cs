@@ -2,7 +2,6 @@ using DbController.MySql;
 using DbController;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Security.Claims;
 using Tabletop.Core.Models;
 using Tabletop.Core.Services;
 using Blazor.Pagination;
@@ -18,13 +17,45 @@ namespace Tabletop.Pages.Account
         [Inject] public IJSRuntime JSRuntime { get; set; }
 #nullable enable
 
+        [Parameter]
+        public string UserName { get; set; } = string.Empty;
+
         public User? CurrentUser { get; set; }
+
+        private User? _loggedInUser;
+
+        public int SelectedFraction { get; set; } = 1;
+        public List<Fraction> Fractions { get; set; } = new();
+        public List<Unit> UserUnits { get; set; } = new();
+        public List<Unit> Units { get; set; } = new();
+        public Unit Unit { get; set; } = new();
+        public int Quantity { get; set; }
+        public int FractionId { get; set; }
+        public int UnitId { get; set; }
+        public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
+        public int TotalItems { get; set; }
+
+        private int _page = 1;
+        public bool AddFriendModal { get; set; } = false;
+        public bool AddUnitModal { get; set; } = false;
+        public bool EditProfile { get; set; } = false;
+        public List<User> Users { get; set; } = new();
+        public List<User> Friends { get; set; } = new();
+        public UserFilter Filter { get; set; } = new()
+        {
+            Limit = AppdataService.PageLimit
+        };
 
         protected override async Task OnParametersSetAsync()
         {
-            if (AuthState is not null)
+            if (AuthState != null)
             {
-                CurrentUser = await authService.GetUserAsync();
+                _loggedInUser = await authService.GetUserAsync();
+
+                UserName ??= _loggedInUser?.Username ?? string.Empty;
+
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                CurrentUser = await userService.GetAsync(UserName, dbController);
 
                 if (CurrentUser?.Image != null)
                 {
@@ -44,34 +75,12 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        public int SelectedFraction { get; set; } = 1;
-        public List<Fraction> Fractions { get; set; } = new();
-        public List<Unit> UserUnits { get; set; } = new();
-        public List<Unit> Units { get; set; } = new();
-        public Unit Unit { get; set; } = new();
-        public int Quantity { get; set; }
-        public int FractionId { get; set; }
-        public int UnitId { get; set; }
-        public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
-        public int TotalItems { get; set; }
-        private int _page = 1;
-        public UserFilter Filter { get; set; } = new()
-        {
-            Limit = AppdataService.PageLimit
-        };
-
-        public bool AddFriendModal { get; set; } = false;
-        public bool AddUnitModal { get; set; } = false;
-        public bool EditProfile { get; set; } = false;
-        public List<User> Users { get; set; } = new();
-        public List<User> Friends { get; set; } = new();
-
         public async Task LoadAsync(bool navigateToPage1 = false)
         {
             Filter.PageNumber = navigateToPage1 ? 1 : Page;
-            using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-            if(Filter.SearchPhrase != string.Empty)
+            if (Filter.SearchPhrase != string.Empty)
             {
+                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 TotalItems = await userService.GetTotalAsync(Filter, dbController);
                 Users = await userService.GetAsync(Filter, dbController);
             }
@@ -182,7 +191,7 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        protected virtual async Task DeleteFriendAsync(int friendId)
+        protected async Task DeleteFriendAsync(int friendId)
         {
             if (CurrentUser != null)
             {
@@ -193,7 +202,7 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        protected virtual async Task DeleteUnitAsync(int unitId)
+        protected async Task DeleteUnitAsync(int unitId)
         {
             if (CurrentUser != null)
             {
@@ -203,5 +212,14 @@ namespace Tabletop.Pages.Account
                 await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been deleted");
             }
         }
+
+        //protected async Task ConvertImage()
+        //{
+        //    if (item?.Image != null)
+        //    {
+        //        string base64String = Convert.ToBase64String(item.Image);
+        //        item.ConvertedImage = $"data:image/png;base64,{base64String}";
+        //    }
+        //}
     }
 }

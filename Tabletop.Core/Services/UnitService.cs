@@ -85,6 +85,7 @@ namespace Tabletop.Core.Services
             return unit;
         }
 
+
         public static async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -222,14 +223,31 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"
-        SELECT uu.quantity, u.*
-        FROM `tabletop`.`user_units` uu
-        INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = uu.`unit_id`)
-        WHERE uu.`user_id` = @USER_ID";
+                SELECT uu.quantity, u.*
+                FROM `tabletop`.`user_units` uu
+                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = uu.`unit_id`)
+                WHERE uu.`user_id` = @USER_ID";
 
             var list = await dbController.SelectDataAsync<Unit>(sql, new
             {
                 USER_ID = userId
+            }, cancellationToken);
+
+            return list;
+        }
+
+        public async Task<List<Unit>> GetPlayerUnitsAsync(int playerId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"
+                SELECT pu.quantity, u.*
+                FROM `tabletop`.`player_units` pu
+                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = pu.`unit_id`)
+                WHERE pu.`player_id` = @PLAYER_ID";
+
+            var list = await dbController.SelectDataAsync<Unit>(sql, new
+            {
+                PLAYER_ID = playerId
             }, cancellationToken);
 
             return list;

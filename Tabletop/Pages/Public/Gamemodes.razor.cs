@@ -20,10 +20,5 @@ namespace Tabletop.Pages.Public
                 }
             }
         }
-
-        private void NavigateToGamemodeProfile(string gamemodeName)
-        {
-            navigationManager.NavigateTo($"/Gamemodes/{gamemodeName}");
-        }
     }
 }

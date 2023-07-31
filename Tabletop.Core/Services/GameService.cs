@@ -7,6 +7,13 @@ namespace Tabletop.Core.Services
 {
     public class GameService : IModelService<Game, int, GameFilter>
     {
+        private readonly PlayerService _playerService;
+
+        public GameService(PlayerService playerService)
+        {
+            _playerService = playerService;
+        }
+
         public async Task CreateAsync(Game input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -76,6 +83,14 @@ namespace Tabletop.Core.Services
             string sql = sb.ToString();
 
             List<Game> list = await dbController.SelectDataAsync<Game>(sql, GetFilterParameter(filter), cancellationToken);
+
+            if (list.Any())
+            {
+                foreach (var item in list)
+                {
+                    item.Players = await _playerService.GetGamePlayersAsync(item.GameId, dbController, cancellationToken);
+                }
+            }
 
             return list;
         }
