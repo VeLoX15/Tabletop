@@ -117,7 +117,12 @@
                                     @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
                                     {
                                         <tr>
-                                            <td>@item.Name</td>
+                                            <td>
+                                                <div>@item.Name</div>
+                                                <div>
+                                                    <img src="@item.ConvertedImage" height="50" width="50" alt="Unit">
+                                                </div>
+                                            </td>
                                             <td class="align-items-center">@item.Quantity</td>
                                             @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                                             {
@@ -155,9 +160,9 @@ else
 @if (AddFriendModal)
 {
     <Modal Title="Find other players"
-           OnClosed="() => AddFriendModal = false"
-           ModalSize="ModalSize.LG"
-           HideFooter="true">
+       OnClosed="() => AddFriendModal = false"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
 
         <div class="row">
             <div class="col-12">
@@ -224,9 +229,9 @@ else
 @if (AddUnitModal)
 {
     <Modal Title="Edit your armies"
-           OnClosed="() => AddUnitModal = false"
-           ModalSize="ModalSize.LG"
-           HideFooter="true">
+       OnClosed="() => AddUnitModal = false"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
 
         <EditForm Model="Unit">
             <FluentValidationValidator />
@@ -270,9 +275,9 @@ else
 @if (EditProfile && CurrentUser != null)
 {
     <Modal Title="Edit your profile"
-           OnClosed="() => EditProfile = false"
-           ModalSize="ModalSize.LG"
-           HideFooter="true">
+       OnClosed="() => EditProfile = false"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
 
         <EditForm Model="CurrentUser">
             <FluentValidationValidator />
@@ -299,10 +304,10 @@ else
                         <label for="user-description">Description</label>
                     </div>
 
-@*                    <div class="form-floating mb-3">
-                        <InputFile @bind-Value="CurrentUser.ConvertedImage" @onclick="" class="form-control" id="user-description" placeholder="Quantity" />
-                        <label for="user-description">Description</label>
-                    </div>*@
+                    @*                    <div class="form-floating mb-3">
+                <InputFile @bind-Value="CurrentUser.ConvertedImage" @onclick="" class="form-control" id="user-description" placeholder="Quantity" />
+                <label for="user-description">Description</label>
+                </div>*@
                 </div>
             </div>
         </EditForm>

@@ -7,6 +7,11 @@ using Tabletop.Core.Services;
 using Blazor.Pagination;
 using Tabletop.Core.Filters;
 using Microsoft.JSInterop;
+using Google.Protobuf.WellKnownTypes;
+using MySqlX.XDevAPI.Relational;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 
 namespace Tabletop.Pages.Account
 {
@@ -213,13 +218,26 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        //protected async Task ConvertImage()
-        //{
-        //    if (item?.Image != null)
-        //    {
-        //        string base64String = Convert.ToBase64String(item.Image);
-        //        item.ConvertedImage = $"data:image/png;base64,{base64String}";
-        //    }
-        //}
+        protected Task<object> ConvertImage<T>(T image)
+        {
+            if (image is byte[])
+            {
+                byte[]? byteArray = image as byte[];
+                if(byteArray != null)
+                {
+
+                }
+                string base64String = Convert.ToBase64String(byteArray);
+                return Task.FromResult<object>($"data:image/png;base64,{base64String}");
+            }
+            else if (image is string)
+            {
+                string? base64String = image as string;
+                byte[] byteArray = Convert.FromBase64String(base64String);
+                return Task.FromResult<object>(byteArray);
+            }
+
+            return Task.FromResult<object>(new());
+        }
     }
 }
