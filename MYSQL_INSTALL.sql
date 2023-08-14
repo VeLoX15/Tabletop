@@ -240,3 +240,33 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`player_units`
 	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`),
 	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
 );
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`templates`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`templates` 
+(
+	`template_id` INTEGER NOT NULL AUTO_INCREMENT,
+	`user_id` INTEGER NOT NULL,
+	`fraction_id` INTEGER NOT NULL,
+	`name` VARCHAR(50) NOT NULL,
+	`force` INTEGER NOT NULL, 
+
+    PRIMARY KEY (`template_id`),
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`template_units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`template_units` 
+(
+	`template_id` INTEGER NOT NULL,
+	`unit_id` INTEGER NOT NULL,
+	`quantity` INTEGER NOT NULL,
+
+    PRIMARY KEY (`template_id`, `unit_id`),
+	FOREIGN KEY (`template_id`) REFERENCES `tabletop`.`templates`(`template_id`),
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+);
