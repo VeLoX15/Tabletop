@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Blazor.Pagination" Version="2.0.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.9" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.10" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="7.0.1" />
     <PackageReference Include="vNext.BlazorComponents.FluentValidation" Version="1.1.1" />
   </ItemGroup>

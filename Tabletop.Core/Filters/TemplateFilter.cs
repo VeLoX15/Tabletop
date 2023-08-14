@@ -2,7 +2,8 @@
 
 namespace Tabletop.Core.Filters
 {
-    public class UserFilter : PageFilterBase
+    public class TemplateFilter : PageFilterBase
     {
+
     }
 }
