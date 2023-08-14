@@ -1,12 +1,14 @@
 ﻿@page "/Fractions/{fractionName}"
 @inject NavigationManager navigationManager
-<PageTitle>Tablebricks - @Fraction.ShortName</PageTitle>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @Fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName</PageTitle>
 
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h2>@Fraction.Name</h2>
-            <p>Overview about the unit types of the @Fraction.Name</p>
+            <h2>@Fraction.GetLocalization(CultureInfo.CurrentCulture)?.Name</h2>
+            <p>@localizer["UNIT_OVERVIEW_DESCRIPTION"] @Fraction.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
         </div>
     </div>
     <div class="row">
@@ -16,16 +18,16 @@
                 <div class="card h-100">
                     @if (unit.ConvertedImage != string.Empty)
                     {
-                        <a href="/Fractions/@Fraction.ShortName/@unit.UnitId">
-                            <img src="@unit.ConvertedImage" class="card-img-top" alt="@unit.Name">
+                        <a href="/Fractions/@Fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName/@unit.UnitId">
+                            <img src="@unit.ConvertedImage" class="card-img-top" alt="@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name">
                         </a>
                     }
                     <div class="card-header ps-4">
-                        <h4 class="card-title">@unit.Name</h4>
+                        <h4 class="card-title">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                     </div>
                     <div class="card-body d-flex flex-column">
-                        <p class="card-text" style="text-align: justify">@unit.Description</p>
-                        <a href="/Fractions/@Fraction.ShortName/@unit.UnitId" class="btn btn-primary mt-auto">More</a>
+                        <p class="card-text" style="text-align: justify">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
+                        <a href="/Fractions/@Fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName/@unit.UnitId" class="btn btn-primary mt-auto">More</a>
                     </div>
                 </div>
             </div>

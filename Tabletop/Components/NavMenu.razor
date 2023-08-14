@@ -1,4 +1,5 @@
 ﻿@using System.Runtime.InteropServices
+@inject IStringLocalizer<NavMenu> localizer
 
 <h3 class="text-center">TABLEBRICKS</h3>
 
@@ -6,51 +7,51 @@
     <li class="sidebar-item">
         <NavLink href="/" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-house"></i>
-            <span>Home</span>
+            <span>@localizer["HOME"]</span>
         </NavLink>
     </li>
 
 
-    <li class="sidebar-title">Information</li>
+    <li class="sidebar-title">@localizer["INFO"]</li>
 
 
 
     <li class="sidebar-item">
         <NavLink href="/Rules" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-book-journal-whills"></i>
-            <span>Rules</span>
+            <span>@localizer["INFO_RULES"]</span>
         </NavLink>
     </li>
 
     <li class="sidebar-item">
         <NavLink href="/Fractions" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-brands fa-galactic-senate"></i>
-            <span>Fractions</span>
+            <span>@localizer["INFO_FRACTIONS"]</span>
         </NavLink>
     </li>
 
     <li class="sidebar-item">
         <NavLink href="/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-dice-five"></i>
-            <span>Game Modes</span>
+            <span>@localizer["INFO_GAME_MODES"]</span>
         </NavLink>
     </li>
 
     <li class="sidebar-item">
         <NavLink href="/Tables" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-table-cells"></i>
-            <span>Table Values</span>
+            <span>@localizer["INFO_TABLE_VALUES"]</span>
         </NavLink>
     </li>
 
     <AuthorizeView>
         <Authorized>
-            <li class="sidebar-title">Calculator</li>
+            <li class="sidebar-title">@localizer["CALCULATOR"]</li>
 
             <li class="sidebar-item">
                 <NavLink href="/Calculator/Simulation" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-microchip"></i>
-                    <span>Simulation</span>
+                    <span>@localizer["CALCULATOR_SIMULATION"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -58,7 +59,7 @@
 
     <AuthorizeView Roles="@($"{Roles.VIEW_USERS}, {Roles.VIEW_UNITS}, {Roles.VIEW_WEAPONS}, {Roles.VIEW_FRACTIONS}, {Roles.VIEW_GAMEMODES}")">
         <Authorized>
-            <li class="sidebar-title">Administration</li>
+            <li class="sidebar-title">@localizer["ADMIN"]</li>
         </Authorized>
     </AuthorizeView>
 
@@ -67,7 +68,7 @@
             <li class="sidebar-item">
                 <NavLink href="/Administration/Users" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-users"></i>
-                    <span>Users</span>
+                    <span>@localizer["ADMIN_USERS"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -78,7 +79,7 @@
             <li class="sidebar-item">
                 <NavLink href="/Administration/Units" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-person-rifle"></i>
-                    <span>Units</span>
+                    <span>@localizer["ADMIN_UNITS"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -89,7 +90,7 @@
             <li class="sidebar-item">
                 <NavLink href="/Administration/Weapons" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-gun"></i>
-                    <span>Weapons</span>
+                    <span>@localizer["ADMIN_WEAPONS"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -100,7 +101,7 @@
             <li class="sidebar-item">
                 <NavLink href="/Administration/Fractions" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-brands fa-galactic-senate"></i>
-                    <span>Fractions</span>
+                    <span>@localizer["ADMIN_FRACTIONS"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -111,26 +112,26 @@
             <li class="sidebar-item">
                 <NavLink href="/Administration/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-dice-five"></i>
-                    <span>Game Modes</span>
+                    <span>@localizer["ADMIN_GAME_MODES"]</span>
                 </NavLink>
             </li>
         </Authorized>
     </AuthorizeView>
 
-    <li class="sidebar-title">Account</li>
+    <li class="sidebar-title">@localizer["ACCOUNT"]</li>
     <AuthorizeView>
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Account/Profile" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-user"></i>
-                    <span>Profile</span>
+                    <span>@localizer["ACCOUNT_PROFILE"]</span>
                 </NavLink>
             </li>
 
             <li class="sidebar-item">
                 <NavLink href="/Account/Games" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>Games</span>
+                    <span>@localizer["ACCOUNT_GAMES"]</span>
                 </NavLink>
             </li>
 
@@ -138,7 +139,7 @@
                 <form method="post" action="/Account/Logout">
                     <button type="submit" class="btn btn-danger btn-block text-left sidebar-link logout-button">
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
+                        <span>@localizer["ACCOUNT_LOGOUT"]</span>
                     </button>
                 </form>
             </li>
@@ -148,7 +149,7 @@
             <li class="sidebar-item">
                 <NavLink href="/Account/Login" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>Login</span>
+                    <span>@localizer["ACCOUNT_LOGIN"]</span>
                 </NavLink>
             </li>
         </NotAuthorized>
@@ -160,3 +161,9 @@
     Ver. @Program.GetVersion()
     <div>@RuntimeInformation.FrameworkDescription / @RuntimeInformation.ProcessArchitecture</div>
 </p>
+
+<div class="d-flex justify-content-center pb-5">
+    <div class="culture-wrapper">
+        <CultureSelector />
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿@page "/"
+@inject IStringLocalizer<App> localizer
 
-<PageTitle>Tablebricks</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"]</PageTitle>
 
 <div>
     <div class="card">
@@ -13,13 +14,13 @@
         </div>
         <div class="p-4">
             <div style="text-align: justify">
-                <h4>The Game</h4>
-                <p>This Game is an unoffical tabletop of LEGO Star Wars. The project is developed since 2019.</p>
+                <h4>@localizer["THE_GAME"]</h4>
+                <p>@localizer["THE_GAME_TEXT"]</p>
             </div>
             <div style="text-align: justify">
-                <h4>The Application</h4>
-                <p>This web application is an exciting fan project created by a small, dedicated team in Germany. Inspired by classic tabletop games and the endless possibilities offered by LEGO, they have developed a fascinating concept for playing with it. This innovative application perfectly complements the game and encompasses all the rules and mechanics necessary for an optimal gaming experience.</p>
-                <p>This application is a true enhancement for every player who wants to fully enjoy the game. It provides an intuitive user interface that allows players of all experience levels to seamlessly immerse themselves and focus on what matters most—the gameplay itself. The team has worked hard to create a platform that excites players by giving them full control over their gaming experience while also providing the ability to document their progress and achievements.</p>
+                <h4>@localizer["THE_APP"]</h4>
+                <p>@localizer["THE_APP_TEXT_1"]</p>
+                <p>@localizer["THE_APP_TEXT_2"]</p>
             </div>
         </div>
     </div>

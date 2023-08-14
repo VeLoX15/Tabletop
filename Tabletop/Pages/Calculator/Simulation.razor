@@ -1,12 +1,14 @@
 ﻿@page "/Calculator/Simulation/"
 @attribute [Authorize]
-<PageTitle>Tablebricks - Simulation</PageTitle>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["SIMULATION"]</PageTitle>
 
 <div class="container">
     <div class="card">
         <div class="card-header ps-4">
-            <h2>Simulation</h2>
-            <p>You can simulate a battle between two types of units here.</p>
+            <h2>@localizer["SIMULATION"]</h2>
+            <p>@localizer["SIMULATION_DESCRIPTION"]</p>
         </div>
     </div>
     <div class="row">
@@ -17,20 +19,20 @@
                     <InputSelect id="select-fraction" @bind-Value="FractionId1" class="form-control">
                         @foreach (Fraction item in Fractions)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                         }
                     </InputSelect>
-                    <label for="select-unit">Fraction</label>
+                    <label for="select-unit">@localizer["FRACTION"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
                     <InputSelect id="select-unit" @bind-Value="UnitId1" class="form-control">
                         @foreach (Unit item in Units.Where(x => x.FractionId == FractionId1))
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                         }
                     </InputSelect>
-                    <label for="select-unit">Unit</label>
+                    <label for="select-unit">@localizer["UNIT"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -40,7 +42,7 @@
                             <option value="@i">@i</option>
                         }
                     </InputSelect>
-                    <label for="unit-quantity">Quantity</label>
+                    <label for="unit-quantity">@localizer["QUANTITY"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -50,7 +52,7 @@
                             <option value="@cover">@cover</option>
                         }
                     </InputSelect>
-                    <label for="select-unit">Cover Type</label>
+                    <label for="select-unit">@localizer["COVER_TYPE"]</label>
                 </div>
             </div>
         </div>
@@ -59,7 +61,7 @@
                 <h1 class="text-center">VS.</h1>
                 <div class="form-floating mb-3">
                     <InputNumber @bind-Value="Distance" class="form-control" id="unit-distance" placeholder="Distance" />
-                    <label for="unit-distance">Distance</label>
+                    <label for="unit-distance">@localizer["DISTANCE"]</label>
                 </div>
             </div>
         </div>
@@ -70,20 +72,20 @@
                     <InputSelect id="select-fraction" @bind-Value="FractionId2" class="form-control">
                         @foreach (Fraction item in Fractions)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                         }
                     </InputSelect>
-                    <label for="select-fraction">Fraction</label>
+                    <label for="select-fraction">@localizer["FRACTION"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
                     <InputSelect id="select-unit" @bind-Value="UnitId2" class="form-control">
                         @foreach (Unit item in Units.Where(x => x.FractionId == FractionId2))
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                         }
                     </InputSelect>
-                    <label for="select-unit">Unit</label>
+                    <label for="select-unit">@localizer["UNIT"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -93,7 +95,7 @@
                             <option value="@i">@i</option>
                         }
                     </InputSelect>
-                    <label for="unit-quantity">Quantity</label>
+                    <label for="unit-quantity">@localizer["QUANTITY"]</label>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -103,7 +105,7 @@
                             <option value="@cover">@cover</option>
                         }
                     </InputSelect>
-                    <label for="select-unit">Cover Type</label>
+                    <label for="select-unit">@localizer["COVER_TYPE"]</label>
                 </div>
             </div>
         </div>

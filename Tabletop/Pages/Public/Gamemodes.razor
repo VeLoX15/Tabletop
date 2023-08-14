@@ -1,12 +1,14 @@
 ﻿@page "/Gamemodes"
 @inject NavigationManager navigationManager
-<PageTitle>Tablebricks - Game Modes</PageTitle>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>Tablebricks - @localizer["GAME_MODES"]</PageTitle>
 
 <div class="container">
     <div class="card ps-2">
         <div class="card-header">
-            <h2>Game Modes</h2>
-            <p>Fight for victory in different game modes and bring your faction to success in the galaxy.</p>
+            <h2>@localizer["GAME_MODES"]</h2>
+            <p>@localizer["GAME_MODE_DESCRIPTION"]</p>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -15,11 +17,11 @@
             <div class="col-lg-6 pb-4">
                 <div class="card h-100">
                     <div class="card-header">
-                        <h4 class="card-title ps-2">@gamemode.Name</h4>
+                        <h4 class="card-title ps-2">@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                     </div>
                     <div class="card-body d-flex flex-column">
-                        <p class="card-text">@gamemode.Description</p>
-                        <a href="@($"/Gamemodes/{gamemode.Name}")" class="btn btn-primary mt-auto">Learn more</a>
+                        <p class="card-text">@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
+                        <a href="@($"/Gamemodes/{gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name}")" class="btn btn-primary mt-auto">Learn more</a>
                     </div>
                 </div>
             </div>

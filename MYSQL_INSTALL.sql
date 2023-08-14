@@ -8,13 +8,110 @@ USE `tabletop`;
 CREATE TABLE IF NOT EXISTS `tabletop`.`fractions` 
 (
     `fraction_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-	`short_name` VARCHAR(50) NOT NULL,
-    `description` TEXT NOT NULL,
 	`image` MEDIUMBLOB NULL,
 
     PRIMARY KEY (`fraction_id`)
-); 
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`fraction_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`fraction_description` (
+	`fraction_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+    `name` VARCHAR(50) NOT NULL,
+	`short_name` VARCHAR(5) NOT NULL,
+    `description` TEXT NOT NULL,
+
+	PRIMARY KEY (`fraction_id`, `code`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`gamemodes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`gamemodes` 
+(
+    `gamemode_id` INTEGER NOT NULL AUTO_INCREMENT,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`gamemode_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`gamemode_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`gamemode_description` (
+	`gamemode_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+	`mechanic` TEXT NOT NULL,
+
+	PRIMARY KEY (`gamemode_id`, `code`),
+	FOREIGN KEY (`gamemode_id`) REFERENCES `tabletop`.`gamemodes`(`gamemode_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`weapons`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`weapons` 
+(
+    `weapon_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `attack` INTEGER NOT NULL,
+    `quality` INTEGER NOT NULL,
+    `range` INTEGER NOT NULL,
+    `dices` INTEGER NOT NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`weapon_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`weapon_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`weapon_description` (
+	`weapon_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+
+	PRIMARY KEY (`weapon_id`, `code`),
+	FOREIGN KEY (`weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
+(
+    `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `fraction_id` INTEGER NOT NULL,
+    `defense` INTEGER NOT NULL,
+    `moving` INTEGER NOT NULL,
+	`primary_weapon_id` INTEGER NULL,
+	`secondary_weapon_id` INTEGER NULL,
+	`image` MEDIUMBLOB NULL,
+
+    PRIMARY KEY (`unit_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
+	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
+	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`unit_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`unit_description` (
+	`unit_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+	`mechanic` TEXT NOT NULL,
+
+	PRIMARY KEY (`unit_id`, `code`),
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- -----------------------------------------------------
 -- Table `tabletop`.`users`
@@ -35,19 +132,30 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
 );
 
 -- -----------------------------------------------------
--- Table `tabletop`.`permissons`
+-- Table `tabletop`.`permissions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`permissions` (
 	`permission_id` INTEGER NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50) NOT NULL,
 	`identifier` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
 
 	PRIMARY KEY (`permission_id`)
 );
 
 -- -----------------------------------------------------
--- Table `tabletop`.`user_permissons`
+-- Table `tabletop`.`permission_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`permission_description` (
+	`permission_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+
+	PRIMARY KEY (`permission_id`, `code`),
+	FOREIGN KEY (`permission_id`) REFERENCES `tabletop`.`permissions`(`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`user_permissions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`user_permissions` (
 	`user_id` INTEGER NOT NULL,
@@ -56,59 +164,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_permissions` (
 	PRIMARY KEY(`user_id`, `permission_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`permission_id`) REFERENCES `tabletop`.`permissions`(`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`weapons`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`weapons` 
-(
-    `weapon_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `description` TEXT NOT NULL,
-    `attack` INTEGER NOT NULL,
-    `quality` INTEGER NOT NULL,
-    `range` INTEGER NOT NULL,
-    `dices` INTEGER NOT NULL,
-	`image` MEDIUMBLOB NULL,
-
-    PRIMARY KEY (`weapon_id`)
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`units`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
-(
-    `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(50) NOT NULL,
-    `fraction_id` INTEGER NOT NULL,
-    `description` TEXT NOT NULL,
-	`mechanic` TEXT NOT NULL,
-    `defense` INTEGER NOT NULL,
-    `moving` INTEGER NOT NULL,
-	`primary_weapon_id` INTEGER NULL,
-	`secondary_weapon_id` INTEGER NULL,
-	`image` MEDIUMBLOB NULL,
-
-    PRIMARY KEY (`unit_id`),
-	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
-	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
-	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`gamemodes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`gamemodes` 
-(
-    `gamemode_id` INTEGER NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50) NOT NULL,
-    `description` TEXT NOT NULL,
-	`mechanic` TEXT NOT NULL,
-	`image` MEDIUMBLOB NULL,
-
-    PRIMARY KEY (`gamemode_id`)
 );
 
 -- -----------------------------------------------------
@@ -168,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 
     PRIMARY KEY (`player_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
-	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`),
+	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
 

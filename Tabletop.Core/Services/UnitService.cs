@@ -1,4 +1,6 @@
 ﻿using DbController;
+using Org.BouncyCastle.Asn1.X509;
+using System.Globalization;
 using System.Text;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
@@ -19,10 +21,7 @@ namespace Tabletop.Core.Services
             cancellationToken.ThrowIfCancellationRequested();
             string sql = $@"INSERT INTO `tabletop`.`units` 
                 (
-                `name`,
                 `fraction_id`,
-                `description`,
-                `mechanic`,
                 `defense`,
                 `moving`,
                 `primary_weapon_id`,
@@ -30,10 +29,7 @@ namespace Tabletop.Core.Services
                 )
                 VALUES
                 (
-                @NAME,
                 @FRACTION_ID,
-                @DESCRIPTION,
-                @MECHANIC,
                 @DEFENSE,
                 @MOVING,
                 @PRIMARY_WEAPON_ID,
@@ -76,10 +72,10 @@ namespace Tabletop.Core.Services
                 UNIT_ID = unitId
             }, cancellationToken);
 
-            if (unit != null)
+            if (unit?.PrimaryWeaponId != null && unit?.SecondaryWeaponId != null)
             {
-                unit.PrimaryWeapon = await _weaponService.GetAsync(unit.PrimaryWeaponId, dbController, cancellationToken) ?? new();
-                unit.SecondaryWeapon = await _weaponService.GetAsync(unit.SecondaryWeaponId, dbController, cancellationToken) ?? new();
+                unit.PrimaryWeapon = await _weaponService.GetAsync((int)unit.PrimaryWeaponId, dbController, cancellationToken) ?? new();
+                unit.SecondaryWeapon = await _weaponService.GetAsync((int)unit.SecondaryWeaponId, dbController, cancellationToken) ?? new();
             }
 
             return unit;
@@ -93,126 +89,63 @@ namespace Tabletop.Core.Services
 
             var list = await dbController.SelectDataAsync<Unit>(sql, cancellationToken: cancellationToken);
 
-            if (list.Any())
-            {
-                IEnumerable<int> weaponIds = list.Select(x => x.PrimaryWeaponId ?? 0);
-                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
-                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.PrimaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.PrimaryWeaponId) ?? new();
-                }
-            }
-
-            if (list.Any())
-            {
-                IEnumerable<int> weaponIds = list.Select(x => x.SecondaryWeaponId ?? 0);
-                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
-                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.SecondaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.SecondaryWeaponId) ?? new();
-                }
-            }
-
-            if (list.Any())
-            {
-                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
-                sql = $"SELECT `name` FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
-                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
-                }
-            }
-
+            await LoadUnitDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
         public async Task<List<Unit>> GetAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM `tabletop`.`units`  WHERE 1 = 1");
-            sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `name` ASC");
-            sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
+            StringBuilder sqlBuilder = new();
+            sqlBuilder.AppendLine("SELECT ud.`name`, u.* " +
+                "FROM `tabletop`.`unit_description` ud " +
+                "INNER JOIN `tabletop`.`units` u " +
+                "ON (u.`unit_id` = ud.`unit_id`) " +
+                "WHERE 1 = 1");
+            sqlBuilder.AppendLine(GetFilterWhere(filter));
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
+            sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
-            string sql = sb.ToString();
+            string sql = sqlBuilder.ToString();
 
             List<Unit> list = await dbController.SelectDataAsync<Unit>(sql, GetFilterParameter(filter), cancellationToken);
 
-            if (list.Any())
-            {
-                IEnumerable<int> weaponIds = list.Select(x => x.PrimaryWeaponId ?? 0);
-                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
-                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.PrimaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.PrimaryWeaponId) ?? new();
-                }
-            }
-
-            if (list.Any())
-            {
-                IEnumerable<int> weaponIds = list.Select(x => x.SecondaryWeaponId ?? 0);
-                sql = $"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
-                List<Weapon> weapons = await dbController.SelectDataAsync<Weapon>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.SecondaryWeapon = weapons.FirstOrDefault(x => x.WeaponId == item.SecondaryWeaponId) ?? new();
-                }
-            }
-
-            if (list.Any())
-            {
-                IEnumerable<int> fractionIds = list.Select(x => x.FractionId);
-                sql = $"SELECT `name` FROM `tabletop`.`fractions` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
-                List<Fraction> fractions = await dbController.SelectDataAsync<Fraction>(sql, null, cancellationToken);
-
-                foreach (var item in list)
-                {
-                    item.Fraction = fractions.FirstOrDefault(x => x.FractionId == item.FractionId) ?? new();
-                }
-            }
-
+            await LoadUnitDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
         public Dictionary<string, object?> GetFilterParameter(UnitFilter filter)
-        {
+        {   
             return new Dictionary<string, object?>
             {
-                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "CULTURE", CultureInfo.CurrentCulture.Name }
             };
         }
 
         public string GetFilterWhere(UnitFilter filter)
         {
-            StringBuilder sb = new();
+            StringBuilder sqlBuilder = new();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
             }
 
-            string sql = sb.ToString();
+            string sql = sqlBuilder.ToString();
             return sql;
         }
 
         public async Task<int> GetTotalAsync(UnitFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`units`  WHERE 1 = 1");
-            sb.AppendLine(GetFilterWhere(filter));
+            StringBuilder sqlBuilder = new();
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`unit_description` WHERE 1 = 1 ");
+            sqlBuilder.AppendLine(GetFilterWhere(filter));
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
 
-            string sql = sb.ToString();
+            string sql = sqlBuilder.ToString();
 
             int result = await dbController.GetFirstAsync<int>(sql, GetFilterParameter(filter), cancellationToken);
 
@@ -287,10 +220,7 @@ namespace Tabletop.Core.Services
         public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`units` SET
-                `name` = @NAME,
                 `fraction_id` = @FRACTION_ID,
-                `description` = @DESCRIPTION,
-                `mechanic` = @MECHANIC,
                 `defense` = @DEFENSE,
                 `moving` = @MOVING,
                 `primary_weapon_id` = @PRIMARY_WEAPON_ID,
@@ -298,8 +228,22 @@ namespace Tabletop.Core.Services
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+        }
 
+        private static async Task LoadUnitDescriptionsAsync(List<Unit> list, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (list.Any())
+            {
+                IEnumerable<int> unitIds = list.Select(x => x.Id);
+                string sql = $"SELECT * FROM `tabletop`.`unit_description` WHERE `unit_id` IN ({string.Join(",", unitIds)})";
+                List<UnitDescription> descriptions = await dbController.SelectDataAsync<UnitDescription>(sql, null, cancellationToken);
 
+                foreach (var unit in list)
+                {
+                    unit.Description = descriptions.Where(x => x.UnitId == unit.Id).ToList();
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DbController;
+using System.Globalization;
 using System.Text;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
@@ -11,15 +12,9 @@ namespace Tabletop.Core.Services
         {
             string sql = $@"INSERT INTO `tabletop`.`gamemodes` 
                 (
-                `name`,
-                `description`,
-                `mechanic`
                 )
                 VALUES
                 (
-                @NAME,
-                @DESCRIPTION,
-                @MECHANIC
                 ); {dbController.GetLastIdSql()}";
 
             input.GamemodeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -52,16 +47,13 @@ namespace Tabletop.Core.Services
             string sql = "SELECT * FROM `tabletop`.`gamemodes`";
 
             var list = await dbController.SelectDataAsync<Gamemode>(sql, cancellationToken: cancellationToken);
-
+            await LoadGamemodeDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
         public async Task UpdateAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`gamemodes` SET
-                `name` = @NAME,
-                `description` = @DESCRIPTION,
-                `mechanic` = @MECHANIC,
                 `image` = @IMAGE
                 WHERE `gamemode_id` = @GAMEMODE_ID";
 
@@ -72,16 +64,21 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.Append("SELECT * FROM `tabletop`.`gamemodes` WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT gd.`name`, g.* " +
+                "FROM `tabletop`.`gamemode_description` gd " +
+                "INNER JOIN `tabletop`.`gamemodes` g " +
+                "ON (g.`gamemode_id` = gd.`gamemode_id`) " +
+                "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@$"  ORDER BY `name` ASC");
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
             string sql = sqlBuilder.ToString();
 
             List<Gamemode> list = await dbController.SelectDataAsync<Gamemode>(sql, GetFilterParameter(filter), cancellationToken);
-
+            await LoadGamemodeDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
@@ -89,8 +86,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) FROM `tabletop`.`gamemodes` WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`gamemode_description` WHERE 1 = 1 ");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -101,17 +99,14 @@ namespace Tabletop.Core.Services
 
         public string GetFilterWhere(GamemodeFilter filter)
         {
-            StringBuilder sb = new();
+            StringBuilder sqlBuilder = new();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND 
-(
-        UPPER(name) LIKE @SEARCHPHRASE
-)");
+                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
             }
 
-            string sql = sb.ToString();
+            string sql = sqlBuilder.ToString();
             return sql;
         }
 
@@ -119,8 +114,25 @@ namespace Tabletop.Core.Services
         {
             return new Dictionary<string, object?>
             {
-                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "CULTURE", CultureInfo.CurrentCulture.Name }
             };
+        }
+
+        private static async Task LoadGamemodeDescriptionsAsync(List<Gamemode> list, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (list.Any())
+            {
+                IEnumerable<int> gamemodeIds = list.Select(x => x.Id);
+                string sql = $"SELECT * FROM `tabletop`.`gamemode_description` WHERE `gamemode_id` IN ({string.Join(",", gamemodeIds)})";
+                List<GamemodeDescription> descriptions = await dbController.SelectDataAsync<GamemodeDescription>(sql, null, cancellationToken);
+
+                foreach (var gamemode in list)
+                {
+                    gamemode.Description = descriptions.Where(x => x.GamemodeId == gamemode.Id).ToList();
+                }
+            }
         }
     }
 }

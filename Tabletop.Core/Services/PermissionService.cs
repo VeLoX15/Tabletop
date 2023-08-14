@@ -18,7 +18,7 @@ namespace Tabletop.Core.Services
                 USER_ID = userId
             }, cancellationToken);
 
-            //await LoadPermissionDescriptionsAsync(list, dbController, cancellationToken);
+            await LoadPermissionDescriptionsAsync(list, dbController, cancellationToken);
 
             return list;
         }
@@ -55,12 +55,30 @@ namespace Tabletop.Core.Services
 
             }
         }
+
         public static async Task<List<Permission>> GetAllAsync(IDbController dbController)
         {
             string sql = "SELECT * FROM `tabletop`.`permissions`";
 
             var list = await dbController.SelectDataAsync<Permission>(sql);
+            await LoadPermissionDescriptionsAsync(list, dbController);
             return list;
+        }
+
+        private static async Task LoadPermissionDescriptionsAsync(List<Permission> list, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (list.Any())
+            {
+                IEnumerable<int> permissionIds = list.Select(x => x.Id);
+                string sql = $"SELECT * FROM `tabletop`.`permission_description` WHERE `permission_id` IN ({string.Join(",", permissionIds)})";
+                List<PermissionDescription> descriptions = await dbController.SelectDataAsync<PermissionDescription>(sql, null, cancellationToken);
+
+                foreach (var permission in list)
+                {
+                    permission.Description = descriptions.Where(x => x.PermissionId == permission.Id).ToList();
+                }
+            }
         }
     }
 }

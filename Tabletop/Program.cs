@@ -40,6 +40,10 @@ namespace Tabletop
             builder.Services.AddScoped<FractionService>();
             builder.Services.AddScoped<GameService>();
             builder.Services.AddScoped<PlayerService>();
+            builder.Services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Languages";
+            });
 
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);
 
@@ -60,6 +64,13 @@ namespace Tabletop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(AppdataService.SupportedCultures[0].Name)
+                .AddSupportedCultures(AppdataService.SupportedCultureCodes)
+                .AddSupportedUICultures(AppdataService.SupportedCultureCodes);
+
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();
 

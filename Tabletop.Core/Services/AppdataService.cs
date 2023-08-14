@@ -1,12 +1,22 @@
 ﻿using DbController;
 using DbController.MySql;
 using Microsoft.Extensions.Configuration;
+using System.Globalization;
+using Tabletop.Core.Interfaces;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
     public static class AppdataService
     {
+        public static string[] SupportedCultureCodes => SupportedCultures.Select(x => x.Name).ToArray();
+
+        public static CultureInfo[] SupportedCultures => new CultureInfo[]
+        {
+            new CultureInfo("de"),
+            new CultureInfo("en")
+        };
+
         public static bool FirstUserExists { get; set; } = false;
 
         public static List<Permission> Permissions { get; set; } = new();
@@ -84,5 +94,20 @@ namespace Tabletop.Core.Services
 
         public static string ConnectionString => _configuration?["ConnectionString"] ?? string.Empty;
         public static int PageLimit => _configuration?.GetValue<int>("PageLimit") ?? 30;
+
+        public static CultureInfo ToCulture(this ILocalizationHelper helper)
+        {
+
+            var culture = SupportedCultures.FirstOrDefault(x => x.TwoLetterISOLanguageName.Equals(helper.Code, StringComparison.OrdinalIgnoreCase));
+
+            if (culture is null)
+            {
+                return SupportedCultures[0];
+            }
+            else
+            {
+                return culture;
+            }
+        }
     }
 }

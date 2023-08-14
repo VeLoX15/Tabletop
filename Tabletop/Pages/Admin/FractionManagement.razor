@@ -1,7 +1,9 @@
 ﻿@page "/Administration/Fractions"
-@inherits ManagementBasePage<Fraction, FractionService>
 @attribute [Authorize(Roles = Roles.VIEW_FRACTIONS)]
-<PageTitle>Tablebricks - Fractions (Management)</PageTitle>
+@inherits ManagementBasePage<Fraction, FractionService>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>>@localizer["TABLEBRICKS"] - @localizer["FRACTION"]</PageTitle>
 
 <div class="container">
     <div class="card">
@@ -30,19 +32,18 @@
         <div class="col-lg-3 col-sm-12 order-lg-3">
             <div class="card">
                 <div class="card-header">
-                    <h4>Filter</h4>
+                    <h4>@localizer["FILTER"]</h4>
                 </div>
                 <div class="card-content" style="padding: 0 1.3rem;">
                     <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
                         <div class="form-floating mb-3">
                             <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
-                            <label for="usermanagement-filter-searchphrase">Search</label>
+                            <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
                         </div>
 
                         <div class="toolbar">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
                         </div>
-
                     </EditForm>
                 </div>
             </div>
@@ -55,14 +56,14 @@
                         <table class="table mb-0 table-lg">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th class="text-right">Action</th>
+                                    <th>@localizer["NAME"]</th>
+                                    <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <Virtualize Items="Data" Context="user">
                                     <tr>
-                                        <td>@user.Name</td>
+                                        <td>@user.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td class="text-right">
                                             <AuthorizeView Roles="@(Roles.DELETE_FRACTIONS)">
                                                 <Authorized>
@@ -96,7 +97,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit fraction: {0}", Input.Name)"
+    <Modal Title="@String.Format("Edit fraction: {0}", Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
        OnClosed="() => Input = null"
        ModalSize="ModalSize.LG"
        HideFooter="true">
@@ -106,20 +107,20 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.Name" class="form-control" id="fraction-name" placeholder="Name" />
-                        <label for="fraction-name">Name</label>
-                        <ValidationMessage For="() => Input.Name" />
+                        <InputText @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Name" class="form-control" id="fraction-name" placeholder="Name" />
+                        <label for="fraction-name">@localizer["NAME"]</label>
+                        <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Name" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.ShortName" class="form-control" id="fraction-shortname" placeholder="Short Name" />
-                        <label for="fraction-shortname">Short Name</label>
-                        <ValidationMessage For="() => Input.ShortName" />
+                        <InputText @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).ShortName" class="form-control" id="fraction-shortname" placeholder="Short Name" />
+                        <label for="fraction-shortname">@localizer["SHORT_NAME"]</label>
+                        <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).ShortName" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputTextArea @bind-Value="Input.Description" class="form-control" id="fraction-description" placeholder="Description" />
-                        <label for="fraction-description">Description</label>
+                        <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Description" class="form-control" id="fraction-description" placeholder="Description" />
+                        <label for="fraction-description">@localizer["DESCRIPTION"]</label>
                         <ValidationMessage For="() => Input.Description" />
                     </div>
                 </div>
@@ -127,8 +128,8 @@
         </EditForm>
 
         <div class="toolbar">
-            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
-            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
         </div>
     </Modal>
 }
@@ -138,6 +139,6 @@
     <ConfirmModal Title="Delete"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
-        <p>@String.Format("Should the unit '{0}' really be deleted?", SelectedForDeletion.Name)</p>
+        <p>@String.Format("Should the unit '{0}' really be deleted?", SelectedForDeletion.GetLocalization(CultureInfo.CurrentCulture)?.Name)</p>
     </ConfirmModal>
 }

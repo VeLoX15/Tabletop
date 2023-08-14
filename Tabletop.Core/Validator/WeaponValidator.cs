@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Globalization;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Validator
@@ -7,15 +8,15 @@ namespace Tabletop.Core.Validator
     {
         public WeaponValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.GetLocalization(CultureInfo.CurrentCulture).Name)
                 .NotEmpty()
                 .WithMessage("The field must be filled")
                 .MaximumLength(50)
                 .WithMessage("Name must contain only 50 characters.");
 
-            RuleFor(x => x.Description)
-                .MaximumLength(400)
-                .WithMessage("Description must contain only 400 characters.");
+            RuleFor(x => x.GetLocalization(CultureInfo.CurrentCulture).Description)
+                .MaximumLength(500)
+                .WithMessage("Description must contain only 500 characters.");
 
             RuleFor(x => x.Attack)
                 .NotEmpty()

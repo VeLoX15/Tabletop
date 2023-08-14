@@ -1,9 +1,10 @@
 ﻿@page "/Administration/Users"
-@inject AuthService authService
-@inject UnitService unitService
-@inherits ManagementBasePage<User, UserService>
 @attribute [Authorize(Roles = Roles.VIEW_USERS)]
-<PageTitle>Tablebricks - Users (Management)</PageTitle>
+@inherits ManagementBasePage<User, UserService>
+@inject AuthService authService
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - Users (Management)</PageTitle>
 
 <div class="container">
     <div class="card">
@@ -25,17 +26,17 @@
         <div class="col-lg-3 col-sm-12 order-lg-3">
             <div class="card">
                 <div class="card-header">
-                    <h4>Filter</h4>
+                    <h4>@localizer["FILTER"]</h4>
                 </div>
                 <div class="card-content" style="padding: 0 1.3rem;">
                     <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
                         <div class="form-floating mb-3">
                             <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
-                            <label for="usermanagement-filter-searchphrase">Search</label>
+                            <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
                         </div>
 
                         <div class="toolbar">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
                         </div>
 
                     </EditForm>
@@ -51,9 +52,9 @@
                         <table class="table mb-0 table-lg">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th class="text-right">Action</th>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["USERNAME"]</th>
+                                    <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,13 +110,13 @@
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.Username" class="form-control" id="user-username" placeholder="Username" />
-                        <label for="user-username">Username</label>
+                        <label for="user-username">@localizer["USERNAME"]</label>
                         <ValidationMessage For="() => Input.Username" />
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.DisplayName" class="form-control" id="user-displayname" placeholder="Name" />
-                        <label for="user-displayname">Name</label>
+                        <label for="user-displayname">@localizer["NAME"]</label>
                         <ValidationMessage For="() => Input.DisplayName" />
                     </div>
 
@@ -123,7 +124,7 @@
                         <InputSelect id="user-fraction" @bind-Value="Input.MainFractionId" class="form-control">
                             @foreach (Fraction item in Fractions)
                             {
-                                <option value="@item.FractionId">@item.Name</option>
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
                         <label for="user-fraction">Main Fraction</label>
@@ -133,18 +134,18 @@
                     {
                         <div class="form-floating mb-3">
                             <InputText @bind-Value="Input.Password" class="form-control" id="user-password" placeholder="Password" type="password" />
-                            <label for="user-password">Password</label>
+                            <label for="user-password">@localizer["PASSWORD"]</label>
                             <ValidationMessage For="() => Input.Password" />
                         </div>
                     }
 
 
 
-                    <h4>Permissions</h4>
+                    <h4>@localizer["PERMISSIONS"]</h4>
 
                     @if (_loggedInUser is not null && Input.UserId == _loggedInUser.UserId)
                     {
-                        <p>Permissons</p>
+                        <p>@localizer["OWN_PERMISSIONS"]</p>
                     }
                     else
                     {
@@ -152,20 +153,21 @@
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Action</th>
+                                        <th>@localizer["TH_PERMISSIONS_NAME"]</th>
+                                        <th>@localizer["TH_PERMISSIONS_DESCRIPTION"]</th>
+                                        <th>@localizer["TH_PERMISSIONS_ACTION"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var permission in Input.Permissions)
                                     {
+                                        var description = permission.GetLocalization(CultureInfo.CurrentCulture);
                                         <tr>
-                                            <td class="text-bold-500">@permission.Name</td>
-                                            <td>@permission.Description</td>
+                                            <td class="text-bold-500">@description?.Name</td>
+                                            <td>@description?.Description</td>
                                             <td>
                                                 <button type="button" class="btn btn-danger" @onclick="() => Input.Permissions.Remove(permission)">
-                                                    <i class="fa-solid fa-trash-can"></i>
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -179,19 +181,20 @@
                                                     <select @onchange="PermissionSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Berechtigung">
                                                         @if (SelectedPermission is null)
                                                         {
-                                                            <option value="0" selected>Choose</option>
+                                                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                                                         }
                                                         else
                                                         {
-                                                            <option value="0">Choose</option>
+                                                            <option value="0">@localizer["SELECT_CHOOSE"]</option>
                                                         }
 
                                                         @foreach (var permission in AppdataService.Permissions)
                                                         {
                                                             var userberechtigung = Input.Permissions.FirstOrDefault(x => x.PermissionId == permission.PermissionId);
+                                                            var description = permission.GetLocalization(CultureInfo.CurrentCulture);
                                                             @if (userberechtigung is null)
                                                             {
-                                                                <option value="@permission.PermissionId">@permission.Name</option>
+                                                                <option value="@permission.PermissionId">@description?.Name</option>
                                                             }
                                                         }
                                                     </select>
@@ -201,8 +204,11 @@
                                                     </button>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     }
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -212,8 +218,8 @@
         </EditForm>
 
         <div class="toolbar">
-            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
-            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
         </div>
     </Modal>
 }

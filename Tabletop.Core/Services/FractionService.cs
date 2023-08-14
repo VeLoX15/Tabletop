@@ -1,4 +1,5 @@
 ﻿using DbController;
+using System.Globalization;
 using System.Text;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
@@ -11,15 +12,9 @@ namespace Tabletop.Core.Services
         {
             string sql = $@"INSERT INTO `tabletop`.`fractions` 
                 (
-                `name`,
-                `short_name`,
-                `description`
                 )
                 VALUES
                 (
-                @NAME,
-                @SHORT_NAME,
-                @DESCRIPTION
                 ); {dbController.GetLastIdSql()}";
 
             input.FractionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -52,16 +47,13 @@ namespace Tabletop.Core.Services
             string sql = "SELECT * FROM `tabletop`.`fractions`";
 
             var list = await dbController.SelectDataAsync<Fraction>(sql, cancellationToken: cancellationToken);
-
+            await LoadFractionDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
         public async Task UpdateAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`fractions` SET
-                `name` = @NAME,
-                `short_name` = @SHORT_NAME,    
-                `description` = @DESCRIPTION,
                 `image` = @IMAGE
                 WHERE `fraction_id` = @FRACTION_ID";
 
@@ -72,16 +64,21 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.Append("SELECT * FROM `tabletop`.`fractions` WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT fd.`name`, f.* " +
+                "FROM `tabletop`.`fraction_description` fd " +
+                "INNER JOIN `tabletop`.`fractions` f " +
+                "ON (f.`fraction_id` = fd.`fraction_id`) " +
+                "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@$"  ORDER BY `name` ASC");
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
             string sql = sqlBuilder.ToString();
 
             List<Fraction> list = await dbController.SelectDataAsync<Fraction>(sql, GetFilterParameter(filter), cancellationToken);
-
+            await LoadFractionDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
@@ -89,8 +86,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) FROM `tabletop`.`fractions` WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`fraction_description` WHERE 1 = 1 ");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
+            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -101,17 +99,14 @@ namespace Tabletop.Core.Services
 
         public string GetFilterWhere(FractionFilter filter)
         {
-            StringBuilder sb = new();
+            StringBuilder sqlBuilder = new();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND 
-(
-        UPPER(name) LIKE @SEARCHPHRASE
-)");
+                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
             }
 
-            string sql = sb.ToString();
+            string sql = sqlBuilder.ToString();
             return sql;
         }
 
@@ -119,8 +114,25 @@ namespace Tabletop.Core.Services
         {
             return new Dictionary<string, object?>
             {
-                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "CULTURE", CultureInfo.CurrentCulture.Name }
             };
+        }
+
+        private static async Task LoadFractionDescriptionsAsync(List<Fraction> list, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (list.Any())
+            {
+                IEnumerable<int> fractionIds = list.Select(x => x.Id);
+                string sql = $"SELECT * FROM `tabletop`.`fraction_description` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
+                List<FractionDescription> descriptions = await dbController.SelectDataAsync<FractionDescription>(sql, null, cancellationToken);
+
+                foreach (var fraction in list)
+                {
+                    fraction.Description = descriptions.Where(x => x.FractionId == fraction.Id).ToList();
+                }
+            }
         }
     }
 }

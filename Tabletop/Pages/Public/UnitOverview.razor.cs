@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using System.Globalization;
 using Tabletop.Core.Models;
 using Tabletop.Core.Services;
 
@@ -13,7 +14,7 @@ namespace Tabletop.Pages.Public
 
         protected override void OnInitialized()
         {
-            Fraction = AppdataService.Fractions.FirstOrDefault(x => x.ShortName == FractionName) ?? new();
+            Fraction = AppdataService.Fractions.FirstOrDefault(x => x.GetLocalization(CultureInfo.CurrentCulture)?.ShortName == FractionName) ?? new();
 
             List = AppdataService.Units.Where(x => x.FractionId == Fraction.FractionId).ToList();
 

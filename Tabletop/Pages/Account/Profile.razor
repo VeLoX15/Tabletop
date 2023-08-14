@@ -4,6 +4,8 @@
 @inject AuthService authService
 @inject UnitService unitService
 @inject UserService userService
+@inject IStringLocalizer<App> localizer
+
 <PageTitle>Tablebricks - Account</PageTitle>
 
 @if (CurrentUser is not null)
@@ -29,7 +31,7 @@
                 <div class="card p-4 pb-3">
                     <div class="row">
                         <div class="col">
-                            <h4>About me</h4>
+                            <h4>@localizer["ABOUT_US"]</h4>
                         </div>
                         @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                         {
@@ -44,7 +46,7 @@
                 <div class="card p-4">
                     <div class="row">
                         <div class="col">
-                            <h4>You Follow</h4>
+                            <h4>@localizer["FRIENDS"]</h4>
                         </div>
                         @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                         {
@@ -61,7 +63,7 @@
                                     <tr>
                                         <td>
                                             <a href="/Account/Profile/@item.Username">
-                                                <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle" alt="Logo">
+                                                <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle">
                                             </a>
                                         </td>
                                         <td>@item.Username (@item.DisplayName)</td>
@@ -86,7 +88,7 @@
                     <div class="p-4">
                         <div class="row">
                             <div class="form-group col">
-                                <h4>Your Armies</h4>
+                                <h4>@localizer["ARMIES"]</h4>
                             </div>
                             @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                             {
@@ -99,7 +101,7 @@
                             <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectFractionUnitsByUser" class="form-control">
                                 @foreach (Fraction item in Fractions)
                                 {
-                                    <option value="@item.FractionId">@item.Name</option>
+                                    <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                                 }
                             </InputSelect>
                             <label for="fractions">Choose Fraction</label>
@@ -108,8 +110,8 @@
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Unit</th>
-                                        <th>Quantity</th>
+                                        <th>@localizer["UNIT"]</th>
+                                        <th>@localizer["QUANTITY"]</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -118,7 +120,7 @@
                                     {
                                         <tr>
                                             <td>
-                                                <div>@item.Name</div>
+                                                <div>@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</div>
                                                 <div>
                                                     <img src="@item.ConvertedImage" height="50" width="50" alt="Unit">
                                                 </div>
@@ -145,13 +147,13 @@
 }
 else
 {
-    <PageTitle>Tablebricks - User not found</PageTitle>
+    <PageTitle>Tablebricks - @localizer["USER"] @localizer["NOT_FOUND"]</PageTitle>
 
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>Error</h2>
-                <p>User not found</p>
+                <h2>@localizer["ERROR"]</h2>
+                <p>@localizer["USER"] @localizer["NOT_FOUND"]</p>
             </div>
         </div>
     </div>
@@ -159,7 +161,7 @@ else
 
 @if (AddFriendModal)
 {
-    <Modal Title="Find other players"
+    <Modal Title="@localizer["FIND_PLAYERS"]"
        OnClosed="() => AddFriendModal = false"
        ModalSize="ModalSize.LG"
        HideFooter="true">
@@ -168,17 +170,17 @@ else
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Filter</h4>
+                        <h4>@localizer["FILTER"]</h4>
                     </div>
                     <div class="card-content" style="padding: 0 1.3rem;">
                         <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
                             <div class="form-floating mb-3">
                                 <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
-                                <label for="usermanagement-filter-searchphrase">Search</label>
+                                <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
                             </div>
 
                             <div class="toolbar">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
                             </div>
 
                         </EditForm>
@@ -195,8 +197,8 @@ else
                             <table class="table mb-0 table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Username</th>
-                                        <th>Name</th>
+                                        <th>@localizer["USERNAME"]</th>
+                                        <th>@localizer["NAME"]</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -242,7 +244,7 @@ else
                         <InputSelect id="select-fraction" @bind-Value="FractionId" class="form-control">
                             @foreach (Fraction item in Fractions)
                             {
-                                <option value="@item.FractionId">@item.Name</option>
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
                         <label for="select-fraction">Choose Fraction</label>
@@ -252,7 +254,7 @@ else
                         <InputSelect id="select-unit" @bind-Value="UnitId" class="form-control">
                             @foreach (Unit item in Units.Where(x => x.FractionId == FractionId))
                             {
-                                <option value="@item.UnitId">@item.Name</option>
+                                <option value="@item.UnitId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
                         <label for="select-unit">Choose Unit</label>
@@ -286,34 +288,29 @@ else
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="CurrentUser.DisplayName" class="form-control" id="user-displayname" placeholder="Quantity" />
-                        <label for="user-displayname">Your Name</label>
+                        <label for="user-displayname">@localizer["NAME"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputSelect id="user-mainfraction" @bind-Value="CurrentUser.MainFractionId" class="form-control">
                             @foreach (Fraction item in Fractions)
                             {
-                                <option value="@item.FractionId">@item.Name</option>
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="user-mainfraction">Choose your Main Fraction</label>
+                        <label for="user-mainfraction">@localizer["CHOOSE_MAIN_FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
-                        <label for="user-description">Description</label>
+                        <label for="user-description">@localizer["DESCRIPTION"]</label>
                     </div>
-
-                    @*                    <div class="form-floating mb-3">
-                <InputFile @bind-Value="CurrentUser.ConvertedImage" @onclick="" class="form-control" id="user-description" placeholder="Quantity" />
-                <label for="user-description">Description</label>
-                </div>*@
                 </div>
             </div>
         </EditForm>
 
         <div class="toolbar">
-            <button type="button" class="btn btn-success" @onclick="() => EditProfileAsync()">Save</button>
+            <button type="button" class="btn btn-success" @onclick="() => EditProfileAsync()">@localizer["SAVE"]</button>
         </div>
     </Modal>
 }

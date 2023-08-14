@@ -1,10 +1,14 @@
 ﻿@page
+@using Microsoft.Extensions.Localization;
 @using Tabletop.Core.Services;
+@using Tabletop;
+@inject IStringLocalizer<App> localizer
 @model Tabletop.Pages.Account.LoginModel
 @{
     Layout = null;
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,15 +32,15 @@
             <div class="col-lg-4">
                 <div class="login loginbox p-4">
                     <a href="/" class="text-center mb-4 text-decoration-none"><h1 class="text-white">Tablebricks</h1></a>
-                    <h2 class="text-center mb-4 text-white">Login</h2>
+                    <h2 class="text-center mb-4 text-white">@localizer["LOGIN"]</h2>
                     <form method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group mb-4">
-                            <input asp-for="Input.Username" type="text" class="form-control" placeholder="Username">
+                            <input asp-for="Input.Username" type="text" class="form-control" placeholder="@localizer["USERNAME"]">
                             <span asp-validation-for="Input.Username" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-4">
-                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="Password">
+                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="@localizer["PASSWORD"]">
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
                         <div class="form-check mb-4">

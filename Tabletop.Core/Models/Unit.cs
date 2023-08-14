@@ -1,27 +1,28 @@
 ﻿using DbController;
+using Tabletop.Core.Interfaces;
 
 namespace Tabletop.Core.Models
 {
-    public class Unit : IDbModel
+    public class Unit : LocalizationModelBase<UnitDescription>, IDbModel
     {
         [CompareField("unit_id")]
         public int UnitId { get; set; }
-        [CompareField("name")]
-        public string Name { get; set; } = string.Empty;
+
         [CompareField("fraction_id")]
         public int FractionId { get; set; }
-        [CompareField("description")]
-        public string Description { get; set; } = string.Empty;
-        [CompareField("mechanic")]
-        public string Mechanic { get; set; } = string.Empty;
+
         [CompareField("defense")]
         public int Defense { get; set; }
+
         [CompareField("moving")]
         public int Moving { get; set; }
+
         [CompareField("primary_weapon_id")]
         public int? PrimaryWeaponId { get; set; }
+
         [CompareField("secondary_weapon_id")]
         public int? SecondaryWeaponId { get; set; }
+
         [CompareField("image")]
         public byte[]? Image { get; set; }
 
@@ -36,15 +37,26 @@ namespace Tabletop.Core.Models
 
         public int Id => UnitId;
 
+        public IEnumerable<Dictionary<string, object?>> GetLocalizedParameters()
+        {
+            foreach (var description in Description)
+            {
+                yield return new Dictionary<string, object?>
+                {
+                    { "UNIT_ID", UnitId },
+                    { "NAME", description.Name },
+                    { "DESCRIPTION", description.Description },
+                    { "MECHANIC", description.Mechanic }
+                };
+            }
+        }
+
         public Dictionary<string, object?> GetParameters()
         {
             return new Dictionary<string, object?>
             {
                 { "UNIT_ID", UnitId },
-                { "NAME", Name },
                 { "FRACTION_ID", FractionId },
-                { "DESCRIPTION", Description },
-                { "MECHANIC", Mechanic },
                 { "DEFENSE", Defense },
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },
@@ -52,5 +64,23 @@ namespace Tabletop.Core.Models
                 { "QUANTITY", Quantity }
             };
         }
+    }
+
+    public class UnitDescription : ILocalizationHelper
+    {
+        [CompareField("unit_id")]
+        public int UnitId { get; set; }
+
+        [CompareField("code")]
+        public string Code { get; set; } = string.Empty;
+
+        [CompareField("name")]
+        public string Name { get; set; } = string.Empty;
+
+        [CompareField("description")]
+        public string Description { get; set; } = string.Empty;
+
+        [CompareField("mechanic")]
+        public string Mechanic { get; set; } = string.Empty;
     }
 }

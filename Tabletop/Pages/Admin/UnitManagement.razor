@@ -1,7 +1,9 @@
 ﻿@page "/Administration/Units"
-@inherits ManagementBasePage<Unit, UnitService>
 @attribute [Authorize(Roles = Roles.VIEW_UNITS)]
-<PageTitle>Tablebricks - Units (Management)</PageTitle>
+@inherits ManagementBasePage<Unit, UnitService>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - Units (Management)</PageTitle>
 
 <div class="container">
     <div class="card">
@@ -30,19 +32,18 @@
         <div class="col-lg-3 col-sm-12 order-lg-3">
             <div class="card">
                 <div class="card-header">
-                    <h4>Filter</h4>
+                    <h4>@localizer["FILTER"]</h4>
                 </div>
                 <div class="card-content" style="padding: 0 1.3rem;">
                     <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
                         <div class="form-floating mb-3">
                             <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
-                            <label for="usermanagement-filter-searchphrase">Search</label>
+                            <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
                         </div>
 
                         <div class="toolbar">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
                         </div>
-
                     </EditForm>
                 </div>
             </div>
@@ -56,16 +57,16 @@
                         <table class="table mb-0 table-lg">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Fraction</th>
-                                    <th class="text-right">Action</th>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["FRACTION"]</th>
+                                    <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <Virtualize Items="Data" Context="user">
                                     <tr>
-                                        <td>@user.Name</td>
-                                        <td>@user.Fraction.Name</td>
+                                        <td>@user.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td>@AppdataService.Fractions.FirstOrDefault(x => x.FractionId == user.FractionId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td class="text-right">
                                             <AuthorizeView Roles="@(Roles.DELETE_UNITS)">
                                                 <Authorized>
@@ -99,7 +100,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit unit: {0}", Input.Name)"
+    <Modal Title="@String.Format("Edit unit: {0}", Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
            OnClosed="() => Input = null"
            ModalSize="ModalSize.LG"
            HideFooter="true">
@@ -109,31 +110,31 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.Name" class="form-control" id="unit-name" placeholder="Name" />
-                        <label for="unit-name">Name</label>
-                        <ValidationMessage For="() => Input.Name" />
+                        <InputText @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Name" class="form-control" id="unit-name" placeholder="Name" />
+                        <label for="unit-name">@localizer["NAME"]</label>
+                        <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Name" />
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
                             @foreach (Fraction item in AppdataService.Fractions)
                             {
-                                <option value="@item.FractionId">@item.Name</option>
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-fraction">Choose Fraction</label>
+                        <label for="select-fraction">@localizer["CHOOSE_FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputTextArea @bind-Value="Input.Description" class="form-control" id="unit-description" placeholder="Description" />
-                        <label for="unit-description">Description</label>
+                        <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Description" class="form-control" id="unit-description" placeholder="Description" />
+                        <label for="unit-description">@localizer["DESCRIPTION"]</label>
                         <ValidationMessage For="() => Input.Description" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputTextArea @bind-Value="Input.Mechanic" class="form-control" id="unit-mechanic" placeholder="Mechanic" />
-                        <label for="unit-mechanic">Mechanic</label>
-                        <ValidationMessage For="() => Input.Mechanic" />
+                        <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Mechanic" class="form-control" id="unit-mechanic" placeholder="Mechanic" />
+                        <label for="unit-mechanic">@localizer["GAME_MECHANIC"]</label>
+                        <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Mechanic" />
                     </div>
 
                     <div class="form-floating mb-3">
@@ -143,13 +144,13 @@
                                 <option value="@i">@i</option>
                             }
                         </InputSelect>
-                        <label for="unit-defense">Defense</label>
+                        <label for="unit-defense">@localizer["DEFENSE"]</label>
                         <ValidationMessage For="() => Input.Defense" />
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputNumber @bind-Value="Input.Moving" class="form-control" id="unit-moving" placeholder="Moving" />
-                        <label for="unit-moving">Moving</label>
+                        <label for="unit-moving">@localizer["MOVING"]</label>
                         <ValidationMessage For="() => Input.Moving" />
                     </div>
 
@@ -158,10 +159,10 @@
                             <option value="">None</option>
                             @foreach (Weapon item in AppdataService.Weapons)
                             {
-                                <option value="@item.WeaponId">@item.Name</option>
+                                <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">Choose Primary Weapon</label>
+                        <label for="select-weapon">@localizer["CHOOSE_PRIMARY_WEAPON"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -169,18 +170,18 @@
                             <option value="">None</option>
                             @foreach (Weapon item in AppdataService.Weapons)
                             {
-                                <option value="@item.WeaponId">@item.Name</option>
+                                <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">Choose Secondary Weapon</label>
+                        <label for="select-weapon">@localizer["CHOOSE_SECONDARY_WEAPON"]</label>
                     </div>
                 </div>
             </div>
         </EditForm>
 
         <div class="toolbar">
-            <button type="button" class="btn btn-danger" @onclick="() => Input = null">Cancel</button>
-            <button type="button" class="btn btn-success" @onclick="SaveAsync">Save</button>
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
         </div>
     </Modal>
 }
@@ -190,6 +191,6 @@
     <ConfirmModal Title="Delete"
                   OnClosed="() => SelectedForDeletion = null"
                   OnConfirmed="DeleteAsync">
-        <p>@String.Format("Should the unit '{0}' really be deleted?", SelectedForDeletion.Name)</p>
+        <p>@String.Format("Should the unit '{0}' really be deleted?", SelectedForDeletion.GetLocalization(CultureInfo.CurrentCulture)?.Name)</p>
     </ConfirmModal>
 }

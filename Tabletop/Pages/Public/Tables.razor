@@ -1,11 +1,13 @@
 ﻿@page "/Tables"
-<PageTitle>Tablebricks - Damage Table</PageTitle>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["DAMAGE_TABLE"]</PageTitle>
 
 <div class="container">
     <div class="card">
         <div class="card-header ps-4">
-            <h2>Damage Table</h2>
-            <p>Here you can find everything about the damage tables.</p>
+            <h2>@localizer["DAMAGE_TABLE"]</h2>
+            <p>@localizer["DAMAGE_TABLE_DESCRIPTION"]</p>
         </div>
     </div>
     <div class="card p-4">
@@ -13,7 +15,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Units</th>
+                        <th>@localizer["UNIT"]</th>
                         @for (int i = 1; i <= 10; i++)
                         {
                             <th>D@(i)</th>

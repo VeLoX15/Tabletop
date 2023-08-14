@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Tabletop.Core.Constants;
 using Tabletop.Core.Models;
 
@@ -31,7 +32,7 @@ namespace Tabletop.Core.Calculators
                     unit2.PrimaryWeapon.Dices *= 2;
                 }
 
-                sb.AppendLine($"Round 0: {unit1.Name} ({quantityUnit1}) VS ({quantityUnit2}) {unit2.Name}");
+                sb.AppendLine($"Round 0: {unit1.GetLocalization(CultureInfo.CurrentCulture)?.Name} ({quantityUnit1}) VS ({quantityUnit2}) {unit2.GetLocalization(CultureInfo.CurrentCulture)?.Name}");
                 log.Add(sb.ToString());
 
                 //Round
@@ -82,7 +83,7 @@ namespace Tabletop.Core.Calculators
                         quantityUnit2 = 0;
                     }
 
-                    sb.AppendLine($"{unit1.Name} ({quantityUnit1}) VS ({quantityUnit2}) {unit2.Name}");
+                    sb.AppendLine($"{unit1.GetLocalization(CultureInfo.CurrentCulture)?.Name} ({quantityUnit1}) VS ({quantityUnit2}) {unit2.GetLocalization(CultureInfo.CurrentCulture)?.Name}");
                     log.Add(sb.ToString());
                 }
 

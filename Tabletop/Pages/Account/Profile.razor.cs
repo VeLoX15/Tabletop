@@ -7,15 +7,10 @@ using Tabletop.Core.Services;
 using Blazor.Pagination;
 using Tabletop.Core.Filters;
 using Microsoft.JSInterop;
-using Google.Protobuf.WellKnownTypes;
-using MySqlX.XDevAPI.Relational;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 
 namespace Tabletop.Pages.Account
 {
-    public partial class AccountDetails : IHasPagination
+    public partial class Profile : IHasPagination
     {
 #nullable disable
         [CascadingParameter] private Task<AuthenticationState> AuthState { get; set; }
@@ -61,12 +56,6 @@ namespace Tabletop.Pages.Account
 
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 CurrentUser = await userService.GetAsync(UserName, dbController);
-
-                if (CurrentUser?.Image != null)
-                {
-                    string base64String = Convert.ToBase64String(CurrentUser.Image);
-                    CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
-                }
 
                 if (CurrentUser?.MainFractionId > 0)
                 {
@@ -133,7 +122,7 @@ namespace Tabletop.Pages.Account
 
                 foreach (User item in Friends)
                 {
-                    if (item?.Image != null)
+                    if (item.Image != null)
                     {
                         string base64String = Convert.ToBase64String(item.Image);
                         item.ConvertedImage = $"data:image/png;base64,{base64String}";
@@ -216,28 +205,6 @@ namespace Tabletop.Pages.Account
                 await UnitReloading();
                 await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been deleted");
             }
-        }
-
-        protected Task<object> ConvertImage<T>(T image)
-        {
-            if (image is byte[])
-            {
-                byte[]? byteArray = image as byte[];
-                if(byteArray != null)
-                {
-
-                }
-                string base64String = Convert.ToBase64String(byteArray);
-                return Task.FromResult<object>($"data:image/png;base64,{base64String}");
-            }
-            else if (image is string)
-            {
-                string? base64String = image as string;
-                byte[] byteArray = Convert.FromBase64String(base64String);
-                return Task.FromResult<object>(byteArray);
-            }
-
-            return Task.FromResult<object>(new());
         }
     }
 }

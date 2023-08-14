@@ -1,7 +1,9 @@
 ﻿@page "/Fractions/{fractionName}/{unitId:int}"
+@inject IStringLocalizer<App> localizer
+
 @if (Unit != null)
 {
-    <PageTitle>Tablebricks - @Unit.Name</PageTitle>
+    <PageTitle>@localizer["TABLEBRICKS"] - @Unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</PageTitle>
 
     <div class="container">
         <div class="row">
@@ -9,7 +11,7 @@
                 <div class="card">
                     <div class="card-header ps-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="mb-0">@Unit.Name</h2>
+                            <h2 class="mb-0">@Unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</h2>
                         </div>
                     </div>
                     <div class="card-body">
@@ -20,18 +22,18 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div>
-                                        <h4>Description</h4>
-                                        <p>@Unit.Description</p>
+                                        <h4>@localizer["DESCRIPTION"]</h4>
+                                        <p>@Unit.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
                                     </div>
                                     <div>
-                                        <h4>Mechanics</h4>
-                                        <p>@Unit.Mechanic</p>
+                                        <h4>@localizer["GAME_MECHANIC"]</h4>
+                                        <p>@Unit.GetLocalization(CultureInfo.CurrentCulture)?.Mechanic</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h4>Unit values</h4>
+                                    <h4>@localizer["UNIT_VALUES"]</h4>
                                     <table class="table">
                                         <thead class="thead-dark">
                                             <tr>
@@ -49,10 +51,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                @if (Unit.PrimaryWeapon.Id > 0)
+                                @if (PrimaryWeapon != null)
                                 {
                                     <div class="col-md-4">
-                                        <h4>@Unit.PrimaryWeapon.Name</h4>
+                                        <h4>@PrimaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -64,19 +66,19 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>@Unit.PrimaryWeapon.Attack</td>
-                                                    <td>@Unit.PrimaryWeapon.Quality</td>
-                                                    <td>@Unit.PrimaryWeapon.Range</td>
-                                                    <td>@Unit.PrimaryWeapon.Dices</td>
+                                                    <td>@PrimaryWeapon.Attack</td>
+                                                    <td>@PrimaryWeapon.Quality</td>
+                                                    <td>@PrimaryWeapon.Range</td>
+                                                    <td>@PrimaryWeapon.Dices</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 }
-                                @if (Unit.SecondaryWeapon.Id > 0)
+                                @if (SecondaryWeapon != null)
                                 {
                                     <div class="col-md-4">
-                                        <h4>@Unit.SecondaryWeapon.Name</h4>
+                                        <h4>@SecondaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -88,10 +90,10 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>@Unit.SecondaryWeapon.Attack</td>
-                                                    <td>@Unit.SecondaryWeapon.Quality</td>
-                                                    <td>@Unit.SecondaryWeapon.Range</td>
-                                                    <td>@Unit.SecondaryWeapon.Dices</td>
+                                                    <td>@SecondaryWeapon.Attack</td>
+                                                    <td>@SecondaryWeapon.Quality</td>
+                                                    <td>@SecondaryWeapon.Range</td>
+                                                    <td>@SecondaryWeapon.Dices</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -107,13 +109,13 @@
 }
 else
 {
-    <PageTitle>Tablebricks - Unit not found</PageTitle>
+    <PageTitle>@localizer["TABLEBRICKS"] - @localizer["UNIT"] @localizer["NOT_FOUND"]</PageTitle>
 
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>Error</h2>
-                <p>Unit not found</p>
+                <h2>@localizer["ERROR"]</h2>
+                <p>@localizer["UNIT"] @localizer["NOT_FOUND"]</p>
             </div>
         </div>
     </div>
