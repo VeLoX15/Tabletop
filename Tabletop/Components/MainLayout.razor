@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
 @inject AuthService authService
+
+@inject IStringLocalizer<App> localizer
+
 @using System.Runtime.InteropServices
 
-<PageTitle>Tablebricks</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"]</PageTitle>
 
 <div id="app" class="app-background">
     <div id="sidebar" class="@(ShowMenu ? "active" : string.Empty)">
@@ -30,7 +33,7 @@
             </div>
             <div>
                 <a href="/" class="text-decoration-none">
-                    <h1 class="text-white mb-0">TABLEBRICKS</h1>
+                    <h1 class="text-white mb-0">@localizer["TABLEBRICKS_UPPER"]</h1>
                 </a>
             </div>
             <div>
@@ -54,22 +57,20 @@
             <div class="card-header p-4">
                 <div class="row">
                     <div class="col-lg-4">
-                        <h5>About Us</h5>
+                        <h5>@localizer["ABOUT_US"]</h5>
                         <div>
-                            <p style="text-align: justify">We have created a fan-made tabletop game inspired by LEGO Star Wars. For more information, please visit our website and check out our social media channels.</p>
+                            <p style="text-align: justify">@localizer["ABOUT_US_TEXT"]</p>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <h5>Contact</h5>
+                        <h5>@localizer["CONTACT"]</h5>
                         <ul class="list-unstyled">
-                            <li>
-                                <i class="bi bi-geo-alt-fill"></i> 46282 Dorsten, Germany
-                            </li>
-                            <li><i class="bi bi-envelope-fill"></i> support@tablebricks.com</li>
+                            <li><i class="bi bi-geo-alt-fill"></i> @localizer["ADDRESS"]</li>
+                            <li><i class="bi bi-envelope-fill"></i> @localizer["EMAIL"]</li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h5>Social Media</h5>
+                        <h5>@localizer["SOCIAL_MEDIA"]</h5>
                         <ul class="list-inline">
                             <li class="list-inline-item"><a href="https://github.com/VeLoX15/Tabletop"><i class="fa-brands fa-github"></i></a></li>
                             <li class="list-inline-item"><a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a></li>
@@ -78,7 +79,7 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="text-center pt-5 pb-5">
-                            @DateTime.Now.Year &copy; Tablebricks
+                            @DateTime.Now.Year &copy; @localizer["TABLEBRICKS"]
                         </div>
                     </div>
                 </div>

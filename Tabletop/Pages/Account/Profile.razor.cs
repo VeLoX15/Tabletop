@@ -19,7 +19,6 @@ namespace Tabletop.Pages.Account
 
         [Parameter]
         public string UserName { get; set; } = string.Empty;
-
         public User? CurrentUser { get; set; }
 
         private User? _loggedInUser;
@@ -60,6 +59,12 @@ namespace Tabletop.Pages.Account
                 if (CurrentUser?.MainFractionId > 0)
                 {
                     SelectedFraction = CurrentUser.MainFractionId;
+                }
+
+                if (CurrentUser?.Image != null)
+                {
+                    string base64String = Convert.ToBase64String(CurrentUser.Image);
+                    CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
                 }
 
                 await LoadContent();

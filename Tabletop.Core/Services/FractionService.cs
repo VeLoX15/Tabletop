@@ -18,6 +18,34 @@ namespace Tabletop.Core.Services
                 ); {dbController.GetLastIdSql()}";
 
             input.FractionId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"INSERT INTO `tabletop`.`fraction_description`
+                    (
+                    `fraction_id`,
+                    `code`,
+                    `name`,
+                    `description`
+                    )
+                    VALUES
+                    (
+                    @FRACTION_ID,
+                    @CODE,
+                    @NAME,
+                    @DESCRIPTION
+                    )";
+
+                var parameters = new
+                {
+                    FRACTION_ID = input.FractionId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task DeleteAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -58,6 +86,24 @@ namespace Tabletop.Core.Services
                 WHERE `fraction_id` = @FRACTION_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"UPDATE `tabletop`.`fraction_description` SET
+                    `name` = @NAME,
+                    `description` = @DESCRIPTION,
+                    WHERE `fraction_id` = @FRACTION_ID AND `code` = @CODE";
+
+                var parameters = new
+                {
+                    FRACTION_ID = input.FractionId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task<List<Fraction>> GetAsync(FractionFilter filter, IDbController dbController, CancellationToken cancellationToken = default)

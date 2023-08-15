@@ -1,7 +1,7 @@
 ﻿@page "/Gamemodes/{gamemodeName}"
 @inject IStringLocalizer<App> localizer
 
-<PageTitle>Tablebricks - @Gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"] - @Gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name</PageTitle>
 
 <div class="container">
     <div class="card">

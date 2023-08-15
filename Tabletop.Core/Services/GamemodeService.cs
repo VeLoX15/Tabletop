@@ -18,6 +18,34 @@ namespace Tabletop.Core.Services
                 ); {dbController.GetLastIdSql()}";
 
             input.GamemodeId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"INSERT INTO `tabletop`.`gamemode_description`
+                    (
+                    `gamemode_id`,
+                    `code`,
+                    `name`,
+                    `description`
+                    )
+                    VALUES
+                    (
+                    @GAMEMODE_ID,
+                    @CODE,
+                    @NAME,
+                    @DESCRIPTION
+                    )";
+
+                var parameters = new
+                {
+                    GAMEMODE_ID = input.GamemodeId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task DeleteAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -58,6 +86,24 @@ namespace Tabletop.Core.Services
                 WHERE `gamemode_id` = @GAMEMODE_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"UPDATE `tabletop`.`gamemode_description` SET
+                    `name` = @NAME,
+                    `description` = @DESCRIPTION,
+                    WHERE `gamemode_id` = @GAMEMODE_ID AND `code` = @CODE";
+
+                var parameters = new
+                {
+                    GAMEMODE_ID = input.GamemodeId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task<List<Gamemode>> GetAsync(GamemodeFilter filter, IDbController dbController, CancellationToken cancellationToken = default)

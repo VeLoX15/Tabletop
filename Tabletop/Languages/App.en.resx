@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ABOUT_ME" xml:space="preserve">
+    <value>About me</value>
+  </data>
   <data name="ABOUT_US" xml:space="preserve">
     <value>About us</value>
+  </data>
+  <data name="ABOUT_US_TEXT" xml:space="preserve">
+    <value>We have created a fan-made tabletop game that works with LEGO Star Wars. For more information, please visit our website and check out our social media channels.</value>
+  </data>
+  <data name="ACCOUNT" xml:space="preserve">
+    <value>Account</value>
   </data>
   <data name="ACTION" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="ADDRESS" xml:space="preserve">
+    <value>D-46282 Dorsten, Germany</value>
+  </data>
+  <data name="ADMIN" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
   <data name="ARMIES" xml:space="preserve">
     <value>Armies</value>
+  </data>
+  <data name="ARMY_BUILDER" xml:space="preserve">
+    <value>Army Builder</value>
   </data>
   <data name="ATTACK" xml:space="preserve">
     <value>Attack</value>
@@ -143,6 +161,9 @@
   </data>
   <data name="CHOOSE_SECONDARY_WEAPON" xml:space="preserve">
     <value>Choose secondary weapon</value>
+  </data>
+  <data name="CONTACT" xml:space="preserve">
+    <value>Contact</value>
   </data>
   <data name="COVER_TYPE" xml:space="preserve">
     <value>Cover type</value>
@@ -168,6 +189,9 @@
   <data name="DISTANCE" xml:space="preserve">
     <value>Distance</value>
   </data>
+  <data name="EMAIL" xml:space="preserve">
+    <value>support@tablebricks.com</value>
+  </data>
   <data name="ERROR" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -187,13 +211,16 @@
     <value>Fractions</value>
   </data>
   <data name="FRACTION_DESCRIPTION" xml:space="preserve">
-    <value />
+    <value>Join one of the powerful armies in the galaxy and fight for supremacy in epic land battles.</value>
   </data>
   <data name="FRIENDS" xml:space="preserve">
     <value>Friends</value>
   </data>
   <data name="GAME" xml:space="preserve">
     <value>Game</value>
+  </data>
+  <data name="GAMES" xml:space="preserve">
+    <value>Games</value>
   </data>
   <data name="GAME_INFO" xml:space="preserve">
     <value>Game History</value>
@@ -207,8 +234,17 @@
   <data name="GAME_MODE_DESCRIPTION" xml:space="preserve">
     <value>Fight for victory in different game modes and bring your faction to success in the galaxy.</value>
   </data>
+  <data name="HOME" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="INFO" xml:space="preserve">
+    <value>Information</value>
+  </data>
   <data name="LOGIN" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="LOGOUT" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="MOVING" xml:space="preserve">
     <value>Moving</value>
@@ -228,6 +264,9 @@
   <data name="PERMISSIONS" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="PROFILE" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="QUALITY" xml:space="preserve">
     <value>Quality</value>
   </data>
@@ -240,8 +279,8 @@
   <data name="ROUNDS" xml:space="preserve">
     <value>Rounds</value>
   </data>
-  <data name="RULES" xml:space="preserve">
-    <value>Rules</value>
+  <data name="RULE_SET" xml:space="preserve">
+    <value>Rule Set</value>
   </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
@@ -258,8 +297,20 @@
   <data name="SIMULATION_DESCRIPTION" xml:space="preserve">
     <value>You can simulate a battle between two types of units here.</value>
   </data>
+  <data name="SLOGAN" xml:space="preserve">
+    <value>Bring your minifigs to life!</value>
+  </data>
+  <data name="SOCIAL_MEDIA" xml:space="preserve">
+    <value>Social Media</value>
+  </data>
   <data name="TABLEBRICKS" xml:space="preserve">
     <value>Tablebricks</value>
+  </data>
+  <data name="TABLEBRICKS_UPPER" xml:space="preserve">
+    <value>TABLEBRICKS</value>
+  </data>
+  <data name="TABLES" xml:space="preserve">
+    <value>Tables</value>
   </data>
   <data name="THE_APP" xml:space="preserve">
     <value>The Application</value>
@@ -279,6 +330,9 @@
   <data name="UNIT" xml:space="preserve">
     <value>Unit</value>
   </data>
+  <data name="UNITS" xml:space="preserve">
+    <value>Units</value>
+  </data>
   <data name="UNIT_OVERVIEW_DESCRIPTION" xml:space="preserve">
     <value>Overview about the unit types of the</value>
   </data>
@@ -290,5 +344,11 @@
   </data>
   <data name="USERNAME" xml:space="preserve">
     <value>Username</value>
+  </data>
+  <data name="USERS" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="WEAPONS" xml:space="preserve">
+    <value>Weapons</value>
   </data>
 </root>

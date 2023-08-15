@@ -20,35 +20,19 @@ namespace Tabletop.Core.Validator
 
             RuleFor(x => x.Attack)
                 .NotEmpty()
-                .WithMessage("The field must be filled.")
-                .LessThan(11)
-                .WithMessage("The field may be a maximum of 10")
-                .GreaterThan(0)
-                .WithMessage("The field must not be greater than 0");
+                .WithMessage("Attack must be filled.");
 
             RuleFor(x => x.Quality)
                 .NotEmpty()
-                .WithMessage("The field must be filled")
-                .LessThan(11)
-                .WithMessage("The field may be a maximum of 10")
-                .GreaterThan(0)
-                .WithMessage("The field must not be greater than 0");
+                .WithMessage("Quality must be filled");
 
             RuleFor(x => x.Range)
                 .NotEmpty()
-                .WithMessage("The field must be filled")
-                .LessThan(150)
-                .WithMessage("The field may be a maximum of 150")
-                .GreaterThan(0)
-                .WithMessage("The field must not be greater than 0");
+                .WithMessage("Range must be filled");
 
             RuleFor(x => x.Dices)
                 .NotEmpty()
-                .WithMessage("The field must be filled")
-                .LessThan(11)
-                .WithMessage("The field may be a maximum of 10")
-                .GreaterThan(0)
-                .WithMessage("The field must not be greater than 0");
+                .WithMessage("Dices must be filled");
         }
     }
 }

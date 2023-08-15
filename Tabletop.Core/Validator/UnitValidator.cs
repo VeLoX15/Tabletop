@@ -25,14 +25,10 @@ namespace Tabletop.Core.Validator
             RuleFor(x => x.GetLocalization(CultureInfo.CurrentCulture).Mechanic)
                 .MaximumLength(500)
                 .WithMessage("Description must contain only 500 characters.");
-            
+
             RuleFor(x => x.Defense)
                 .NotEmpty()
-                .WithMessage("The field must be filled.") 
-                .LessThan(11)
-                .WithMessage("The field may be a maximum of 10")
-                .GreaterThan(0)
-                .WithMessage("The field must not be greater than 0");
+                .WithMessage("Defense must be filled.");
 
             RuleFor(x => x.Moving)
                 .NotEmpty()

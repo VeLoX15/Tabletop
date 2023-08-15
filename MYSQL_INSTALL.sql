@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 	`image` MEDIUMBLOB NULL,
 
     PRIMARY KEY (`unit_id`),
-	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`),
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
 	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
 );
@@ -176,8 +176,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_units`
 	`quantity` INTEGER NOT NULL,
 
     PRIMARY KEY (`user_id`, `unit_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
-	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -189,8 +189,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`user_friends`
 	`friend_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`user_id`, `friend_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
-	FOREIGN KEY (`friend_id`) REFERENCES `tabletop`.`users`(`user_id`)
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`friend_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 	`team` INTEGER NOT NULL,
 
     PRIMARY KEY (`player_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`)
 	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );
@@ -237,8 +237,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`player_units`
 	`quantity` INTEGER NOT NULL,
 
     PRIMARY KEY (`player_id`, `unit_id`),
-	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`),
-	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+	FOREIGN KEY (`player_id`) REFERENCES `tabletop`.`players`(`player_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -253,8 +253,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`templates`
 	`force` INTEGER NOT NULL, 
 
     PRIMARY KEY (`template_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
-	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -267,6 +267,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`template_units`
 	`quantity` INTEGER NOT NULL,
 
     PRIMARY KEY (`template_id`, `unit_id`),
-	FOREIGN KEY (`template_id`) REFERENCES `tabletop`.`templates`(`template_id`),
-	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+	FOREIGN KEY (`template_id`) REFERENCES `tabletop`.`templates`(`template_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

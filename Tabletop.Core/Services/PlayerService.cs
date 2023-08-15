@@ -42,6 +42,7 @@ namespace Tabletop.Core.Services
         {
             throw new NotImplementedException();
         }
+
         public async Task<List<Player>> GetGamePlayersAsync(int gameId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

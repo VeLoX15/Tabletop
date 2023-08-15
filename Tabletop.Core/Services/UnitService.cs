@@ -2,6 +2,7 @@
 using Org.BouncyCastle.Asn1.X509;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
 
@@ -37,6 +38,34 @@ namespace Tabletop.Core.Services
                 ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"INSERT INTO `tabletop`.`unit_description`
+                    (
+                    `unit_id`,
+                    `code`,
+                    `name`,
+                    `description`
+                    )
+                    VALUES
+                    (
+                    @UNIT_ID,
+                    @CODE,
+                    @NAME,
+                    @DESCRIPTION
+                    )";
+
+                var parameters = new
+                {
+                    UNIT_ID = input.UnitId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task DeleteAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -116,7 +145,7 @@ namespace Tabletop.Core.Services
         }
 
         public Dictionary<string, object?> GetFilterParameter(UnitFilter filter)
-        {   
+        {
             return new Dictionary<string, object?>
             {
                 { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
@@ -166,6 +195,7 @@ namespace Tabletop.Core.Services
                 USER_ID = userId
             }, cancellationToken);
 
+            await LoadUnitDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
@@ -183,6 +213,25 @@ namespace Tabletop.Core.Services
                 PLAYER_ID = playerId
             }, cancellationToken);
 
+            await LoadUnitDescriptionsAsync(list, dbController, cancellationToken);
+            return list;
+        }
+
+        public async Task<List<Unit>> GetTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"
+                SELECT tu.quantity, u.*
+                FROM `tabletop`.`template_units` tu
+                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = tu.`unit_id`)
+                WHERE tu.`template_id` = @TEMPLATE_ID";
+
+            var list = await dbController.SelectDataAsync<Unit>(sql, new
+            {
+                TEMPLATE_ID = templateId
+            }, cancellationToken);
+
+            await LoadUnitDescriptionsAsync(list, dbController, cancellationToken);
             return list;
         }
 
@@ -217,6 +266,39 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
+        public async Task DeleteTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            string sql = "DELETE FROM `tabletop`.`template_units` WHERE `template_id` = @TEMPLATE_ID";
+            await dbController.QueryAsync(sql, new
+            {
+                TEMPLATE_ID = templateId
+            }, cancellationToken);
+        }
+
+        public async Task CreateTemplateUnitAsync(Template template, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"INSERT INTO `tabletop`.`template_units`
+                (
+                `template_id`,
+                `unit_id`,
+                `quantity`
+                )
+                VALUES
+                (
+                @TEMPLATE_ID,
+                @UNIT_ID,
+                @QUANTITY
+                )";
+
+            await dbController.QueryAsync(sql, new
+            {
+                TEMPLATE_ID = template.TemplateId,
+                UNIT_ID = unit.UnitId,
+                QUANTITY = unit.Quantity
+            }, cancellationToken);
+        }
+
         public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             string sql = @"UPDATE `tabletop`.`units` SET
@@ -228,7 +310,28 @@ namespace Tabletop.Core.Services
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"UPDATE `tabletop`.`unit_description` SET
+                    `name` = @NAME,
+                    `description` = @DESCRIPTION,
+                    `mechanic` = @MECHANIC
+                    WHERE `unit_id` = @UNIT_ID AND `code` = @CODE";
+
+                var parameters = new
+                {
+                    UNIT_ID = input.UnitId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description,
+                    MECHANIC = description.Mechanic
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
+
 
         private static async Task LoadUnitDescriptionsAsync(List<Unit> list, IDbController dbController, CancellationToken cancellationToken = default)
         {

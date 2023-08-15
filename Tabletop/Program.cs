@@ -40,6 +40,7 @@ namespace Tabletop
             builder.Services.AddScoped<FractionService>();
             builder.Services.AddScoped<GameService>();
             builder.Services.AddScoped<PlayerService>();
+            builder.Services.AddScoped<TemplateService>();
             builder.Services.AddLocalization(options =>
             {
                 options.ResourcesPath = "Languages";

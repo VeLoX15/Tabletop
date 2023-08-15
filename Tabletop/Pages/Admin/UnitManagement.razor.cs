@@ -15,6 +15,7 @@ namespace Tabletop.Pages.Admin
         };
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
+
         protected override async Task OnParametersSetAsync()
         {
             await LoadAsync();

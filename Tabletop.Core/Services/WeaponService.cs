@@ -1,8 +1,6 @@
 ﻿using DbController;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Threading;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
 
@@ -29,6 +27,34 @@ namespace Tabletop.Core.Services
                 ); {dbController.GetLastIdSql()}";
 
             input.WeaponId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"INSERT INTO `tabletop`.`weapon_description`
+                    (
+                    `weapon_id`,
+                    `code`,
+                    `name`,
+                    `description`
+                    )
+                    VALUES
+                    (
+                    @WEAPON_ID,
+                    @CODE,
+                    @NAME,
+                    @DESCRIPTION
+                    )";
+
+                var parameters = new
+                {
+                    WEAPON_ID = input.WeaponId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         public async Task DeleteAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
@@ -138,6 +164,24 @@ namespace Tabletop.Core.Services
                 WHERE `weapon_id` = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var description in input.Description)
+            {
+                sql = @"UPDATE `tabletop`.`weapon_description` SET
+                    `name` = @NAME,
+                    `description` = @DESCRIPTION,
+                    WHERE `weapon_id` = @WEAPON_ID AND `code` = @CODE";
+
+                var parameters = new
+                {
+                    WEAPON_ID = input.WeaponId,
+                    CODE = description.Code,
+                    NAME = description.Name,
+                    DESCRIPTION = description.Description
+                };
+
+                await dbController.QueryAsync(sql, parameters, cancellationToken);
+            }
         }
 
         private static async Task LoadWeaponDescriptionsAsync(List<Weapon> list, IDbController dbController, CancellationToken cancellationToken = default)

@@ -17,7 +17,7 @@ INSERT INTO `tabletop`.`fractions` (`fraction_id`, `image`) VALUES (4, NULL);
 # Dumping data for table 'tabletop'.'fraction_description'
 #
 
-INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'en', 'Grand Army of Republic', 'GAR', 'The Grand Army of the Republic is the main military force of the Galactic Republic. It was formed during the Clone Wars to combat the Separatists. The army consists primarily of clone troopers, who were created using the genetic material of Jango Fett as a basis. It encompasses a variety of troops, including infantry, artillery, and special forces, as well as an extensive fleet of starships. The Grand Army of the Republic is renowned for its effective organization, disciplined training, and tactical prowess.');
+INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'en', 'Grand Army of the Republic', 'GAR', 'The Grand Army of the Republic is the main military force of the Galactic Republic. It was formed during the Clone Wars to combat the Separatists. The army consists primarily of clone troopers, who were created using the genetic material of Jango Fett as a basis. It encompasses a variety of troops, including infantry, artillery, and special forces, as well as an extensive fleet of starships. The Grand Army of the Republic is renowned for its effective organization, disciplined training, and tactical prowess.');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'de', 'Große Armee der Republik', 'GAR', '');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (2, 'en', 'Confederacy of Independent Systems', 'CIS', 'The Confederation of Independent Systems (CIS) is a military alliance in the galaxy, consisting of renegade planets and organizations that have distanced themselves from the rule of the Galactic Republic. The CIS possesses an impressive military force, primarily composed of droid armies. These automated combat droids are produced in large numbers and pose a dangerous threat due to their numerical superiority.');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (2, 'de', 'Konföderation der unabhängigen Systeme', 'KUS', '');
@@ -52,33 +52,33 @@ INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `di
 #
 
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (1, 'en', 'DC-15A Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (1, 'de', 'DC-15A Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (1, 'de', 'DC-15A Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (2, 'en', 'DC-15S Blaster Carbine', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (2, 'de', 'DC-15S Blaster Carbine', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (2, 'de', 'DC-15S Blasterkarabiner', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (3, 'en', 'DC-15x Sniper Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (3, 'de', 'DC-15x Sniper Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (3, 'de', 'DC-15x Scharfschützengewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (4, 'en', 'DC-17 Hand Blaster', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (4, 'de', 'DC-17 Hand Blaster', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (4, 'de', 'DC-17 Handblaster', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (5, 'en', 'Z-6 Rotary Blaster Cannon', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (5, 'de', 'Z-6 Rotary Blaster Cannon', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (5, 'de', 'Z-6 Rotationsblaster', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (6, 'en', 'E-5 Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (6, 'de', 'E-5 Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (6, 'de', 'E-5 Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (7, 'en', 'E-5s Sniper Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (7, 'de', 'E-5s Sniper Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (7, 'de', 'E-5s Scharfschützengewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (8, 'en', 'RG-4D Blaster Pistol', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (8, 'de', 'RG-4D Blaster Pistol', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (8, 'de', 'RG-4D Blasterpistole', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (9, 'en', 'Wrist Blaster', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (9, 'de', 'Wrist Blaster', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (9, 'de', 'Dual-Blaster ', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (10, 'en', 'E-11 Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (10, 'de', 'E-11 Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (10, 'de', 'E-11 Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (11, 'en', 'DLT-19 Heavy Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (11, 'de', 'DLT-19 Heavy Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (11, 'de', 'DLT-19 Schweres Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (12, 'en', 'E-11s Sniper Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (12, 'de', 'E-11s Sniper Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (12, 'de', 'E-11s Scharfschützengewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (13, 'en', 'E-22 Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (13, 'de', 'E-22 Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (13, 'de', 'E-22 Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (14, 'en', 'E-11D Blaster Rifle', '');
-INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (14, 'de', 'E-11D Blaster Rifle', '');
+INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (14, 'de', 'E-11D Blastergewehr', '');
 # 28 records
 
 #
@@ -122,11 +122,11 @@ INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `
 #
 
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'en', '41st Ranger Platoon', 'The 41st Ranger Platoon is a clone trooper infantry platoon and strike team within the 41st Elite Corps. The platoon participated in sabotage missions on Separatist supply lines and installations.', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'de', '41st Ranger Platoon', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'de', '41. Ranger Platoon', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'en', '41st Elite Corps', 'The 41st Elite Corps is a military corps of the Grand Army of the Republic. They are specialized in conducting missions on exotic and often primitve worlds. One of their main tasks was to contact and cooperate with the native indigenous population. in addition, the unit was capable of successfully carrying out both infatry and reconnaissance missions.', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'de', '41st Elite Korp', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'de', '41. Elitekorps', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'en', '212th Attack Battalion', 'The 212th Attack Battalion is a clone trooper battalion in the Grand Army of the Republic. The Battalion is famous for its bravery, discipline and effectivness in combat. As an extremly versatile infantry unit of the Regular Forces, it is optimally equipped for a variety of different tasks.', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'de', '212. Angriffsbattalion', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'de', '212. Angriffsbataillion', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (4, 'en', '2nd Airborne Company', 'The 2nd Airborne Company was an aerial infantry company of the 212th Attack Battalion. The company consisted of clone paratroopers and participated in the Clone Wars.', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (4, 'de', '2. Luftlandekompanie', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (5, 'en', '501st Legion', 'The 501st Legion is an elite military battalion of clone troopers in the Grand Army of the Galactic Republic. The soldiers of the Legion are known for their courage, unconventional tactics and loyalty to the Republic.', '');
@@ -134,7 +134,7 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (6, 'en', '501st Jetpack Company', 'The 501st Jetpack Company is an special unit within the 501st Legion whose soldiers are equipped with jetpacks. The jetpack troopers use their jetpacks with limited flight capabilities to quickly cover large distances and gain an advantage over their enemies in the air. Thanks to their exceptional agility, they are hard to hit and can skillfully attack their enemies from behind.', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (6, 'de', '501. Jetpack Kompanie', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (7, 'en', '104th Battalion', 'The 104th Battalion, is a military unit within the Galactic Republic. Its primary mission is to perform relief and recovery missions. The battalions distinctive mark is a symbol with a wolfs snout, which is why they are also called the Wolfpack battalion.', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (7, 'de', '104. Battalion', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (7, 'de', '104. Bataillion', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (8, 'en', '501st Heavy Gunner', 'The 501st Heavy Gunners form an elite special forces unit within the 501st Legion, whose members are equipped with powerful Heavy Guns. These soldiers possess advanced clone trooper armor that offers significant improvements over traditional army clone troopers. Their heavy blasters also give them superior firepower, making them a formidable presence on the battlefield.', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (8, 'de', '501. Schwerer Schütze', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (9, 'en', '501st Specialist', 'The 501st Specialist represent an special unit within the 501st Legion. Their expertise lies in precise attacks from a considerable distance, which makes them an extremely dangerous threat. Their primary mission is to conduct patrols and lead reconnaissance missions.', '');
@@ -152,7 +152,7 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (15, 'en', 'Droideka', 'Droidekas are specialized battle droids characterized by their characteristic spherical shape. In this spherical form, they are able to attack, but they are also extremely fast and agile. However, once they assume their attack position, they unfold to reveal their three-legged form. In this upright position, they have devastating energy weapon salvos and are also equipped with powerful energy shields that protect them from enemy fire.', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (15, 'de', 'Droideka', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (16, 'en', 'B1-series Sniper Droid', 'The B1-series Sniper Droid is a special variant of the B1-series combat droid. Their gyroscopic stabilizers and detailed target selection programs made them very effective snipers.', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (16, 'de', 'Scharfschützendroide der B1-Serie', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (16, 'de', 'B1-Serie Scharfschützendroide', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (17, 'en', 'Imperial Storm Trooper', 'Stormtroopers are the primary unit of the Galactic Empire. In action, the Stormtroopers are capable of a variety of tasks, including counterinsurgency, defense of Imperial installations, as well as assault missions and conducting operations as part of the Galactic Conquest of the Empire.', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (17, 'de', 'Imperialer Sturmtruppe', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (18, 'en', 'Imperial Snow Trooper', 'The Snowtroopers are specialized stormtroopers of the Galactic Empire, equipped with special armors designed to protect them from extreme conditions, including cold, ice, and snow. Their main mission is to pursue hostile targets in snow-covered regions.', '');

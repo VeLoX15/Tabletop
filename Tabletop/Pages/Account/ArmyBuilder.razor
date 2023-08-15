@@ -1,16 +1,17 @@
-﻿@page "/Account/Templates"
+﻿@page "/Account/Army-Builder"
 @attribute [Authorize]
 @inject AuthService authService
+@inject UnitService unitService
 @inherits ManagementBasePage<Template, TemplateService>
 @inject IStringLocalizer<App> localizer
 
-<PageTitle>@localizer["TABLEBRICKS"] - Army Builder</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["ARMY_BUILDER"]</PageTitle>
 
 <div class="container">
     <div class="card">
         <div class="card-header ps-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Army Builder</h2>
+                <h2>@localizer["ARMY_BUILDER"]</h2>
                 <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
             </div>
             <div style="text-align: justify">
@@ -51,7 +52,7 @@
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["FRACTION"]</th>
                                     <th>@localizer["FORCE"]</th>
-                                    <th class="text-right">Action</th>
+                                    <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,7 +83,7 @@
 
 
 
-@if (Input is not null)
+@if (Input is not null && _loggedInUser is not null)
 {
     <Modal Title="@String.Format("Edit template: {0}", Input.Name)"
            OnClosed="() => Input = null"
@@ -91,7 +92,6 @@
 
         <EditForm Model="Input" @ref="_form">
             <FluentValidationValidator />
-            <ValidationSummary />
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
@@ -108,7 +108,83 @@
                             }
                         </InputSelect>
                         <label for="template-force">@localizer["FORCE"]</label>
+                        <ValidationMessage For="() => Input.Force" />
                     </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
+                            @foreach (Fraction item in AppdataService.Fractions)
+                            {
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-fraction">@localizer["CHOOSE_FRACTION"]</label>
+                        <ValidationMessage For="() => Input.FractionId" />
+                    </div>
+
+                    <h4>@localizer["UNITS"]</h4>
+
+                    <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead>
+                                <tr>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["QUANTITY"]</th>
+                                    <th>@localizer["ACTION"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Input.Units.FirstOrDefault(x => x.FractionId == Input.FractionId) == null)
+                                {
+                                    Input.Units.Clear();
+                                }
+
+                                @foreach (var unit in Input.Units)
+                                {
+                                    <tr>
+                                        <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" @onclick="() => Input.Units.Remove(unit)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="input-group">
+                                            <select @onchange="UnitSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                                @if (SelectedUnit is null)
+                                                {
+                                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                }
+
+                                                @foreach (var unit in _loggedInUser.Units.Where(x => x.FractionId == Input.FractionId))
+                                                {
+                                                    var templateUnit = Input.Units.FirstOrDefault(x => x.UnitId == unit.UnitId);
+                                                    @if (templateUnit is null)
+                                                    {
+                                                        <option value="@unit.UnitId">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <button @onclick="AddUnitAsync" class="btn btn-success" type="button" disabled="@(SelectedUnit is null)">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </EditForm>
