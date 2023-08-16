@@ -1,4 +1,5 @@
 ﻿using DbController;
+using System.Globalization;
 using System.Text;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
@@ -42,12 +43,16 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(Template input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+
+            await _unitService.DeleteTemplateUnitsAsync(input.TemplateId, dbController, cancellationToken);
+
             string sql = "DELETE FROM `tabletop`.`templates` WHERE `template_id` = @TEMPLATE_ID";
 
             await dbController.QueryAsync(sql, new
             {
                 TEMPLATE_ID = input.TemplateId,
             }, cancellationToken);
+            
         }
 
         public async Task<Template?> GetAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
@@ -67,7 +72,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM `tabletop`.`templates`  WHERE 1 = 1");
+            sb.AppendLine("SELECT * FROM `tabletop`.`templates`  WHERE `user_id` = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
             sb.AppendLine(@$"  ORDER BY `name` ASC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
@@ -88,7 +93,8 @@ namespace Tabletop.Core.Services
         {
             return new Dictionary<string, object?>
             {
-                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "USER_ID", filter.UserId }
             };
         }
 
@@ -109,7 +115,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`templates`  WHERE 1 = 1");
+            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`templates`  WHERE `user_id` = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();

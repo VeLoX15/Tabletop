@@ -229,7 +229,7 @@
     <value>Spielmechanik</value>
   </data>
   <data name="GAME_MODES" xml:space="preserve">
-    <value>Game modes</value>
+    <value>Spielmodi</value>
   </data>
   <data name="GAME_MODE_DESCRIPTION" xml:space="preserve">
     <value>Fight for victory in different game modes and bring your faction to success in the galaxy.</value>

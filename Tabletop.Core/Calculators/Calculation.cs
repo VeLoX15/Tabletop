@@ -9,7 +9,20 @@ namespace Tabletop.Core.Calculators
     {
         public static int Force(Unit unit)
         {
-            return (unit.PrimaryWeapon.Attack * unit.PrimaryWeapon.Quality * (unit.PrimaryWeapon.Range / 10) * unit.PrimaryWeapon.Dices) + (unit.Defense * 50 + unit.Moving * 4) * 2;
+            double unitForce = ((unit.Defense * 10) + (unit.Moving * 2)) * 2;
+            double primaryWeaponForce = 0;
+            double secondaryWeaponForce = 0;
+
+            if (unit.PrimaryWeapon != null)
+            {
+                primaryWeaponForce = ((unit.PrimaryWeapon.Attack * unit.PrimaryWeapon.Quality) * (unit.PrimaryWeapon.Range / 10)) * unit.PrimaryWeapon.Dices;
+            }
+            if (unit.SecondaryWeapon != null)
+            {
+                secondaryWeaponForce = ((unit.SecondaryWeapon.Attack * unit.SecondaryWeapon.Quality) * (unit.SecondaryWeapon.Range / 10)) * unit.SecondaryWeapon.Dices;
+            }
+
+            return Convert.ToInt32(Math.Round((unitForce + primaryWeaponForce + secondaryWeaponForce) / 25));
         }
 
         public async Task<List<string>> Simulation(Unit unit1, int quantityUnit1, CoverTypes coverUnit1, Unit unit2, int quantityUnit2, CoverTypes coverUnit2, int distance)

@@ -1,7 +1,6 @@
 using Blazor.Pagination;
 using DbController;
 using DbController.MySql;
-using Microsoft.AspNetCore.Components;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
 using Tabletop.Core.Services;
@@ -11,6 +10,7 @@ namespace Tabletop.Pages.Account
     public partial class GameManagement : IHasPagination
     {
         private int _page = 1;
+        private User? _loggedInUser;
         public GameFilter Filter { get; set; } = new()
         {
             Limit = AppdataService.PageLimit
@@ -21,6 +21,17 @@ namespace Tabletop.Pages.Account
         public int TotalItems { get; set; }
         protected override async Task OnParametersSetAsync()
         {
+            _loggedInUser = await authService.GetUserAsync();
+
+            if (_loggedInUser != null)
+            {
+                Filter = new()
+                {
+                    Limit = AppdataService.PageLimit,
+                    UserId = _loggedInUser.UserId
+                };
+            }
+
             await LoadAsync();
         }
         protected override async Task SaveAsync()
@@ -49,7 +60,13 @@ namespace Tabletop.Pages.Account
 
         protected override Task NewAsync()
         {
-            Input = new();
+            if (_loggedInUser != null)
+            {
+                Input = new Game
+                {
+                    UserId = _loggedInUser.UserId
+                };
+            }
 
             return Task.CompletedTask;
         }

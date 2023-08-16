@@ -1,5 +1,6 @@
 ﻿@page "/Account/Games"
 @attribute [Authorize]
+@inject AuthService authService
 @inherits ManagementBasePage<Game, GameService>
 @inject IStringLocalizer<App> localizer
 
@@ -92,7 +93,6 @@
 
         <EditForm Model="Input" @ref="_form">
             <FluentValidationValidator />
-            <ValidationSummary />
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
@@ -109,16 +109,27 @@
                             }
                         </InputSelect>
                         <label for="select-unit">@localizer["GAME_MODES"]</label>
+                        <ValidationMessage For="() => Input.GamemodeId" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Input.Rounds" class="form-control" id="game-rounds" placeholder="Rounds" />
+                        <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
+                            @for (int i = 6; i <= 14; i += 1)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
                         <label for="game-rounds">@localizer["ROUNDS"]</label>
                         <ValidationMessage For="() => Input.Rounds" />
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Input.Force" class="form-control" id="game-force" placeholder="Force" />
+                        <InputSelect id="game-force" @bind-Value="Input.Force" class="form-control">
+                            @for (int i = 200; i <= 800; i += 100)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
                         <label for="game-force">@localizer["FORCE"]</label>
                         <ValidationMessage For="() => Input.Force" />
                     </div>

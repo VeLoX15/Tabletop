@@ -46,15 +46,15 @@
                                             <tr>
                                                 <td>@Unit.Defense</td>
                                                 <td>@Unit.Moving</td>
-                                                <td>0</td>
+                                                <td>@Calculation.Force(Unit)</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                @if (PrimaryWeapon != null)
+                                @if (Unit.PrimaryWeapon != null)
                                 {
                                     <div class="col-md-4">
-                                        <h4>@PrimaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
+                                        <h4>@Unit.PrimaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -66,19 +66,19 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>@PrimaryWeapon.Attack</td>
-                                                    <td>@PrimaryWeapon.Quality</td>
-                                                    <td>@PrimaryWeapon.Range</td>
-                                                    <td>@PrimaryWeapon.Dices</td>
+                                                    <td>@Unit.PrimaryWeapon.Attack</td>
+                                                    <td>@Unit.PrimaryWeapon.Quality</td>
+                                                    <td>@Unit.PrimaryWeapon.Range</td>
+                                                    <td>@Unit.PrimaryWeapon.Dices</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 }
-                                @if (SecondaryWeapon != null)
+                                @if (Unit.SecondaryWeapon != null)
                                 {
                                     <div class="col-md-4">
-                                        <h4>@SecondaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
+                                        <h4>@Unit.SecondaryWeapon.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                                         <table class="table">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -90,10 +90,10 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>@SecondaryWeapon.Attack</td>
-                                                    <td>@SecondaryWeapon.Quality</td>
-                                                    <td>@SecondaryWeapon.Range</td>
-                                                    <td>@SecondaryWeapon.Dices</td>
+                                                    <td>@Unit.SecondaryWeapon.Attack</td>
+                                                    <td>@Unit.SecondaryWeapon.Quality</td>
+                                                    <td>@Unit.SecondaryWeapon.Range</td>
+                                                    <td>@Unit.SecondaryWeapon.Dices</td>
                                                 </tr>
                                             </tbody>
                                         </table>

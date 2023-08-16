@@ -26,10 +26,12 @@ namespace Tabletop.Core.Models
         [CompareField("image")]
         public byte[]? Image { get; set; }
 
+        public int Force { get; set; }
+
         public string ConvertedImage { get; set; } = string.Empty;
 
-        public Weapon PrimaryWeapon { get; set; } = new();
-        public Weapon SecondaryWeapon { get; set; } = new();
+        public Weapon? PrimaryWeapon { get; set; }
+        public Weapon? SecondaryWeapon { get; set; }
         public Fraction Fraction { get; set; } = new();
 
         [CompareField("quantity")]

@@ -50,7 +50,7 @@ namespace Tabletop.Core.Services
 
         public async Task DeleteAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "DELETE FROM `tabletop`.`fractions`  WHERE `fraction_id` = @FRACTION_ID";
+            string sql = "DELETE FROM `tabletop`.`fractions` WHERE `fraction_id` = @FRACTION_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -60,7 +60,7 @@ namespace Tabletop.Core.Services
 
         public async Task<Fraction?> GetAsync(int fractionId, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"SELECT * FROM `tabletop`.`fractions`  WHERE `fraction_id` = @FRACTION_ID";
+            string sql = @"SELECT * FROM `tabletop`.`fractions` WHERE `fraction_id` = @FRACTION_ID";
 
             var fraction = await dbController.GetFirstAsync<Fraction>(sql, new
             {

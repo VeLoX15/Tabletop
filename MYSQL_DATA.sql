@@ -85,22 +85,22 @@ INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `descr
 # Dumping data for table 'tabletop'.'units'
 #
 
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (1, 1, 6, 17, 2, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (2, 1, 5, 17, 1, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (3, 1, 6, 17, 1, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (4, 1, 6, 17, 2, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (5, 1, 6, 17, 2, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (6, 1, 6, 17, 4, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (7, 1, 6, 17, 2, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (8, 1, 7, 17, 5, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (9, 1, 6, 17, 3, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (1, 1, 6, 16, 2, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (2, 1, 5, 16, 1, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (3, 1, 6, 16, 1, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (4, 1, 6, 16, 2, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (5, 1, 6, 16, 2, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (6, 1, 6, 22, 4, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (7, 1, 6, 22, 2, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (8, 1, 7, 10, 5, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (9, 1, 6, 14, 3, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (10, 2, 2, 12, 6, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (11, 2, 4, 12, 9, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (12, 2, 5, 16, 6, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (13, 2, 4, 12, 9, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (14, 2, 4, 12, 6, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (11, 2, 5, 14, 9, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (12, 2, 6, 17, 6, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (13, 2, 5, 14, 9, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (14, 2, 2, 22, 6, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (15, 2, 10, 22, 10, NULL, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (16, 2, 6, 17, 11, NULL, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (16, 2, 2, 12, 11, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (17, 3, 5, 16, 10, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (18, 3, 6, 14, 10, NULL, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `image`) VALUES (19, 3, 7, 16, 14, NULL, NULL);

@@ -13,10 +13,7 @@ namespace Tabletop.Pages.Account
     {
         private int _page = 1;
         private User? _loggedInUser;
-        public TemplateFilter Filter { get; set; } = new()
-        {
-            Limit = AppdataService.PageLimit
-        };
+        public TemplateFilter Filter { get; set; } = new();
 
         public List<User> Friends { get; set; } = new();
         public List<Player> Players { get; set; } = new();
@@ -31,6 +28,12 @@ namespace Tabletop.Pages.Account
             {
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
                 _loggedInUser.Units = await unitService.GetUserUnitsAsync(_loggedInUser.UserId, dbController);
+
+                Filter = new()
+                {
+                    Limit = AppdataService.PageLimit,
+                    UserId = _loggedInUser.UserId
+                };
             }
 
             await LoadAsync();

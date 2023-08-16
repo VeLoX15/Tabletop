@@ -143,7 +143,9 @@
                                 {
                                     <tr>
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
-                                        <td></td>
+                                        <td>
+                                            <InputNumberSwitch @bind-Value="unit.Quantity" MaxValue="@_loggedInUser.Units.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity" />
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-danger" @onclick="() => Input.Units.Remove(unit)">
                                                 <i class="fa-solid fa-trash"></i>

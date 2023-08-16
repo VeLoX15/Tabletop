@@ -11,14 +11,16 @@ namespace Tabletop.Pages.Public
         [Parameter]
         public int UnitId { get; set; }
         public Unit? Unit { get; set; }
-        public Weapon? PrimaryWeapon { get; set; }
-        public Weapon? SecondaryWeapon { get; set; }
 
         protected override void OnInitialized()
         {
             Unit = AppdataService.Units.FirstOrDefault(x => x.UnitId == UnitId);
-            PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.PrimaryWeaponId);
-            SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.SecondaryWeaponId);
+
+            if(Unit != null)
+            {
+                Unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.PrimaryWeaponId) ?? null;
+                Unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.SecondaryWeaponId) ?? null;
+            }
 
             if (Unit?.Image != null)
             {

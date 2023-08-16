@@ -19,6 +19,7 @@ namespace Tabletop.Core.Services
             cancellationToken.ThrowIfCancellationRequested();
             string sql = $@"INSERT INTO `tabletop`.`games` 
                 (
+                `user_id`,
                 `gamemode_id`,
                 `name`,
                 `rounds`,
@@ -27,6 +28,7 @@ namespace Tabletop.Core.Services
                 )
                 VALUES
                 (
+                @USER_ID,
                 @GAMEMODE_ID,
                 @NAME,
                 @ROUNDS,
@@ -40,7 +42,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(Game input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`games`  WHERE `game_id` = @GAME_ID";
+            string sql = "DELETE FROM `tabletop`.`games` WHERE `game_id` = @GAME_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -75,9 +77,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM `tabletop`.`games`  WHERE 1 = 1");
+            sb.AppendLine("SELECT * FROM `tabletop`.`games` WHERE `user_id` = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `name` ASC");
+            sb.AppendLine(@$"  ORDER BY `name` ASC ");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
@@ -99,7 +101,8 @@ namespace Tabletop.Core.Services
         {
             return new Dictionary<string, object?>
             {
-                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" }
+                { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "USER_ID", filter.UserId }
             };
         }
 
@@ -120,7 +123,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`games`  WHERE 1 = 1");
+            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`games` WHERE `user_id` = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
