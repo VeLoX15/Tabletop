@@ -52,6 +52,7 @@
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["FRACTION"]</th>
                                     <th>@localizer["FORCE"]</th>
+                                    <th>@localizer["FORCE"]</th>
                                     <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
@@ -61,6 +62,7 @@
                                         <td>@template.Name</td>
                                         <td>@AppdataService.Fractions.FirstOrDefault(x => x.FractionId == template.FractionId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>@template.Force</td>
+                                        <td>@CalculateTotalForce(template)</td>
                                         <td class="text-right">
                                             <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = template">
                                                 <i class="fa-solid fa-trash-can"></i>
@@ -130,6 +132,7 @@
                                 <tr>
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["QUANTITY"]</th>
+                                    <th>@localizer["FORCE"]</th>
                                     <th>@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
@@ -144,15 +147,25 @@
                                     <tr>
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>
-                                            <InputNumberSwitch @bind-Value="unit.Quantity" MaxValue="@_loggedInUser.Units.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity" />
+                                            <InputNumberSwitch @bind-Value="unit.Quantity" MaxValue="@_loggedInUser.Units.FirstOrDefault(x => x.UnitId == unit.UnitId).Quantity" />
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-danger" @onclick="() => Input.Units.Remove(unit)">
-                                                <i class="fa-solid fa-trash"></i>
+                                            <p>@(CalculateForce(unit) * unit.Quantity) (@CalculateForce(unit))</p>
+                                        </td>
+                                        <td>
+                                            <button class="btn">
+                                                <i class="fa-solid fa-trash-can" @onclick="() => Input.Units.Remove(unit)"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 }
+
+                                <tr>
+                                    <th><ValidationMessage For="() => Input.TotalUsedForce" /></th>
+                                    <th></th>
+                                    <th>@CalculateTotalForce(Input)</th>
+                                    <th></th>
+                                </tr>
 
                                 <tr>
                                     <td colspan="3">
@@ -186,7 +199,6 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </EditForm>

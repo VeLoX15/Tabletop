@@ -16,6 +16,7 @@ namespace Tabletop.Core.Models
         public int Force { get; set; }
 
         public List<Unit> Units { get; set; } = new();
+        public int TotalUsedForce { get; set; }
 
         public int Id => TemplateId;
 

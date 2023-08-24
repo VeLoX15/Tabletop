@@ -1,8 +1,9 @@
 ﻿@page "/Account/Games/{gameId:int}"
 @attribute [Authorize]
 @inject GameService gameService
+@inject IStringLocalizer<App> localizer
 
-<PageTitle>Tablebricks - Game</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["GAME"]</PageTitle>
 
 @if (Input != null)
 {
@@ -19,6 +20,7 @@
                 </div>
                 <div class="col-4">
                     <h4>VS</h4>
+                    <p>@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Input.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
                 </div>
                 <div class="col-4">
                     <h4>Team 2</h4>
@@ -29,12 +31,12 @@
 }
 else
 {
-    <PageTitle>Tablebricks - Unit not found</PageTitle>
+    <PageTitle>@localizer["TABLEBRICKS"] - Game not found</PageTitle>
 
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>Error</h2>
+                <h2>@localizer["ERROR"]</h2>
                 <p>Game not found</p>
             </div>
         </div>

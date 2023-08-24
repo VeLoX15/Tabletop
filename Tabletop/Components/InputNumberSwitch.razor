@@ -1,41 +1,11 @@
-﻿@inject IStringLocalizer<App> localizer
-
-<div class="row">
-    <div class="col-12">
-        <button @onclick="Decrement">-</button>
-        <div class="form-floating mb-3">
-            <InputNumber @bind-Value="Value" class="form-control" id="component-name" placeholder="Name" />
-            <label for="component-name">@localizer["QUANTITY"]</label>
-            <ValidationMessage For="() => Value" />
-        </div>
-        <button @onclick="Increment">+</button>
-    </div>
-</div>
-
-@code {
-    [Parameter]
-    public int Value { get; set; }
-
-    [Parameter]
-    public EventCallback<int> ValueChanged { get; set; }
-
-    private void Increment()
-    {
-        Value++;
-        ValueChanged.InvokeAsync(Value);
-    }
-
-    private void Decrement()
-    {
-        Value--;
-        ValueChanged.InvokeAsync(Value);
-    }
-}
-
-<div class="number-input">
-    <button @onclick="Decrement">-</button>
-    <input type="number" @bind="Value" max="@MaxValue" />
-    <button @onclick="Increment">+</button>
+﻿<div class="d-flex align-items-center">
+    <button class="btn">
+        <i class="fa-solid fa-minus cursor-pointer" @onclick="Decrement"></i>
+    </button>
+    <input class="text-right" @bind="Value" max="@MaxValue" readonly style="width:40px" />
+    <button class="btn">
+        <i class="fa-solid fa-plus cursor-pointer" @onclick="Increment"></i>
+    </button>
 </div>
 
 @code {

@@ -162,9 +162,9 @@ else
 @if (AddFriendModal)
 {
     <Modal Title="@localizer["FIND_PLAYERS"]"
-       OnClosed="() => AddFriendModal = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => AddFriendModal = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <div class="row">
             <div class="col-12">
@@ -210,9 +210,9 @@ else
                                             <td class="text-right">
                                                 @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id)
                                                 {
-                                                    <div>
-                                                        <button type="button" class="btn" @onclick="() => AddFriendAsync(user.Id)"><i class="fa-solid fa-user-plus"></i></button>
-                                                    </div>
+                                                    <button type="button" class="btn" @onclick="() => AddFriendAsync(user.Id)">
+                                                        <i class="fa-solid fa-user-plus"></i>
+                                                    </button>
                                                 }
                                             </td>
                                         </tr>
@@ -231,9 +231,9 @@ else
 @if (AddUnitModal)
 {
     <Modal Title="Edit your armies"
-       OnClosed="() => AddUnitModal = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => AddUnitModal = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <EditForm Model="Unit">
             <FluentValidationValidator />
@@ -277,9 +277,9 @@ else
 @if (EditProfile && CurrentUser != null)
 {
     <Modal Title="Edit your profile"
-       OnClosed="() => EditProfile = false"
-       ModalSize="ModalSize.LG"
-       HideFooter="true">
+           OnClosed="() => EditProfile = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
 
         <EditForm Model="CurrentUser">
             <FluentValidationValidator />

@@ -1,6 +1,7 @@
 ﻿@page "/Account/Games"
 @attribute [Authorize]
 @inject AuthService authService
+@inject UserService userService
 @inherits ManagementBasePage<Game, GameService>
 @inject IStringLocalizer<App> localizer
 
@@ -25,10 +26,10 @@
                     <h4>@localizer["FILTER"]</h4>
                 </div>
                 <div class="card-content" style="padding: 0 1.3rem;">
-                    <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                    <EditForm Model="GameFilter" OnValidSubmit="async () => await LoadAsync(true)">
                         <div class="form-floating mb-3">
-                            <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
-                            <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
+                            <InputText @bind-Value="GameFilter.SearchPhrase" class="form-control" id="gamemanagement-filter-searchphrase" placeholder="Search games" />
+                            <label for="gamemanagement-filter-searchphrase">@localizer["SEARCH"]</label>
                         </div>
 
                         <div class="toolbar">
@@ -132,6 +133,63 @@
                         </InputSelect>
                         <label for="game-force">@localizer["FORCE"]</label>
                         <ValidationMessage For="() => Input.Force" />
+                    </div>
+
+                    <h4>Team 1</h4>
+
+                    <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead>
+                                <tr>
+                                    <th>@localizer["USERNAME"]</th>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["ACTION"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var player in Input.Players.Where(x => x.Team == 1))
+                                {
+                                    <tr>
+                                        <td>@player.User.Username</td>
+                                        <td>@player.User.DisplayName</td>
+                                        <td>
+                                            <button class="btn">
+                                                <i class="fa-solid fa-trash-can" @onclick="() => Input.Players.Remove(player)"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="input-group">
+                                            <select @onchange="UserSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                                @if (SelectedUser is null)
+                                                {
+                                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                }
+
+                                                @foreach (var user in Friends)
+                                                {
+                                                    @if (user is not null)
+                                                    {
+                                                        <option value="@user.User.UserId">@user.User.Username</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <button @onclick="async () => await AddUserAsync(1)" class="btn btn-success" type="button" disabled="@(SelectedUser is null)">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
