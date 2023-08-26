@@ -46,7 +46,7 @@ INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `di
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (13, 1, 1, 1, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (14, 1, 1, 1, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (15, 7, 4, 30, 4);
-# 14 records
+# 15 records
 
 #
 # Dumping data for table 'tabletop'.'weapon_description'
@@ -82,7 +82,7 @@ INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `descr
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (14, 'de', 'E-11D Blastergewehr', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (15, 'en', 'Droideka', '');
 INSERT INTO `tabletop`.`weapon_description` (`weapon_id`, `code`, `name`, `description`) VALUES (15, 'de', 'Droideka', '');
-# 28 records
+# 30 records
 
 #
 # Dumping data for table 'tabletop'.'units'
