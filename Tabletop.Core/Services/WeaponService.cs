@@ -64,7 +64,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                WEAPON_ID = input.WeaponId,
+                WEAPON_ID = input.WeaponId
             }, cancellationToken);
         }
 

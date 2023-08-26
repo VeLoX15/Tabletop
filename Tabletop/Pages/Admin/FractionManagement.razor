@@ -97,7 +97,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit fraction: {0}", Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
+    <Modal Title="@String.Format("Edit fraction: {0}", Input?.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
        OnClosed="() => Input = null"
        ModalSize="ModalSize.LG"
        HideFooter="true">

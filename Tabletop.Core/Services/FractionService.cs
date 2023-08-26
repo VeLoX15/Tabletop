@@ -54,7 +54,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                FRACTION_ID = input.FractionId,
+                FRACTION_ID = input.FractionId
             }, cancellationToken);
         }
 

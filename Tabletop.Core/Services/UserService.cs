@@ -51,7 +51,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                USER_ID = input.UserId,
+                USER_ID = input.UserId
             }, cancellationToken);
         }
 
@@ -103,11 +103,24 @@ namespace Tabletop.Core.Services
             return user;
         }
 
+        public async Task<User?> GetUserForPlayerAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"SELECT `user_id`, `username`, `display_name`, `image` FROM `tabletop`.`users` WHERE `user_id` = @USER_ID";
+
+            var user = await dbController.GetFirstAsync<User>(sql, new
+            {
+                USER_ID = userId
+            }, cancellationToken);
+
+            return user;
+        }
+
         public async Task<List<User>> GetAsync(UserFilter filter, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.Append("SELECT * FROM `tabletop`.`users` WHERE 1 = 1");
+            sqlBuilder.Append("SELECT `user_id`, `username`, `display_name`, `description`, `main_fraction_id`, `last_login`, `image` FROM `tabletop`.`users` WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
             sqlBuilder.AppendLine(@$"  ORDER BY `user_id` DESC");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));

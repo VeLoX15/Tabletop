@@ -21,21 +21,38 @@ namespace Tabletop.Core.Services
                 (
                 `user_id`,
                 `game_id`,
-                `fraction_id`
+                `team`
                 )
                 VALUES
                 (
                 @USER_ID,
                 @GAME_ID,
-                @FRACTION_ID
+                @TEAM
                 ); {dbController.GetLastIdSql()}";
 
             input.PlayerId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
         }
 
-        public Task DeleteAsync(Player input, IDbController dbController, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(Player player, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "DELETE FROM `tabletop`.`players` WHERE `player_id` = @PLAYER_ID";
+
+            await dbController.QueryAsync(sql, new
+            {
+                PLAYER_ID = player.PlayerId
+            }, cancellationToken);
+        }
+
+        public async Task DeleteByGameAsync(int gameId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "DELETE FROM `tabletop`.`players` WHERE `game_id` = @GAME_ID";
+
+            await dbController.QueryAsync(sql, new
+            {
+                GAME_ID = gameId
+            }, cancellationToken);
         }
 
         public Task<Player?> GetAsync(int identifier, IDbController dbController, CancellationToken cancellationToken = default)
@@ -57,17 +74,33 @@ namespace Tabletop.Core.Services
             {
                 foreach (var item in list)
                 {
-                    item.StartUnits = await _unitService.GetPlayerUnitsAsync(gameId, dbController, cancellationToken);
-                    item.User = await _userService.GetAsync(item.UserId, dbController, cancellationToken) ?? new();
+                    item.StartUnits = await _unitService.GetPlayerUnitsAsync(item.PlayerId, dbController, cancellationToken);
+                    item.User = await _userService.GetUserForPlayerAsync(item.UserId, dbController, cancellationToken) ?? new();
                 }
             }
 
             return list;
         }
 
-        public Task UpdateAsync(Player input, IDbController dbController, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(Player input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _unitService.DeletePlayerUnitsAsync(input.PlayerId, dbController, cancellationToken);
+
+            string sql = @"UPDATE `tabletop`.`players` SET
+                `user_id` = @USER_ID,
+                `game_id` = @GAME_ID,
+                `fraction_id` = @FRACTION_ID,
+                `team` = @TEAM
+                WHERE `player_id` = @PLAYER_ID";
+
+            await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var unit in input.StartUnits)
+            {
+                await _unitService.CreatePlayerUnitAsync(input, unit, dbController, cancellationToken);
+            }
         }
     }
 }

@@ -228,6 +228,9 @@
   <data name="GAME_MECHANIC" xml:space="preserve">
     <value>Spielmechanik</value>
   </data>
+  <data name="GAME_MODE" xml:space="preserve">
+    <value>Spielmodus</value>
+  </data>
   <data name="GAME_MODES" xml:space="preserve">
     <value>Spielmodi</value>
   </data>
@@ -271,7 +274,7 @@
     <value>Qualität</value>
   </data>
   <data name="QUANTITY" xml:space="preserve">
-    <value>Quantität</value>
+    <value>Anzahl</value>
   </data>
   <data name="RANGE" xml:space="preserve">
     <value>Reichweite</value>
@@ -311,6 +314,9 @@
   </data>
   <data name="TABLES" xml:space="preserve">
     <value>Tabellen</value>
+  </data>
+  <data name="TEMPLATE" xml:space="preserve">
+    <value>Vorlage</value>
   </data>
   <data name="THE_APP" xml:space="preserve">
     <value>Die Website</value>

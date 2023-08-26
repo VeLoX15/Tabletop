@@ -54,7 +54,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                GAMEMODE_ID = input.GamemodeId,
+                GAMEMODE_ID = input.GamemodeId
             }, cancellationToken);
         }
 

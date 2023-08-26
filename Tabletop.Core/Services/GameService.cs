@@ -60,6 +60,11 @@ namespace Tabletop.Core.Services
                 GAME_ID = gameId
             }, cancellationToken);
 
+            if (game != null)
+            {
+                game.Players = await _playerService.GetGamePlayersAsync(game.GameId, dbController, cancellationToken);
+            }
+
             return game;
         }
 
@@ -77,7 +82,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM `tabletop`.`games` WHERE `user_id` = @USER_ID");
+            sb.AppendLine("SELECT DISTINCT g.* FROM `games` g LEFT JOIN `players` p ON g.`game_id` = p.`game_id` WHERE p.`user_id` = @USER_ID OR g.`user_id` = @USER_ID ");
             sb.AppendLine(GetFilterWhere(filter));
             sb.AppendLine(@$"  ORDER BY `name` ASC ");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
@@ -144,6 +149,11 @@ namespace Tabletop.Core.Services
                 WHERE `game_id` = @GAME_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+
+            foreach (var item in input.Players)
+            {
+                await _playerService.CreateAsync(item, dbController, cancellationToken);
+            }
         }
     }
 }

@@ -218,11 +218,11 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 	`player_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
 	`game_id` INTEGER NOT NULL,
-	`fraction_id` INTEGER NOT NULL,
+	`fraction_id` INTEGER NULL,
 	`team` INTEGER NOT NULL,
 
     PRIMARY KEY (`player_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`)
+	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
 	FOREIGN KEY (`game_id`) REFERENCES `tabletop`.`games`(`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`)
 );

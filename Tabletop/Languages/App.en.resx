@@ -228,6 +228,9 @@
   <data name="GAME_MECHANIC" xml:space="preserve">
     <value>Game Mechanic</value>
   </data>
+  <data name="GAME_MODE" xml:space="preserve">
+    <value>Game Mode</value>
+  </data>
   <data name="GAME_MODES" xml:space="preserve">
     <value>Game modes</value>
   </data>
@@ -311,6 +314,9 @@
   </data>
   <data name="TABLES" xml:space="preserve">
     <value>Tables</value>
+  </data>
+  <data name="TEMPLATE" xml:space="preserve">
+    <value>Template</value>
   </data>
   <data name="THE_APP" xml:space="preserve">
     <value>The Application</value>

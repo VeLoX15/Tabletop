@@ -1,5 +1,4 @@
 ﻿using DbController;
-using System.Globalization;
 using System.Text;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
@@ -50,7 +49,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                TEMPLATE_ID = input.TemplateId,
+                TEMPLATE_ID = input.TemplateId
             }, cancellationToken);
             
         }
@@ -66,6 +65,25 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
 
             return template;
+        }
+
+        public async Task<List<Template>> GetTemplateOnForceAsync(int user_id, int force, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = "SELECT * FROM `tabletop`.`templates` WHERE `user_id` = @USER_ID AND `force` = @FORCE";
+
+            var list = await dbController.SelectDataAsync<Template>(sql, new
+            {
+                USER_ID = user_id,
+                FORCE = force
+            }, cancellationToken);
+
+            foreach (var item in list)
+            {
+                item.Units = await _unitService.GetTemplateUnitsAsync(item.TemplateId, dbController, cancellationToken);
+            }
+
+            return list;
         }
 
         public async Task<List<Template>> GetAsync(TemplateFilter filter, IDbController dbController, CancellationToken cancellationToken = default)

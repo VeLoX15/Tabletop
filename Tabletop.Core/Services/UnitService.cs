@@ -75,7 +75,7 @@ namespace Tabletop.Core.Services
 
             await dbController.QueryAsync(sql, new
             {
-                UNIT_ID = input.UnitId,
+                UNIT_ID = input.UnitId
             }, cancellationToken);
         }
 
@@ -242,7 +242,7 @@ namespace Tabletop.Core.Services
             await dbController.QueryAsync(sql, new
             {
                 USER_ID = user.UserId,
-                UNIT_ID = unit.UnitId,
+                UNIT_ID = unit.UnitId
             }, cancellationToken);
 
             sql = @"INSERT INTO `tabletop`.`user_units`
@@ -275,6 +275,15 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
+        public async Task DeletePlayerUnitsAsync(int player_id, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            string sql = "DELETE FROM `tabletop`.`player_units` WHERE `player_id` = @PLAYER_ID";
+            await dbController.QueryAsync(sql, new
+            {
+                PLAYER_ID = player_id
+            }, cancellationToken);
+        }
+
         public async Task CreateTemplateUnitAsync(Template template, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -294,6 +303,30 @@ namespace Tabletop.Core.Services
             await dbController.QueryAsync(sql, new
             {
                 TEMPLATE_ID = template.TemplateId,
+                UNIT_ID = unit.UnitId,
+                QUANTITY = unit.Quantity
+            }, cancellationToken);
+        }
+
+        public async Task CreatePlayerUnitAsync(Player player, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"INSERT INTO `tabletop`.`player_units`
+                (
+                `player_id`,
+                `unit_id`,
+                `quantity`
+                )
+                VALUES
+                (
+                @PLAYER_ID,
+                @UNIT_ID,
+                @QUANTITY
+                )";
+
+            await dbController.QueryAsync(sql, new
+            {
+                PLAYER_ID = player.PlayerId,
                 UNIT_ID = unit.UnitId,
                 QUANTITY = unit.Quantity
             }, cancellationToken);

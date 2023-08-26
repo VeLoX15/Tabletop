@@ -110,9 +110,6 @@ namespace Tabletop.Pages.Account
                 }
 
                 template.TotalUsedForce = totalForce;
-            } else
-            {
-
             }
 
             return totalForce;
