@@ -18,21 +18,25 @@
     [Parameter]
     public EventCallback<int> ValueChanged { get; set; }
 
-    private void Increment()
+    private Task Increment()
     {
         if (Value < MaxValue)
         {
             Value++;
             ValueChanged.InvokeAsync(Value);
         }
+
+        return Task.CompletedTask;
     }
 
-    private void Decrement()
+    private Task Decrement()
     {
         if (Value > 0)
         {
             Value--;
             ValueChanged.InvokeAsync(Value);
         }
+
+        return Task.CompletedTask;
     }
 }

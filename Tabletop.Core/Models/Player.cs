@@ -14,9 +14,12 @@ namespace Tabletop.Core.Models
         public int FractionId { get; set; }
         [CompareField("team")]
         public int Team { get; set; }
+        [CompareField("used_force")]
+        public int UsedForce { get; set; }
 
         public User User { get; set; } = new();
         public List<Unit> StartUnits { get; set; } = new();
+        public bool IsReady { get; set; } = false;
 
         public int Id => PlayerId;
 
@@ -28,7 +31,9 @@ namespace Tabletop.Core.Models
                 { "USER_ID", UserId },
                 { "GAME_ID", GameId },
                 { "FRACTION_ID", FractionId },
-                { "TEAM", Team }
+                { "TEAM", Team },
+                { "USED_FORCE", UsedForce }
+
             };
         }
     }

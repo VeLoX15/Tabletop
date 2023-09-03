@@ -1,5 +1,4 @@
 ﻿using DbController;
-using System.Text;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
@@ -21,13 +20,15 @@ namespace Tabletop.Core.Services
                 (
                 `user_id`,
                 `game_id`,
-                `team`
+                `team`,
+                `used_force`
                 )
                 VALUES
                 (
                 @USER_ID,
                 @GAME_ID,
-                @TEAM
+                @TEAM,
+                @USED_FORCE
                 ); {dbController.GetLastIdSql()}";
 
             input.PlayerId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -92,7 +93,8 @@ namespace Tabletop.Core.Services
                 `user_id` = @USER_ID,
                 `game_id` = @GAME_ID,
                 `fraction_id` = @FRACTION_ID,
-                `team` = @TEAM
+                `team` = @TEAM,
+                `used_force` = @USED_FORCE
                 WHERE `player_id` = @PLAYER_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);

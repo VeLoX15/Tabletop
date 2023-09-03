@@ -52,7 +52,7 @@
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["FRACTION"]</th>
                                     <th>@localizer["FORCE"]</th>
-                                    <th>@localizer["FORCE"]</th>
+                                    <th>Used</th>
                                     <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
@@ -62,7 +62,7 @@
                                         <td>@template.Name</td>
                                         <td>@AppdataService.Fractions.FirstOrDefault(x => x.FractionId == template.FractionId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>@template.Force</td>
-                                        <td>@CalculateTotalForce(template)</td>
+                                        <td>@template.UsedForce</td>
                                         <td class="text-right">
                                             <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = template">
                                                 <i class="fa-solid fa-trash-can"></i>
@@ -144,13 +144,23 @@
 
                                 @foreach (var unit in Input.Units)
                                 {
+                                    int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+
                                     <tr>
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>
-                                            <InputNumberSwitch @bind-Value="unit.Quantity" MaxValue="@_loggedInUser.Units.FirstOrDefault(x => x.UnitId == unit.UnitId).Quantity" />
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn" @onclick="async () => await Decrement(unit)">
+                                                    <i class="fa-solid fa-minus cursor-pointer"></i>
+                                                </button>
+                                                <input class="text-right" @bind="unit.Quantity" max="maxQuantity" readonly style="width:40px" />
+                                                <button class="btn" @onclick="async () => await Increment(unit)">
+                                                    <i class="fa-solid fa-plus cursor-pointer"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                         <td>
-                                            <p>@(CalculateForce(unit) * unit.Quantity) (@CalculateForce(unit))</p>
+                                            <p>@unit.ForceOfQuantity (@unit.Force)</p>
                                         </td>
                                         <td>
                                             <button class="btn">
@@ -161,9 +171,9 @@
                                 }
 
                                 <tr>
-                                    <th><ValidationMessage For="() => Input.TotalUsedForce" /></th>
+                                    <th><ValidationMessage For="() => Input.UsedForce" /></th>
                                     <th></th>
-                                    <th>@CalculateTotalForce(Input)</th>
+                                    <th>@Input.UsedForce</th>
                                     <th></th>
                                 </tr>
 

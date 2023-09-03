@@ -45,9 +45,12 @@ namespace Tabletop.Pages.Account
                 return;
             }
 
+            Input.Units.RemoveAll(unit => unit.Quantity == 0);
+
             await base.SaveAsync();
             await LoadAsync();
         }
+
         public async Task LoadAsync(bool navigateToPage1 = false)
         {
             Filter.PageNumber = navigateToPage1 ? 1 : Page;
@@ -60,6 +63,13 @@ namespace Tabletop.Pages.Account
         {
             await base.DeleteAsync();
             await LoadAsync();
+        }
+
+        protected override async Task EditAsync(Template input)
+        {
+            await base.EditAsync(input);
+            await CalculateTotalForceAsync();
+            await CalculateForceAsync();
         }
 
         protected override Task NewAsync()
@@ -77,12 +87,9 @@ namespace Tabletop.Pages.Account
 
         private Task AddUnitAsync()
         {
-            if (Input is not null)
+            if (Input is not null && SelectedUnit is not null)
             {
-                if (SelectedUnit is not null)
-                {
-                    Input.Units.Add(SelectedUnit);
-                }
+                Input.Units.Add(SelectedUnit);
 
                 SelectedUnit = null;
             }
@@ -97,31 +104,66 @@ namespace Tabletop.Pages.Account
             return Task.CompletedTask;
         }
 
-        private int CalculateTotalForce(Template template)
+        private async Task CalculateTotalForceAsync()
         {
             int totalForce = 0;
-            if (template is not null)
+            if (Input is not null)
             {
-                foreach (var unit in template.Units)
+                foreach (var unit in Input.Units)
                 {
                     unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
                     unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
-                    totalForce += Calculation.Force(unit) * unit.Quantity;
+
+                    int unitForce = await Calculation.ForceAsync(unit);
+                    totalForce += unitForce * unit.Quantity;
                 }
-
-                template.TotalUsedForce = totalForce;
+                Input.UsedForce = totalForce;
             }
-
-            return totalForce;
         }
 
-        private int CalculateForce(Unit unit)
+        private async Task CalculateForceAsync()
         {
-            unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
-            unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
-            int force = Calculation.Force(unit);
+            if (Input is not null)
+            {
+                foreach (var unit in Input.Units)
+                {
+                    unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
+                    unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
 
-            return force;
+                    int force = await Calculation.ForceAsync(unit);
+
+                    unit.Force = force;
+                    unit.ForceOfQuantity = force * unit.Quantity;
+                }
+            }
+        }
+
+        private async Task Increment(Unit unit)
+        {
+            if (unit.Quantity < _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity)
+            {
+                unit.Quantity++;
+            }
+
+            int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+            unit.Quantity = quantity;
+
+            await CalculateTotalForceAsync();
+            await CalculateForceAsync();
+        }
+
+        private async Task Decrement(Unit unit)
+        {
+            if (unit.Quantity > 0)
+            {
+                unit.Quantity--;
+            }
+
+            int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+            unit.Quantity = quantity;
+
+            await CalculateTotalForceAsync();
+            await CalculateForceAsync();
         }
     }
 }

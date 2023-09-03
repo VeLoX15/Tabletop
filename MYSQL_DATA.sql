@@ -187,6 +187,27 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 # 60 records
 
 #
+# Dumping data for table 'tabletop'.'classes'
+#
+
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (1, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (2, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (3, 0);
+# 4 records
+
+#
+# Dumping data for table 'tabletop'.'class_description'
+#
+
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'en', 'Regular', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'de', 'Regulär', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'en', 'Elite', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'de', 'Elite', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'en', 'Specialist', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'de', 'Spezialist', '');
+# 6 records
+
+#
 # Dumping data for table 'tabletop'.'gamemodes'
 #
 

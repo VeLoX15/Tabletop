@@ -21,14 +21,16 @@ namespace Tabletop.Core.Services
                 `user_id`,
                 `fraction_id`,
                 `name`,
-                `force`
+                `force`,
+                `used_force`
                 )
                 VALUES
                 (
                 @USER_ID,
                 @FRACTION_ID,
                 @NAME,
-                @FORCE
+                @FORCE,
+                @USED_FORCE
                 ); {dbController.GetLastIdSql()}";
 
             input.TemplateId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -152,7 +154,8 @@ namespace Tabletop.Core.Services
             string sql = @"UPDATE `tabletop`.`templates` SET
                 `fraction_id` = @FRACTION_ID,
                 `name` = @NAME,
-                `force` = @FORCE
+                `force` = @FORCE,
+                `used_force` = @USED_FORCE
                 WHERE `template_id` = @TEMPLATE_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);

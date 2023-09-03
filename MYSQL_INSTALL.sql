@@ -87,14 +87,17 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 (
     `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
     `fraction_id` INTEGER NOT NULL,
+	`class_id` INTEGER NOT NULL,
     `defense` INTEGER NOT NULL,
     `moving` INTEGER NOT NULL,
 	`primary_weapon_id` INTEGER NULL,
 	`secondary_weapon_id` INTEGER NULL,
+	`has_jetpack` BOOLEAN NOT NULL DEFAULT FALSE,
 	`image` MEDIUMBLOB NULL,
 
     PRIMARY KEY (`unit_id`),
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`),
 	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
 	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
 );
@@ -111,6 +114,30 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`unit_description` (
 
 	PRIMARY KEY (`unit_id`, `code`),
 	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`classes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`classes` (
+	`class_id` INTEGER NOT NULL,
+	`quantity` INTEGER NOT NULL,
+	
+	PRIMARY KEY (`unit_id`, `code`),
+	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`class_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
+	`class_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+
+	PRIMARY KEY (`class_id`, `code`),
+	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -220,6 +247,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`players`
 	`game_id` INTEGER NOT NULL,
 	`fraction_id` INTEGER NULL,
 	`team` INTEGER NOT NULL,
+	`used_force` INTEGER NOT NULL,
 
     PRIMARY KEY (`player_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`),
@@ -251,6 +279,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`templates`
 	`fraction_id` INTEGER NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
 	`force` INTEGER NOT NULL, 
+	`used_force` INTEGER NOT NULL,
 
     PRIMARY KEY (`template_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `tabletop`.`users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,

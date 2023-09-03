@@ -28,6 +28,7 @@ namespace Tabletop.Pages.Admin
             _loggedInUser = await authService.GetUserAsync();
             await LoadAsync();
         }
+
         protected override async Task SaveAsync()
         {
             if (Input is null)

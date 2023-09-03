@@ -21,7 +21,7 @@ namespace Tabletop.Core.Validator
                 .NotEmpty()
                 .WithMessage("Force must be selected");
 
-            RuleFor(x => x.TotalUsedForce)
+            RuleFor(x => x.UsedForce)
                 .LessThanOrEqualTo(x => x.Force)
                 .WithMessage("Force points over limit");
         }

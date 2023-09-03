@@ -23,18 +23,22 @@ namespace Tabletop.Core.Services
             string sql = $@"INSERT INTO `tabletop`.`units` 
                 (
                 `fraction_id`,
+                `class_id`,
                 `defense`,
                 `moving`,
                 `primary_weapon_id`,
-                `secondary_weapon_id`
+                `secondary_weapon_id`,
+                `has_jetpack`
                 )
                 VALUES
                 (
                 @FRACTION_ID,
+                @CLASS_ID
                 @DEFENSE,
                 @MOVING,
                 @PRIMARY_WEAPON_ID,
-                @SECONDARY_WEAPON_ID
+                @SECONDARY_WEAPON_ID,
+                @HAS_JETPACK
                 ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -336,10 +340,12 @@ namespace Tabletop.Core.Services
         {
             string sql = @"UPDATE `tabletop`.`units` SET
                 `fraction_id` = @FRACTION_ID,
+                `class_id` = @CLASS_ID
                 `defense` = @DEFENSE,
                 `moving` = @MOVING,
                 `primary_weapon_id` = @PRIMARY_WEAPON_ID,
-                `secondary_weapon_id` = @SECONDARY_WEAPON_ID
+                `secondary_weapon_id` = @SECONDARY_WEAPON_ID,
+                `has_jetpack` = @HAS_JETPACK
                 WHERE `unit_id` = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);

@@ -14,9 +14,9 @@ namespace Tabletop.Core.Models
         public string Name { get; set; } = string.Empty;
         [CompareField("force")]
         public int Force { get; set; }
-
+        [CompareField("used_force")]
+        public int UsedForce { get; set; }
         public List<Unit> Units { get; set; } = new();
-        public int TotalUsedForce { get; set; }
 
         public int Id => TemplateId;
 
@@ -28,7 +28,8 @@ namespace Tabletop.Core.Models
                 { "USER_ID", UserId },
                 { "FRACTION_ID", FractionId },
                 { "NAME", Name},
-                { "FORCE", Force }
+                { "FORCE", Force },
+                { "USED_FORCE", UsedForce }
             };
         }
     }

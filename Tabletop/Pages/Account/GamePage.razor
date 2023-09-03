@@ -36,7 +36,9 @@
                             }
                             else if (player.StartUnits.Any())
                             {
-                                <i class="fa-solid fa-check" style="color: #008000;"></i>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-check" style="color: #008000;"></i>
+                                </div>
                             }
                         </div>
                         <div class="table-responsive">
@@ -48,7 +50,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.UserId == _loggedInUser?.UserId || ReadyToReveal())
+                                    @if (player.User.UserId == _loggedInUser?.UserId)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -89,7 +91,9 @@
                             }
                             else if (player.StartUnits.Any())
                             {
-                                <i class="fa-solid fa-check" style="color: #008000;"></i>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-check" style="color: #008000;"></i>
+                                </div>
                             }
                         </div>
                         <div class="table-responsive">
@@ -101,7 +105,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.UserId == _loggedInUser?.UserId || ReadyToReveal())
+                                    @if (player.User.UserId == _loggedInUser?.UserId)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -306,19 +310,29 @@
                                 }
 
                                 @if (SelectedTemplate > 0)
-                                {   
-                                    Player.StartUnits = Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate).Units;
+                                {
+                                    Player.StartUnits = Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate)?.Units ?? new();
                                 }
 
                                 @foreach (var unit in Player.StartUnits)
                                 {
+                                    int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+
                                     <tr>
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>
-                                            <InputNumberSwitch @bind-Value="unit.Quantity" MaxValue="@_loggedInUser.Units.FirstOrDefault(x => x.UnitId == unit.UnitId).Quantity" />
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn" @onclick="async () => await Decrement(unit)">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </button>
+                                                <input class="text-right" @bind="unit.Quantity" max="maxQuantity" readonly style="width:40px" />
+                                                <button class="btn" @onclick="async () => await Increment(unit)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                         <td>
-                                            <p>@(CalculateForce(unit) * unit.Quantity) (@CalculateForce(unit))</p>
+                                            <p>@unit.ForceOfQuantity (@unit.Force)</p>
                                         </td>
                                         <td>
                                             <button class="btn">
@@ -331,7 +345,7 @@
                                 <tr>
                                     <th><ValidationMessage For="() => Game.Force" /></th>
                                     <th></th>
-                                    <th>@CalculateTotalForce(Player.StartUnits)</th>
+                                    <th>@Player.UsedForce</th>
                                     <th></th>
                                 </tr>
 

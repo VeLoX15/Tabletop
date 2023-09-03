@@ -10,6 +10,8 @@ namespace Tabletop.Core.Models
 
         [CompareField("fraction_id")]
         public int FractionId { get; set; }
+        [CompareField("class_id")]
+        public int ClassId { get; set; }
 
         [CompareField("defense")]
         public int Defense { get; set; }
@@ -22,12 +24,12 @@ namespace Tabletop.Core.Models
 
         [CompareField("secondary_weapon_id")]
         public int? SecondaryWeaponId { get; set; }
+        [CompareField("has_jetpack")]
+        public bool HasJetpack { get; set; }
 
         [CompareField("image")]
         public byte[]? Image { get; set; }
-
         public int Force { get; set; }
-
         public string ConvertedImage { get; set; } = string.Empty;
 
         public Weapon? PrimaryWeapon { get; set; }
@@ -36,6 +38,7 @@ namespace Tabletop.Core.Models
 
         [CompareField("quantity")]
         public int Quantity { get; set; }
+        public int ForceOfQuantity { get; set; }
 
         public int Id => UnitId;
 
@@ -59,10 +62,12 @@ namespace Tabletop.Core.Models
             {
                 { "UNIT_ID", UnitId },
                 { "FRACTION_ID", FractionId },
+                { "CLASS_ID", ClassId },
                 { "DEFENSE", Defense },
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },
                 { "SECONDARY_WEAPON_ID", SecondaryWeaponId },
+                { "HAS_JETPACK" , HasJetpack },
                 { "QUANTITY", Quantity }
             };
         }

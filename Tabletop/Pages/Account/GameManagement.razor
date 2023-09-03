@@ -107,16 +107,19 @@
                         <ValidationMessage For="() => Input.GamemodeId" />
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
-                            @for (int i = 6; i <= 14; i += 1)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </InputSelect>
-                        <label for="game-rounds">@localizer["ROUNDS"]</label>
-                        <ValidationMessage For="() => Input.Rounds" />
-                    </div>
+                    @if(Input.GamemodeId != 2 && Input.GamemodeId != 3)
+                    {
+                        <div class="form-floating mb-3">
+                            <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
+                                @for (int i = 6; i <= 14; i += 1)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </InputSelect>
+                            <label for="game-rounds">@localizer["ROUNDS"]</label>
+                            <ValidationMessage For="() => Input.Rounds" />
+                        </div>                    
+                    }
 
                     <div class="form-floating mb-3">
                         <InputSelect id="game-force" @bind-Value="Input.Force" class="form-control">
