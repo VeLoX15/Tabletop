@@ -190,9 +190,9 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 # Dumping data for table 'tabletop'.'classes'
 #
 
-INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (1, 0);
-INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (2, 0);
-INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (3, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (1, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (2, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (3, 0);
 # 4 records
 
 #
