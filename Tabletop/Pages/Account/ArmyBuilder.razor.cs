@@ -138,32 +138,72 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        private async Task Increment(Unit unit)
+        private async Task IncrementAsync(Unit unit)
         {
-            if (unit.Quantity < _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity)
+            if (await CheckTroopSize(unit) && await CheckAllowedUnitsOfClass(unit))
             {
-                unit.Quantity++;
+                if (unit.Quantity < _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity)
+                {
+                    unit.Quantity++;
+                }
+
+                int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+                unit.Quantity = quantity;
+
+                await CalculateTotalForceAsync();
+                await CalculateForceAsync();
             }
-
-            int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
-            unit.Quantity = quantity;
-
-            await CalculateTotalForceAsync();
-            await CalculateForceAsync();
         }
 
-        private async Task Decrement(Unit unit)
+        private async Task DecrementAsync(Unit unit)
         {
-            if (unit.Quantity > 0)
+            if (await CheckTroopSize(unit) && await CheckAllowedUnitsOfClass(unit))
             {
-                unit.Quantity--;
+                if (unit.Quantity > 0)
+                {
+                    unit.Quantity--;
+                }
+
+                int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+                unit.Quantity = quantity;
+
+                await CalculateTotalForceAsync();
+                await CalculateForceAsync();
+            }
+        }
+
+        private Task<bool> CheckTroopSize(Unit unit)
+        {
+            if (Input is not null)
+            {
+                foreach (var item in Input.Units.Where(x => x.ClassId == unit.ClassId))
+                {
+                    if (item.Quantity % item.TroopQuantity != 0 && item != unit)
+                    {
+                        return Task.FromResult(false);
+                    }
+                }
+
+                return Task.FromResult(true);
             }
 
-            int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
-            unit.Quantity = quantity;
+            return Task.FromResult(false);
+        }
 
-            await CalculateTotalForceAsync();
-            await CalculateForceAsync();
+        private Task<bool> CheckAllowedUnitsOfClass(Unit unit)
+        {
+            if (Input is not null)
+            {
+                int maxOfClass = (Input.Force / 200);
+                int CountClasses = Input.Units.Where(x => x.ClassId == unit.ClassId).Count();
+
+                if (CountClasses <= maxOfClass || unit.ClassId == 1)
+                {
+                    return Task.FromResult(true);
+                }
+            }
+
+            return Task.FromResult(false);
         }
     }
 }

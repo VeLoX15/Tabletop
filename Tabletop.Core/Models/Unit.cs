@@ -12,6 +12,8 @@ namespace Tabletop.Core.Models
         public int FractionId { get; set; }
         [CompareField("class_id")]
         public int ClassId { get; set; }
+        [CompareField("troop_quantity")]
+        public int TroopQuantity { get; set; }
 
         [CompareField("defense")]
         public int Defense { get; set; }
@@ -34,6 +36,7 @@ namespace Tabletop.Core.Models
 
         public Weapon? PrimaryWeapon { get; set; }
         public Weapon? SecondaryWeapon { get; set; }
+        public Class? Class { get; set; }
         public Fraction Fraction { get; set; } = new();
 
         [CompareField("quantity")]
@@ -63,6 +66,7 @@ namespace Tabletop.Core.Models
                 { "UNIT_ID", UnitId },
                 { "FRACTION_ID", FractionId },
                 { "CLASS_ID", ClassId },
+                { "TROOP_QUANTITY", TroopQuantity },
                 { "DEFENSE", Defense },
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },

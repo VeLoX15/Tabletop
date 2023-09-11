@@ -84,7 +84,7 @@ namespace Tabletop.Core.Services
             StringBuilder sb = new();
             sb.AppendLine("SELECT DISTINCT g.* FROM `games` g LEFT JOIN `players` p ON g.`game_id` = p.`game_id` WHERE p.`user_id` = @USER_ID OR g.`user_id` = @USER_ID ");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `name` ASC ");
+            sb.AppendLine(@$"  ORDER BY `date` DESC ");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();

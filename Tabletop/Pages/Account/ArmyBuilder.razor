@@ -150,11 +150,11 @@
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <button class="btn" @onclick="async () => await Decrement(unit)">
+                                                <button class="btn" @onclick="async () => await DecrementAsync(unit)">
                                                     <i class="fa-solid fa-minus cursor-pointer"></i>
                                                 </button>
                                                 <input class="text-right" @bind="unit.Quantity" max="maxQuantity" readonly style="width:40px" />
-                                                <button class="btn" @onclick="async () => await Increment(unit)">
+                                                <button class="btn" @onclick="async () => await IncrementAsync(unit)">
                                                     <i class="fa-solid fa-plus cursor-pointer"></i>
                                                 </button>
                                             </div>

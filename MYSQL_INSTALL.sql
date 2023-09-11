@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
     `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
     `fraction_id` INTEGER NOT NULL,
 	`class_id` INTEGER NOT NULL,
+	`troop_quantity` INTEGER NOT NULL,
     `defense` INTEGER NOT NULL,
     `moving` INTEGER NOT NULL,
 	`primary_weapon_id` INTEGER NULL,
@@ -123,8 +124,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`classes` (
 	`class_id` INTEGER NOT NULL,
 	`quantity` INTEGER NOT NULL,
 	
-	PRIMARY KEY (`unit_id`, `code`),
-	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`)
+	PRIMARY KEY (`class_id`)
 );
 
 -- -----------------------------------------------------

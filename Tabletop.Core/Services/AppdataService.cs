@@ -25,6 +25,7 @@ namespace Tabletop.Core.Services
         public static List<Weapon> Weapons { get; set; } = new();
         public static List<Fraction> Fractions { get; set; } = new();
         public static List<Gamemode> Gamemodes { get; set; } = new();
+        public static List<Class> Classes { get; set; } = new();
 
 
         private static IConfiguration? _configuration;
@@ -40,6 +41,7 @@ namespace Tabletop.Core.Services
             Weapons = await WeaponService.GetAllAsync(dbController);
             Fractions = await FractionService.GetAllAsync(dbController);
             Gamemodes = await GamemodeService.GetAllAsync(dbController);
+            Classes = await ClassService.GetAllAsync(dbController);
         }
 
 
