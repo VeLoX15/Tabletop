@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Tabletop.Core.Models;
 
-namespace Tabletop.Core.Validator
+namespace Tabletop.Core.Validators
 {
     public class TemplateValidator : AbstractValidator<Template>
     {

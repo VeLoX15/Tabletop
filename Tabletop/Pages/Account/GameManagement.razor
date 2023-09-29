@@ -63,9 +63,12 @@
                                         <td>@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>@game.Date.ToShortDateString()</td>
                                         <td class="text-right">
-                                            <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = game">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </span>
+                                            @if (game.UserId == _loggedInUser?.UserId)
+                                            {
+                                                <span class="aktion-icon" role="button" @onclick="() => SelectedForDeletion = game">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </span>
+                                            }
                                             <a href="@($"/Account/Games/{game.GameId}")" class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
@@ -107,7 +110,7 @@
                         <ValidationMessage For="() => Input.GamemodeId" />
                     </div>
 
-                    @if(Input.GamemodeId != 2 && Input.GamemodeId != 3)
+                    @if (Input.GamemodeId != 2 && Input.GamemodeId != 3)
                     {
                         <div class="form-floating mb-3">
                             <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
@@ -118,7 +121,7 @@
                             </InputSelect>
                             <label for="game-rounds">@localizer["ROUNDS"]</label>
                             <ValidationMessage For="() => Input.Rounds" />
-                        </div>                    
+                        </div>
                     }
 
                     <div class="form-floating mb-3">

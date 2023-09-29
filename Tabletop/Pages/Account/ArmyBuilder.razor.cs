@@ -138,6 +138,17 @@ namespace Tabletop.Pages.Account
             }
         }
 
+        private Task ClearUnitsAsync()
+        {
+            if (Input is not null)
+            {
+                Input.Units.Clear();
+                Input.UsedForce = 0;
+            }
+
+            return Task.CompletedTask;
+        }
+
         private async Task IncrementAsync(Unit unit)
         {
             if (await CheckTroopSize(unit) && await CheckAllowedUnitsOfClass(unit))
@@ -157,7 +168,7 @@ namespace Tabletop.Pages.Account
 
         private async Task DecrementAsync(Unit unit)
         {
-            if (await CheckTroopSize(unit) && await CheckAllowedUnitsOfClass(unit))
+            if (await CheckTroopSize(unit))
             {
                 if (unit.Quantity > 0)
                 {
@@ -194,10 +205,39 @@ namespace Tabletop.Pages.Account
         {
             if (Input is not null)
             {
-                int maxOfClass = (Input.Force / 200);
-                int CountClasses = Input.Units.Where(x => x.ClassId == unit.ClassId).Count();
+                if (unit.ClassId == 1)
+                {
+                    return Task.FromResult(true);
+                }
 
-                if (CountClasses <= maxOfClass || unit.ClassId == 1)
+                int maxOfClass = (Input.Force / 200);
+                int numberOfTroops;
+
+                foreach (var item in Input.Units.Where(x => x.ClassId == unit.ClassId))
+                {
+                    if (item.Quantity > 0 || item == unit)
+                    {
+                        if (maxOfClass > 0)
+                        {
+                            if (item == unit)
+                            {
+                                numberOfTroops = (int)Math.Ceiling(((double)item.Quantity + 1) / (double)item.TroopQuantity);
+                            }
+                            else
+                            {
+                                numberOfTroops = (int)Math.Ceiling((double)item.Quantity / (double)item.TroopQuantity);
+                            }
+
+                            maxOfClass -= numberOfTroops;
+                        }
+                        else
+                        {
+                            return Task.FromResult(false);
+                        }
+                    }
+                }
+
+                if(maxOfClass >= 0)
                 {
                     return Task.FromResult(true);
                 }

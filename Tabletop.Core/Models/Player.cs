@@ -19,7 +19,6 @@ namespace Tabletop.Core.Models
 
         public User User { get; set; } = new();
         public List<Unit> StartUnits { get; set; } = new();
-        public bool IsReady { get; set; } = false;
 
         public int Id => PlayerId;
 

@@ -2,23 +2,28 @@ using Blazor.Pagination;
 using DbController;
 using DbController.MySql;
 using Tabletop.Core.Filters;
-using Tabletop.Core.Services;
+ using Tabletop.Core.Services;
 
 namespace Tabletop.Pages.Admin
 {
     public partial class FractionManagement : IHasPagination
     {
         private int _page = 1;
+
         public FractionFilter Filter { get; set; } = new()
         {
             Limit = AppdataService.PageLimit
         };
+
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
+
         public int TotalItems { get; set; }
+
         protected override async Task OnParametersSetAsync()
         {
             await LoadAsync();
         }
+
         protected override async Task SaveAsync()
         {
             if (Input is null)
@@ -29,6 +34,7 @@ namespace Tabletop.Pages.Admin
             await base.SaveAsync();
             await LoadAsync();
         }
+
         public async Task LoadAsync(bool navigateToPage1 = false)
         {
             Filter.PageNumber = navigateToPage1 ? 1 : Page;

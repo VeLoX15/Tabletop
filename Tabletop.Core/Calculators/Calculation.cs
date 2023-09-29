@@ -12,6 +12,7 @@ namespace Tabletop.Core.Calculators
             double unitForce = ((unit.Defense * 10) + (unit.Moving * 2)) * 2;
             double primaryWeaponForce = 0;
             double secondaryWeaponForce = 0;
+            double hasJetpack = 0;
 
             if (unit.PrimaryWeapon != null)
             {
@@ -21,8 +22,12 @@ namespace Tabletop.Core.Calculators
             {
                 secondaryWeaponForce = ((unit.SecondaryWeapon.Attack * unit.SecondaryWeapon.Quality) * (unit.SecondaryWeapon.Range / 10)) * unit.SecondaryWeapon.Dices;
             }
+            if (unit.HasJetpack)
+            {
+                hasJetpack = 1;
+            }
 
-            return await Task.FromResult(Convert.ToInt32(Math.Round((unitForce + primaryWeaponForce + secondaryWeaponForce) / 25)));
+            return await Task.FromResult(Convert.ToInt32(Math.Round((unitForce + primaryWeaponForce + secondaryWeaponForce) / 25) + hasJetpack));
         }
 
         public async Task<List<string>> Simulation(Unit unit1, int quantityUnit1, CoverTypes coverUnit1, Unit unit2, int quantityUnit2, CoverTypes coverUnit2, int distance)

@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="template-force" @bind-Value="Input.Force" class="form-control">
+                        <InputSelect id="template-force" @bind-Value="Input.Force" @oninput="ClearUnitsAsync" class="form-control">
                             @for (int i = 200; i <= 800; i += 100)
                             {
                                 <option value="@i">@i</option>
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
+                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" @oninput="ClearUnitsAsync" class="form-control">
                             @foreach (Fraction item in AppdataService.Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -137,11 +137,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Input.Units.FirstOrDefault(x => x.FractionId == Input.FractionId) == null)
-                                {
-                                    Input.Units.Clear();
-                                }
-
                                 @foreach (var unit in Input.Units)
                                 {
                                     int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
