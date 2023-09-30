@@ -252,6 +252,11 @@ else
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-unit" @bind-Value="UnitId" class="form-control">
+                            @if (Units.FirstOrDefault(x => x.UnitId == UnitId && x.FractionId == FractionId) is null)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+
                             @foreach (Unit item in Units.Where(x => x.FractionId == FractionId))
                             {
                                 <option value="@item.UnitId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
