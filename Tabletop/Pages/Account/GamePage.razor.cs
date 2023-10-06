@@ -28,11 +28,15 @@ namespace Tabletop.Pages.Account
 
         public int SelectedTeam { get; set; }
         public int SelectedTemplate { get; set; }
+
+        public bool PlayersReady { get; set; } = false;
         public Unit? SelectedUnit { get; set; }
         public Player? SelectedPlayer { get; set; }
         public List<Player> Friends { get; set; } = new(); //Friends of Game Host
         public List<Player> SelectedPlayers { get; set; } = new(); //Players of Game
         public List<Template> Templates { get; set; } = new();
+        public List<Unit> Units { get; set; } = new();
+        public List<Weapon> Weapons { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -40,13 +44,18 @@ namespace Tabletop.Pages.Account
 
             using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
             Game = await gameService.GetAsync(GameId, dbController);
-            if (_loggedInUser != null && Game is not null)
+
+            Units = AppdataService.Units;
+            Weapons = AppdataService.Weapons;
+
+            if (_loggedInUser is not null && Game is not null)
             {
                 _loggedInUser.Units = await unitService.GetUserUnitsAsync(_loggedInUser.UserId, dbController);
                 Templates = await templateService.GetTemplateOnForceAsync(_loggedInUser.UserId, Game.Force, dbController);
             }
 
             await FriendReloading();
+            await CheckPlayerIsReady();
         }
 
         protected async Task FriendReloading()
@@ -142,9 +151,32 @@ namespace Tabletop.Pages.Account
                     playerToUpdate.StartUnits = Player.StartUnits;
                     playerToUpdate.FractionId = Player.FractionId;
                 }
+
+                Player = null;
+            }
+        }
+
+        private Task CheckPlayerIsReady()
+        {
+            if (Game is not null)
+            {
+                int count = 0;
+
+                foreach (var player in Game.Players)
+                {
+                    if (player.StartUnits.Any())
+                    {
+                        count++;
+                    }
+                }
+
+                if (Game.Players.Count == count)
+                {
+                    PlayersReady = true;
+                }
             }
 
-            Player = null;
+            return Task.CompletedTask;
         }
 
         private Task AddUserAsync()
@@ -173,22 +205,21 @@ namespace Tabletop.Pages.Account
             return Task.CompletedTask;
         }
 
-        private Task AddUnitAsync()
+        private async Task AddUnitAsync()
         {
             if (Player is not null && SelectedUnit is not null)
             {
                 Player.StartUnits.Add(SelectedUnit);
 
                 SelectedUnit = null;
+                await CalculateForceAsync();
             }
-
-            return Task.CompletedTask;
         }
 
         private Task UnitSelectionChangedAsync(ChangeEventArgs e)
         {
             int unitId = Convert.ToInt32(e.Value);
-            SelectedUnit = AppdataService.Units.FirstOrDefault(x => x.UnitId == unitId);
+            SelectedUnit = Units.FirstOrDefault(x => x.UnitId == unitId);
             return Task.CompletedTask;
         }
 
@@ -199,8 +230,8 @@ namespace Tabletop.Pages.Account
             {
                 foreach (var unit in Player.StartUnits)
                 {
-                    unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
-                    unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
+                    unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
 
                     int unitForce = await Calculation.ForceAsync(unit);
                     totalForce += unitForce * unit.Quantity;
@@ -215,8 +246,8 @@ namespace Tabletop.Pages.Account
             {
                 foreach (var unit in Player.StartUnits)
                 {
-                    unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
-                    unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
+                    unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
 
                     int force = await Calculation.ForceAsync(unit);
 
@@ -226,32 +257,125 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        private async Task Increment(Unit unit)
+        private async Task CalculateAllForcesAsync()
         {
-            if (unit.Quantity < _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity)
-            {
-                unit.Quantity++;
-            }
-
-            int quantity = Player?.StartUnits.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
-            unit.Quantity = quantity;
-
-            await CalculateTotalForceAsync();
             await CalculateForceAsync();
+            await CalculateTotalForceAsync();
         }
 
-        private async Task Decrement(Unit unit)
+        private Task ClearUnitsAsync()
         {
-            if (unit.Quantity > 0)
+            if (Player is not null)
             {
-                unit.Quantity--;
+                Player.StartUnits.Clear();
+                Player.UsedForce = 0;
             }
 
-            int quantity = Player?.StartUnits.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
-            unit.Quantity = quantity;
+            return Task.CompletedTask;
+        }
 
+        private async Task ClearUnitAsync(Unit unit)
+        {
+            unit.Quantity = 0;
+            Player?.StartUnits.Remove(unit);
             await CalculateTotalForceAsync();
-            await CalculateForceAsync();
+        }
+
+        private async Task IncrementAsync(Unit unit)
+        {
+            if (await CheckTroopSize(unit) && await CheckAllowedUnitsOfClass(unit) && Game?.Force > Player?.UsedForce)
+            {
+                if (unit.Quantity < _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity)
+                {
+                    unit.Quantity++;
+                }
+
+                int quantity = Player?.StartUnits?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+                unit.Quantity = quantity;
+
+                await CalculateTotalForceAsync();
+                await CalculateForceAsync();
+            }
+        }
+
+        private async Task DecrementAsync(Unit unit)
+        {
+            if (await CheckTroopSize(unit))
+            {
+                if (unit.Quantity > 0)
+                {
+                    unit.Quantity--;
+                }
+
+                int quantity = Player?.StartUnits?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+                unit.Quantity = quantity;
+
+                await CalculateTotalForceAsync();
+                await CalculateForceAsync();
+            }
+        }
+
+        private Task<bool> CheckTroopSize(Unit unit)
+        {
+            if (Player is not null)
+            {
+                foreach (var item in Player.StartUnits.Where(x => x.ClassId == unit.ClassId))
+                {
+                    if (item.Quantity % item.TroopQuantity != 0 && item != unit)
+                    {
+                        return Task.FromResult(false);
+                    }
+                }
+
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
+
+        private Task<bool> CheckAllowedUnitsOfClass(Unit unit)
+        {
+            if (Player is not null && Game is not null)
+            {
+                if (unit.ClassId == 1)
+                {
+                    return Task.FromResult(true);
+                }
+
+                int maxOfClass = (Game.Force / 200);
+                int numberOfTroops;
+
+                foreach (var item in Player.StartUnits.Where(x => x.ClassId == unit.ClassId))
+                {
+                    if (item.Quantity > 0 || item == unit)
+                    {
+                        if (maxOfClass > 0)
+                        {
+                            if (item == unit)
+                            {
+                                numberOfTroops = (int)Math.Ceiling(((double)item.Quantity + 1) / (double)item.TroopQuantity);
+                            }
+                            else
+                            {
+                                numberOfTroops = (int)Math.Ceiling((double)item.Quantity / (double)item.TroopQuantity);
+                            }
+
+                            maxOfClass -= numberOfTroops;
+                        }
+                        else
+                        {
+                            return Task.FromResult(false);
+                        }
+                    }
+                }
+
+                if (maxOfClass >= 0)
+                {
+                    return Task.FromResult(true);
+                }
+            }
+
+            return Task.FromResult(false);
         }
     }
 }

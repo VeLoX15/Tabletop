@@ -18,21 +18,42 @@ INSERT INTO `tabletop`.`fractions` (`fraction_id`, `image`) VALUES (4, NULL);
 #
 
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'en', 'Grand Army of the Republic', 'GAR', 'The Grand Army of the Republic is the main military force of the Galactic Republic. It was formed during the Clone Wars to combat the Separatists. The army consists primarily of clone troopers, who were created using the genetic material of Jango Fett as a basis. It encompasses a variety of troops, including infantry, artillery, and special forces, as well as an extensive fleet of starships. The Grand Army of the Republic is renowned for its effective organization, disciplined training, and tactical prowess.');
-INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'de', 'Große Armee der Republik', 'GAR', '');
+INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (1, 'de', 'Große Armee der Republik', 'GAR', 'Die Große Armee der Republik ist die Hauptstreitmacht der Galaktischen Republik. Sie wurde während der Klonkriege eingesetzt, um die Separatisten zu bekämpfen. Die Armee besteht hauptsächlich aus Klontruppen, die mit dem genetischen Material von Jango Fett als Grundlage geschaffen wurden. Sie umfasst eine Vielzahl von Truppentypen, darunter Infanterie, Artillerie und Spezialeinheiten, sowie eine umfangreiche Flotte von Raumschiffen. Die Große Armee der Republik ist bekannt für ihre effektive Organisation, disziplinierte Ausbildung und taktische Geschicklichkeit.');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (2, 'en', 'Confederacy of Independent Systems', 'CIS', 'The Confederation of Independent Systems (CIS) is a military alliance in the galaxy, consisting of renegade planets and organizations that have distanced themselves from the rule of the Galactic Republic. The CIS possesses an impressive military force, primarily composed of droid armies. These automated combat droids are produced in large numbers and pose a dangerous threat due to their numerical superiority.');
-INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (2, 'de', 'Konföderation der unabhängigen Systeme', 'KUS', '');
+INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (2, 'de', 'Konföderation der unabhängigen Systeme', 'KUS', 'Die Konföderation unabhängiger Systeme (KUS) ist ein militärisches Bündnis in der Galaxis, bestehend aus abtrünnigen Planeten und Organisationen, die sich von der Herrschaft der Galaktischen Republik distanziert haben. Die KUS verfügt über eine beeindruckende Militärmacht, die hauptsächlich aus Droidenarmeen besteht. Diese automatisierten Kampfdroiden werden in großen Mengen produziert und stellen aufgrund ihrer zahlenmäßigen Überlegenheit eine gefährliche Bedrohung dar.');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (3, 'en', 'Galactic Empire', 'EMP', 'The Galactic Empire is a military power in the galaxy that emerged after the fall of the Galactic Republic. It possesses a massive military force based on the suppression and control of planets and systems. The Empire employs a variety of troop types. It is renowned for its iron discipline, rigorous training, and ruthless efficiency. It seeks galaxy-wide dominance and pursues a policy of fear and subjugation.');
-INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (3, 'de', 'Galaktisches Imperium', 'IMP', '');
+INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (3, 'de', 'Galaktisches Imperium', 'IMP', 'Das Galaktische Imperium ist eine militärische Macht in der Galaxie, die nach dem Fall der Galaktischen Republik entstand. Es verfügt über eine massive Militärmacht, die auf der Unterdrückung und Kontrolle von Planeten und Systemen basiert. Das Imperium setzt verschiedene Arten von Truppen ein. Es ist bekannt für seine eiserne Disziplin, strenge Ausbildung und rücksichtslose Effizienz. Es strebt die Vorherrschaft in der gesamten Galaxie an und verfolgt eine Politik der Angst und Unterwerfung.');
 INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (4, 'en', 'Rebellion', 'REB', 'The Rebellion is a military resistance movement that fights against the rule of the Galactic Empire. It consists of various factions and planets that rise up against oppression. The Rebellion employs asymmetric warfare and guerrilla tactics to inflict damage upon the Empire. Its forces include both regular troops and partisan units. The Rebellion is known for its determination, belief in freedom, and ability to mobilize resources to challenge the Empire. It also utilizes stolen or improvised starships and weapons to carry out its operations.');
-INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (4, 'de', 'Rebellion', 'REB', '');
+INSERT INTO `tabletop`.`fraction_description` (`fraction_id`, `code`, `name`, `short_name`, `description`) VALUES (4, 'de', 'Rebellion', 'REB', 'Der Widerstand ist eine militärische Widerstandsbewegung, die gegen die Herrschaft des Galaktischen Imperiums kämpft. Er besteht aus verschiedenen Fraktionen und Planeten, die sich gegen die Unterdrückung erheben. Der Widerstand setzt asymmetrische Kriegsführung und Guerillataktiken ein, um dem Imperium Schaden zuzufügen. Seine Streitkräfte umfassen sowohl reguläre Truppen als auch Partisaneneinheiten. Der Widerstand ist bekannt für seine Entschlossenheit, seinen Glauben an die Freiheit und seine Fähigkeit, Ressourcen zu mobilisieren, um das Imperium herauszufordern. Er verwendet auch gestohlene oder improvisierte Raumschiffe und Waffen, um seine Operationen durchzuführen.');
 # 8 records
+
+#
+# Dumping data for table 'tabletop'.'classes'
+#
+
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (1, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (2, 0);
+INSERT INTO `tabletop`.`classes` (`class_id`, `quantity`) VALUES (3, 0);
+# 4 records
+
+#
+# Dumping data for table 'tabletop'.'class_description'
+#
+
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'en', 'Regular', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'de', 'Regulär', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'en', 'Elite', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'de', 'Elite', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'en', 'Specialist', '');
+INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'de', 'Spezialist', '');
+# 6 records
 
 #
 # Dumping data for table 'tabletop'.'weapons'
 #
 
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (1, 5, 5, 60, 1);
-INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (2, 5, 6, 45, 1);
+INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (2, 6, 5, 45, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (3, 9, 7, 80, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (4, 4, 4, 30, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (5, 7, 4, 30, 6);
@@ -93,31 +114,31 @@ INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_qua
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (3, 1, 1, 6, 6, 16, 1, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (4, 1, 1, 6, 6, 16, 2, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (5, 1, 1, 6, 6, 16, 2, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (6, 1, 1, 4, 6, 22, 4, 4, TRUE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (7, 1, 1, 4, 6, 22, 2, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (8, 1, 1, 1, 7, 10, 5, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (9, 1, 1, 1, 6, 14, 3, 4, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (6, 1, 2, 4, 6, 22, 4, 4, TRUE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (7, 1, 2, 4, 6, 22, 2, NULL, TRUE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (8, 1, 3, 1, 7, 10, 5, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (9, 1, 3, 1, 6, 14, 3, 4, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (10, 2, 1, 8, 2, 12, 6, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (11, 2, 1, 6, 5, 14, 9, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (12, 2, 1, 4, 6, 17, 6, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (13, 2, 1, 6, 5, 14, 9, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (14, 2, 1, 6, 2, 22, 6, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (15, 2, 1, 1, 10, 22, 15, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (16, 2, 1, 1, 2, 12, 6, 8, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (12, 2, 2, 4, 6, 17, 6, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (13, 2, 2, 6, 5, 14, 9, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (14, 2, 2, 6, 2, 22, 6, NULL, TRUE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (15, 2, 3, 1, 10, 22, 15, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (16, 2, 3, 1, 2, 12, 6, 8, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (17, 3, 1, 6, 5, 16, 10, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (18, 3, 1, 6, 6, 14, 10, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (19, 3, 1, 4, 7, 16, 14, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (19, 3, 2, 4, 7, 16, 14, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (20, 3, 1, 6, 5, 15, 13, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (21, 3, 1, 4, 6, 14, 11, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (22, 3, 1, 4, 7, 16, 10, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (23, 3, 1, 1, 4, 16, 12, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (21, 3, 2, 4, 6, 14, 11, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (22, 3, 2, 4, 7, 16, 10, NULL, TRUE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (23, 3, 3, 1, 4, 16, 12, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (24, 4, 1, 6, 4, 16, 11, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (25, 4, 1, 4, 4, 16, 11, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (25, 4, 2, 4, 4, 16, 11, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (26, 4, 1, 6, 4, 16, 11, NULL, FALSE, NULL);
 INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (27, 4, 1, 6, 4, 16, 11, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (28, 4, 1, 4, 4, 16, 11, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (29, 4, 1, 1, 4, 16, 11, NULL, FALSE, NULL);
-INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (30, 4, 1, 1, 4, 16, 11, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (28, 4, 2, 4, 4, 16, 11, NULL, TRUE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (29, 4, 3, 1, 4, 16, 11, NULL, FALSE, NULL);
+INSERT INTO `tabletop`.`units` (`unit_id`, `fraction_id`, `class_id`, `troop_quantity`, `defense`, `moving`, `primary_weapon_id`, `secondary_weapon_id`, `has_jetpack`, `image`) VALUES (30, 4, 3, 1, 4, 16, 11, NULL, FALSE, NULL);
 # 30 records
 
 #
@@ -187,27 +208,6 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 # 60 records
 
 #
-# Dumping data for table 'tabletop'.'classes'
-#
-
-INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (1, 0);
-INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (2, 0);
-INSERT INTO `tabletop`.`classes` (`class_id`, `allowed_units`) VALUES (3, 0);
-# 4 records
-
-#
-# Dumping data for table 'tabletop'.'class_description'
-#
-
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'en', 'Regular', '');
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (1, 'de', 'Regulär', '');
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'en', 'Elite', '');
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (2, 'de', 'Elite', '');
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'en', 'Specialist', '');
-INSERT INTO `tabletop`.`class_description` (`class_id`, `code`, `name`, `description`) VALUES (3, 'de', 'Spezialist', '');
-# 6 records
-
-#
 # Dumping data for table 'tabletop'.'gamemodes'
 #
 
@@ -222,13 +222,13 @@ INSERT INTO `tabletop`.`gamemodes` (`gamemode_id`, `image`) VALUES (4, NULL);
 #
 
 INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'en', 'Skirmish', 'The game mode "Skirmish" is the most common of all and focuses on the battle between armies. In this mode, 2-4 armies compete against each other, aiming to eliminate as many units from the opponents field as possible. The game mode is round-limited. The winner is the player who has the most power points remaining on the field at the end.', '');
-INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'de', 'Gefecht', '', '');
+INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (1, 'de', 'Gefecht', 'Der Spielmodus "Gefecht" ist der häufigste aller Spielmodi und konzentriert sich auf die Schlacht zwischen Armeen. In diesem Modus treten 2-4 Armeen gegeneinander an und versuchen so viele Einheiten wie möglich auf dem Spielfeld des Gegners zu eliminieren. Der Spielmodus ist rundenbegrenzt. Der Gewinner ist der Spieler, der am Ende die meisten Macht-Punkte auf dem Spielfeld übrig hat.', '');
 INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'en', 'Extraction', 'The game mode "Escape" revolves around both players escorting a VIP and trying to get them out of the area. The conflict arises because there is only one extraction point. It is also possible to eliminate the enemys VIP from the game. Once the enemy VIP has been eliminated or your own VIP has escaped through the evacuation zone, the player wins.', '');
-INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'de', 'Flucht', '', '');
+INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (2, 'de', 'Flucht', 'Der Spielmodus "Flucht" dreht sich darum, dass beide Spieler einen VIP begleiten und versuchen ihn aus dem Gebiet herauszubringen. Der Konflikt entsteht, weil es nur einen Evakuierungspunkt gibt. Es ist auch möglich, den gegnerischen VIP aus dem Spiel zu eliminieren. Sobald der gegnerische VIP eliminiert wurde oder der eigene VIP durch die Evakuierungszone entkommen ist, gewinnt der Spieler.', '');
 INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'en', 'Assault', 'In the game mode "Assault," the objective is to occupy or defend three defense sectors in succession. The attacker begins with their entire army on one side, while the defender distributes their units across the defense sectors. The attacker has six rounds to capture each sector. The round limit resets after a successful capture. The attacker wins after capturing the third sector, while the defender wins if the round limit expires at any of the sectors.', '');
-INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'de', 'Ansturm', '', '');
+INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (3, 'de', 'Ansturm', 'Im Spielmodus "Angriff" besteht das Ziel darin, drei Verteidigungssektoren nacheinander einzunehmen oder zu verteidigen. Der Angreifer startet mit seiner gesamten Armee auf einer Seite, während der Verteidiger seine Einheiten auf die Verteidigungssektoren verteilt. Der Angreifer hat sechs Runden Zeit, um jeden Sektor zu erobern. Die Rundenbegrenzung setzt sich nach einer erfolgreichen Eroberung zurück. Der Angreifer gewinnt, nachdem er den dritten Sektor erobert hat, während der Verteidiger gewinnt, wenn die Rundenbegrenzung in einem der Sektoren abläuft.', '');
 INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (4, 'en', 'Domination', 'In the game mode "Domination," there are three zones that each side must control.', '');
-INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (4, 'de', 'Herrschaft', '', '');
+INSERT INTO `tabletop`.`gamemode_description` (`gamemode_id`, `code`, `name`, `description`, `mechanic`) VALUES (4, 'de', 'Herrschaft', 'Im Spielmodus "Herrschaft" gibt es drei Zonen, die jede Seite kontrollieren muss.', '');
 # 8 records
 
 #
@@ -343,4 +343,4 @@ INSERT INTO `tabletop`.`user_permissions` (`user_id`, `permission_id`) VALUES (1
 # 20 records
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;z
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

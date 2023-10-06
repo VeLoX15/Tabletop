@@ -121,7 +121,7 @@
                     <div class="form-floating mb-3">
                         <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Description" class="form-control" id="fraction-description" placeholder="Description" />
                         <label for="fraction-description">@localizer["DESCRIPTION"]</label>
-                        <ValidationMessage For="() => Input.Description" />
+                        <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Description" />
                     </div>
                 </div>
             </div>

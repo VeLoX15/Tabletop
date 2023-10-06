@@ -2,7 +2,7 @@
 using System.Globalization;
 using Tabletop.Core.Models;
 
-namespace Tabletop.Core.Validator
+namespace Tabletop.Core.Validators
 {
     public class UnitValidator : AbstractValidator<Unit>
     {

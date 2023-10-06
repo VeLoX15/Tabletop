@@ -13,7 +13,7 @@ namespace Tabletop.Core.Models
         [CompareField("name")]
         public string Name { get; set; } = string.Empty;
         [CompareField("rounds")]
-        public int Rounds { get; set; }
+        public int? Rounds { get; set; }
         [CompareField("force")]
         public int Force { get; set; }
         [CompareField("date")]

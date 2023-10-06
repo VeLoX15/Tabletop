@@ -81,6 +81,29 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`weapon_description` (
 );
 
 -- -----------------------------------------------------
+-- Table `tabletop`.`classes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`classes` (
+	`class_id` INTEGER NOT NULL,
+	`quantity` INTEGER NOT NULL,
+	
+	PRIMARY KEY (`class_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`class_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
+	`class_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NOT NULL,
+
+	PRIMARY KEY (`class_id`, `code`),
+	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
 -- Table `tabletop`.`units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
@@ -115,29 +138,6 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`unit_description` (
 
 	PRIMARY KEY (`unit_id`, `code`),
 	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`classes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`classes` (
-	`class_id` INTEGER NOT NULL,
-	`allowed_units` INTEGER NOT NULL,
-	
-	PRIMARY KEY (`class_id`)
-);
-
--- -----------------------------------------------------
--- Table `tabletop`.`class_description`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
-	`class_id` INTEGER NOT NULL,
-	`code` VARCHAR(5) NOT NULL DEFAULT '',
-	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
-
-	PRIMARY KEY (`class_id`, `code`),
-	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`games`
 	`gamemode_id` INTEGER NOT NULL,
 	`user_id` INTEGER NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
-	`rounds` INTEGER NOT NULL,
+	`rounds` INTEGER NULL,
 	`force` INTEGER NOT NULL,
 	`date` DATETIME NOT NULL,
 

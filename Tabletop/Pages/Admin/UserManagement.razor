@@ -122,6 +122,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="user-fraction" @bind-Value="Input.MainFractionId" class="form-control">
+                            @if (Input.MainFractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Fraction item in Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>

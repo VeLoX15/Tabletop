@@ -122,6 +122,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="weapon-attack" @bind-Value="Input.Attack" class="form-control">
+                            @if (Input.Attack == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 1; i <= 10; i++)
                             {
                                 <option value="@i">@i</option>
@@ -133,6 +137,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="weapon-quality" @bind-Value="Input.Quality" class="form-control">
+                            @if (Input.Quality == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 1; i <= 8; i++)
                             {
                                 <option value="@i">@i</option>
@@ -150,6 +158,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="weapon-dices" @bind-Value="Input.Dices" class="form-control">
+                            @if (Input.Dices == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 1; i <= 10; i++)
                             {
                                 <option value="@i">@i</option>

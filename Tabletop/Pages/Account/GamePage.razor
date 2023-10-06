@@ -50,7 +50,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.User.UserId == _loggedInUser?.UserId)
+                                    @if (player.UserId == _loggedInUser?.UserId || PlayersReady)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -70,7 +70,10 @@
                 <div class="card p-4">
                     <h1 class="text-center">VS</h1>
                     <p>@localizer["GAME_MODE"]: @AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
-                    <p>@localizer["ROUNDS"]: @Game.Rounds</p>
+                    @if (Game.Rounds is not null)
+                    {
+                        <p>@localizer["ROUNDS"]: @Game.Rounds</p>
+                    }
                     <p>@localizer["FORCE"]: @Game.Force</p>
                 </div>
             </div>
@@ -105,7 +108,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.User.UserId == _loggedInUser?.UserId)
+                                    @if (player.User.UserId == _loggedInUser?.UserId || PlayersReady)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -143,10 +146,13 @@
                             <label for="game-rounds">@localizer["FRACTION"]</label>
                         </div>
 
-                        <div class="form-floating mb-3">
-                            <InputNumber id="game-rounds" @bind-Value="Game.Rounds" class="form-control" readonly />
-                            <label for="game-rounds">@localizer["ROUNDS"]</label>
-                        </div>
+                        @if (Game.Rounds is not null)
+                        {
+                            <div class="form-floating mb-3">
+                                <InputNumber id="game-rounds" @bind-Value="Game.Rounds" class="form-control" readonly />
+                                <label for="game-rounds">@localizer["ROUNDS"]</label>
+                            </div>
+                        }
 
                         <div class="form-floating mb-3">
                             <InputNumber id="game-force" @bind-Value="Game.Force" class="form-control" readonly />
@@ -271,7 +277,11 @@
                 <div class="col-12">
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="select-fraction" @bind-Value="Player.FractionId" class="form-control">
+                        <InputSelect id="select-fraction" @bind-Value="Player.FractionId" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Player.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Fraction item in AppdataService.Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -283,6 +293,7 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="player-template" @bind-Value="SelectedTemplate" class="form-control">
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             @foreach (Template item in Templates.Where(x => x.Force == Game.Force && x.FractionId == Player.FractionId))
                             {
                                 <option value="@item.TemplateId">@item.Name</option>
@@ -304,14 +315,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Player.StartUnits.FirstOrDefault(x => x.FractionId == Player.FractionId) == null)
-                                {
-                                    Player.StartUnits.Clear();
-                                }
-
                                 @if (SelectedTemplate > 0)
                                 {
-                                    Player.StartUnits = Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate)?.Units ?? new();
+                                    Player.StartUnits.Clear();
+                                    @foreach(var unit in Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate)?.Units ?? new())
+                                    {
+                                        Player.StartUnits.Add(unit);
+                                    }
+                                } 
+                                else
+                                {
+                                    Player.StartUnits.Clear();
                                 }
 
                                 @foreach (var unit in Player.StartUnits)
@@ -322,11 +336,11 @@
                                         <td class="text-bold-500">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <button class="btn" @onclick="async () => await Decrement(unit)">
+                                                <button class="btn" @onclick="async () => await DecrementAsync(unit)">
                                                     <i class="fa-solid fa-minus"></i>
                                                 </button>
                                                 <input class="text-right" @bind="unit.Quantity" max="maxQuantity" readonly style="width:40px" />
-                                                <button class="btn" @onclick="async () => await Increment(unit)">
+                                                <button class="btn" @onclick="async () => await IncrementAsync(unit)">
                                                     <i class="fa-solid fa-plus"></i>
                                                 </button>
                                             </div>
@@ -336,17 +350,24 @@
                                         </td>
                                         <td>
                                             <button class="btn">
-                                                <i class="fa-solid fa-trash-can" @onclick="() => Player.StartUnits.Remove(unit)"></i>
+                                                <i class="fa-solid fa-trash-can" @onclick="async () => await ClearUnitAsync(unit)"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 }
 
                                 <tr>
-                                    <th><ValidationMessage For="() => Game.Force" /></th>
+                                    <th><ValidationMessage For="() => Player.UsedForce" /></th>
                                     <th></th>
                                     <th>@Player.UsedForce</th>
-                                    <th></th>
+                                    <th>
+                                        @if (Player.StartUnits.Any())
+                                        {
+                                            <button class="btn">
+                                                <i class="fa-solid fa-trash-can" @onclick="ClearUnitsAsync"></i>
+                                            </button>
+                                        }
+                                    </th>
                                 </tr>
 
                                 @if (true)

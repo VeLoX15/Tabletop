@@ -16,9 +16,12 @@
         {
             <div class="col-lg-6 pb-4">
                 <div class="card h-100">
-                    <a href="@($"/Fractions/{fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName}")">
-                        <img src="@fraction.ConvertedImage" class="card-img-top">
-                    </a>
+                    @if (fraction.ConvertedImage != string.Empty)
+                    {
+                        <a href="@($"/Fractions/{fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName}")">
+                            <img src="@fraction.ConvertedImage" class="card-img-top">
+                        </a>
+                    }
                     <div class="card-header ps-4">
                         <h4 class="card-title">@fraction.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                     </div>

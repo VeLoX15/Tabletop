@@ -103,7 +103,11 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="template-force" @bind-Value="Input.Force" class="form-control">
+                        <InputSelect id="template-force" @bind-Value="Input.Force" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Input.Force == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 200; i <= 800; i += 100)
                             {
                                 <option value="@i">@i</option>
@@ -114,7 +118,11 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
+                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Input.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Fraction item in AppdataService.Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -137,11 +145,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Input.Units.FirstOrDefault(x => x.FractionId == Input.FractionId) == null)
-                                {
-                                    Input.Units.Clear();
-                                }
-
                                 @foreach (var unit in Input.Units)
                                 {
                                     int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
@@ -164,7 +167,7 @@
                                         </td>
                                         <td>
                                             <button class="btn">
-                                                <i class="fa-solid fa-trash-can" @onclick="() => Input.Units.Remove(unit)"></i>
+                                                <i class="fa-solid fa-trash-can" @onclick="async () => await ClearUnitAsync(unit)"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -174,7 +177,14 @@
                                     <th><ValidationMessage For="() => Input.UsedForce" /></th>
                                     <th></th>
                                     <th>@Input.UsedForce</th>
-                                    <th></th>
+                                    <th>
+                                        @if (Input.Units.Any())
+                                        {
+                                            <button class="btn">
+                                                <i class="fa-solid fa-trash-can" @onclick="ClearUnitsAsync"></i>
+                                            </button>                                         
+                                        }
+                                    </th>
                                 </tr>
 
                                 <tr>
@@ -200,7 +210,7 @@
                                                 }
                                             </select>
 
-                                            <button @onclick="AddUnitAsync" class="btn btn-success" type="button" disabled="@(SelectedUnit is null)">
+                                            <button @onclick="AddUnitAsync" class="btn btn-success" type="button" disabled="@(SelectedUnit is null ||  Input.Force == 0)">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                         </div>
