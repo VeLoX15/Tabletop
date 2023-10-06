@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`unit_description` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`classes` (
 	`class_id` INTEGER NOT NULL,
-	`quantity` INTEGER NOT NULL,
+	`allowed_units` INTEGER NOT NULL,
 	
 	PRIMARY KEY (`class_id`)
 );
