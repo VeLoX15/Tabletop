@@ -19,8 +19,9 @@ namespace Tabletop.Pages.Public
 
             if(Unit != null)
             {
-                Unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.PrimaryWeaponId) ?? null;
-                Unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.SecondaryWeaponId) ?? null;
+                Unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.PrimaryWeaponId);
+                Unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.SecondaryWeaponId);
+                Unit.Class = AppdataService.Classes.FirstOrDefault(x => x.ClassId == Unit?.ClassId);
 
                 Unit.Force = await Calculation.ForceAsync(Unit);
 

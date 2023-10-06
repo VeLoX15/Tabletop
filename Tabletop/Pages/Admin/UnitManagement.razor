@@ -117,6 +117,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-fraction" @bind-Value="Input.FractionId" class="form-control">
+                            @if (Input.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Fraction item in AppdataService.Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -139,6 +143,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="unit-defense" @bind-Value="Input.Defense" class="form-control">
+                            @if (Input.Defense == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 1; i <= 10; i++)
                             {
                                 <option value="@i">@i</option>

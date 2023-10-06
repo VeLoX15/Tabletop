@@ -101,6 +101,10 @@
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-unit" @bind-Value="Input.GamemodeId" class="form-control">
+                            @if (Input.GamemodeId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Gamemode item in AppdataService.Gamemodes)
                             {
                                 <option value="@item.GamemodeId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -110,10 +114,14 @@
                         <ValidationMessage For="() => Input.GamemodeId" />
                     </div>
 
-                    @if (Input.GamemodeId != 2 && Input.GamemodeId != 3)
+                    @if (Input.GamemodeId == 1 || Input.GamemodeId == 4)
                     {
                         <div class="form-floating mb-3">
                             <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
+                                @if (Input.Rounds == null)
+                                {
+                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                }
                                 @for (int i = 6; i <= 14; i += 1)
                                 {
                                     <option value="@i">@i</option>
@@ -123,9 +131,17 @@
                             <ValidationMessage For="() => Input.Rounds" />
                         </div>
                     }
+                    else
+                    {
+                        Input.Rounds = null;
+                    }
 
                     <div class="form-floating mb-3">
                         <InputSelect id="game-force" @bind-Value="Input.Force" class="form-control">
+                            @if (Input.Force == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @for (int i = 200; i <= 800; i += 100)
                             {
                                 <option value="@i">@i</option>

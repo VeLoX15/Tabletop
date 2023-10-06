@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`games`
 	`gamemode_id` INTEGER NOT NULL,
 	`user_id` INTEGER NOT NULL,
 	`name` VARCHAR(50) NOT NULL,
-	`rounds` INTEGER NOT NULL,
+	`rounds` INTEGER NULL,
 	`force` INTEGER NOT NULL,
 	`date` DATETIME NOT NULL,
 

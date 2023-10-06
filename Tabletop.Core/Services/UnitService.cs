@@ -1,8 +1,6 @@
 ﻿using DbController;
-using Org.BouncyCastle.Asn1.X509;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using Tabletop.Core.Filters;
 using Tabletop.Core.Models;
 
@@ -340,7 +338,7 @@ namespace Tabletop.Core.Services
         {
             string sql = @"UPDATE `tabletop`.`units` SET
                 `fraction_id` = @FRACTION_ID,
-                `class_id` = @CLASS_ID
+                `class_id` = @CLASS_ID,
                 `defense` = @DEFENSE,
                 `moving` = @MOVING,
                 `primary_weapon_id` = @PRIMARY_WEAPON_ID,

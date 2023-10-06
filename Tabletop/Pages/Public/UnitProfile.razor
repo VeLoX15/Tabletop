@@ -28,6 +28,11 @@
                                     <div>
                                         <h4>@localizer["GAME_MECHANIC"]</h4>
                                         <p>@Unit.GetLocalization(CultureInfo.CurrentCulture)?.Mechanic</p>
+                                            Truppengattung: @Unit.Class?.GetLocalization(CultureInfo.CurrentCulture)?.Name
+                                            @if (Unit.HasJetpack == true)
+                                            {
+                                                <p>Ausrüstung: Jetpack</p>
+                                            }
                                     </div>
                                 </div>
                             </div>
@@ -40,6 +45,7 @@
                                                 <th>D</th>
                                                 <th>M</th>
                                                 <th>F</th>
+                                                <th>S</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -47,6 +53,7 @@
                                                 <td>@Unit.Defense</td>
                                                 <td>@Unit.Moving</td>
                                                 <td>@Unit.Force</td>
+                                                <td>@Unit.TroopQuantity</td>
                                             </tr>
                                         </tbody>
                                     </table>
