@@ -208,7 +208,7 @@ else
                                             <td>@user.Username</td>
                                             <td>@user.DisplayName</td>
                                             <td class="text-right">
-                                                @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id)
+                                                @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id && user.Id == 1)
                                                 {
                                                     <button type="button" class="btn" @onclick="() => AddFriendAsync(user.Id)">
                                                         <i class="fa-solid fa-user-plus"></i>
@@ -241,8 +241,8 @@ else
             <div class="row">
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <InputSelect id="select-fraction" @bind-Value="FractionId" class="form-control">
-                            @if (FractionId == 0)
+                        <InputSelect id="select-fraction" @bind-Value="Unit.FractionId" class="form-control">
+                            @if (Unit.FractionId == 0)
                             {
                                 <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
@@ -255,12 +255,12 @@ else
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="select-unit" @bind-Value="UnitId" class="form-control">
-                            @if (Units.FirstOrDefault(x => x.UnitId == UnitId && x.FractionId == FractionId) is null)
+                        <InputSelect id="select-unit" @bind-Value="Unit.UnitId" class="form-control">
+                            @if (Unit.UnitId == 0)
                             {
                                 <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
-                            @foreach (Unit item in Units.Where(x => x.FractionId == FractionId))
+                            @foreach (Unit item in Units.Where(x => x.FractionId == Unit.FractionId))
                             {
                                 <option value="@item.UnitId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
@@ -269,7 +269,7 @@ else
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputNumber @bind-Value="Quantity" class="form-control" id="unit-quantity" placeholder="Quantity" />
+                        <InputNumber @bind-Value="Unit.Quantity" class="form-control" id="unit-quantity" placeholder="Quantity" />
                         <label for="unit-quantity">Quantity</label>
                     </div>
                 </div>
@@ -277,7 +277,7 @@ else
         </EditForm>
 
         <div class="toolbar">
-            <button type="button" class="btn btn-success" @onclick="() => AddUnitAsync()">Save</button>
+            <button type="button" class="btn btn-success" @onclick="() => AddUnitAsync(Unit)" disabled="@(Unit.UnitId <= 0 || Unit.Quantity <= 0)">Save</button>
         </div>
     </Modal>
 }
@@ -301,6 +301,10 @@ else
 
                     <div class="form-floating mb-3">
                         <InputSelect id="user-mainfraction" @bind-Value="CurrentUser.MainFractionId" class="form-control">
+                            @if (CurrentUser.MainFractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
                             @foreach (Fraction item in Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -312,6 +316,10 @@ else
                     <div class="form-floating mb-3">
                         <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
                         <label for="user-description">@localizer["DESCRIPTION"]</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <InputFile @bind-Value="CurrentUser.Image" class="form-control" id="user-image" placeholder="Image" />
                     </div>
                 </div>
             </div>

@@ -47,7 +47,6 @@
 
             <div class="card p-4">
                 <div class="card-content">
-                    <!-- Table with no outer spacing -->
                     <div class="table-responsive">
                         <table class="table mb-0 table-lg">
                             <thead>
@@ -120,20 +119,6 @@
                         <ValidationMessage For="() => Input.DisplayName" />
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <InputSelect id="user-fraction" @bind-Value="Input.MainFractionId" class="form-control">
-                            @if (Input.MainFractionId == 0)
-                            {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
-                            }
-                            @foreach (Fraction item in Fractions)
-                            {
-                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
-                            }
-                        </InputSelect>
-                        <label for="user-fraction">Main Fraction</label>
-                    </div>
-
                     @if (Input.UserId is 0)
                     {
                         <div class="form-floating mb-3">
@@ -142,8 +127,6 @@
                             <ValidationMessage For="() => Input.Password" />
                         </div>
                     }
-
-
 
                     <h4>@localizer["PERMISSIONS"]</h4>
 
@@ -211,8 +194,6 @@
 
                                         </tr>
                                     }
-
-
                                 </tbody>
                             </table>
                         </div>
@@ -220,7 +201,6 @@
                 </div>
             </div>
         </EditForm>
-
         <div class="toolbar">
             <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
             <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>

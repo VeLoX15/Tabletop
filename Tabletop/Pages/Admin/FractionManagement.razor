@@ -51,7 +51,6 @@
         <div class="col-lg-9 col-sm-12">
             <div class="card p-4">
                 <div class="card-content">
-                    <!-- Table with no outer spacing -->
                     <div>
                         <table class="table mb-0 table-lg">
                             <thead>
@@ -122,6 +121,10 @@
                         <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Description" class="form-control" id="fraction-description" placeholder="Description" />
                         <label for="fraction-description">@localizer["DESCRIPTION"]</label>
                         <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Description" />
+                    </div>
+
+                    <div class="mb-3">
+                        <InputFile @bind-Value="Input.Image" class="form-control" id="fraction  -image" placeholder="Image" />
                     </div>
                 </div>
             </div>

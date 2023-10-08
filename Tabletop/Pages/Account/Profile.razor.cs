@@ -28,9 +28,6 @@ namespace Tabletop.Pages.Account
         public List<Unit> UserUnits { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
         public Unit Unit { get; set; } = new();
-        public int Quantity { get; set; }
-        public int FractionId { get; set; }
-        public int UnitId { get; set; }
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
 
@@ -161,17 +158,11 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        protected async Task AddUnitAsync()
+        protected async Task AddUnitAsync(Unit unit)
         {
             if (CurrentUser is not null)
             {
                 using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-
-                Unit unit = new()
-                {
-                    UnitId = UnitId,
-                    Quantity = Quantity
-                };
 
                 CurrentUser.Units.Add(unit);
                 await unitService.CreateUserUnitAsync(CurrentUser, unit, dbController);
