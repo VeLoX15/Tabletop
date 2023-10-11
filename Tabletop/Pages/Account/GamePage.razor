@@ -60,6 +60,10 @@
                                             </tr>
                                         }
                                     }
+                                    <tr>
+                                        <td class="font-bold">Used Force</td>
+                                        <td class="font-bold">@player.UsedForce</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -118,6 +122,10 @@
                                             </tr>
                                         }
                                     }
+                                    <tr>
+                                        <td class="font-bold">Used Force</td>
+                                        <td class="font-bold">@player.UsedForce</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -318,11 +326,11 @@
                                 @if (SelectedTemplate > 0)
                                 {
                                     Player.StartUnits.Clear();
-                                    @foreach(var unit in Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate)?.Units ?? new())
+                                    @foreach (var unit in Templates.FirstOrDefault(x => x.TemplateId == SelectedTemplate)?.Units ?? new())
                                     {
                                         Player.StartUnits.Add(unit);
                                     }
-                                } 
+                                }
                                 else
                                 {
                                     Player.StartUnits.Clear();

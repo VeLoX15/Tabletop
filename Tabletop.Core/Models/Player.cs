@@ -32,7 +32,6 @@ namespace Tabletop.Core.Models
                 { "FRACTION_ID", FractionId },
                 { "TEAM", Team },
                 { "USED_FORCE", UsedForce }
-
             };
         }
     }
