@@ -313,7 +313,7 @@ INSERT INTO `tabletop`.`permission_description` (`permission_id`, `code`, `name`
 # Dumping data for table 'users'
 #
 
-INSERT INTO `tabletop`.`users` (`user_id`, `username`, `display_name`, `description`, `main_fraction_id`, `password`, `salt`, `last_login`, `image`) VALUES (1, 'admin', 'Administrator', '', NULL, 'AQAAAAIAAYagAAAAECDOJwBpi0sqraVzpbiMs47xjH/gr8+/QcCClDnZ2oHzn1xA1jmU50ym+jODGjAHiQ==', '5Vjt5j4785', '2023-01-01 12:00:00', NULL);
+INSERT INTO `tabletop`.`users` (`user_id`, `username`, `display_name`, `description`, `main_fraction_id`, `password`, `salt`, `last_login`, `image`) VALUES (1, 'Admin', 'Administrator', NULL, NULL, 'AQAAAAIAAYagAAAAECDOJwBpi0sqraVzpbiMs47xjH/gr8+/QcCClDnZ2oHzn1xA1jmU50ym+jODGjAHiQ==', '5Vjt5j4785', '0001-01-01 00:00:00', NULL);
 # 1 records
 
 #

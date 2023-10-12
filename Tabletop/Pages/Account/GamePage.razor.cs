@@ -55,6 +55,14 @@ namespace Tabletop.Pages.Account
                 Templates = await templateService.GetTemplateOnForceAsync(_loggedInUser.UserId, Game.Force, dbController);
             }
 
+            if (Game is not null)
+            {
+                foreach (Player player in Game.Players)
+                {
+                    await CalculateAllForcesAsync(player);
+                }
+            }
+
             await FriendReloading();
             await CheckPlayerIsReady();
         }

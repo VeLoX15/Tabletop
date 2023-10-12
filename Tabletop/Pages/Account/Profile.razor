@@ -208,7 +208,7 @@ else
                                             <td>@user.Username</td>
                                             <td>@user.DisplayName</td>
                                             <td class="text-right">
-                                                @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id && user.Id == 1)
+                                                @if (Friends.FirstOrDefault(x => x.Id == user.Id) == null && user.Id != CurrentUser?.Id && user.Id > 1)
                                                 {
                                                     <button type="button" class="btn" @onclick="() => AddFriendAsync(user.Id)">
                                                         <i class="fa-solid fa-user-plus"></i>

@@ -27,7 +27,6 @@ namespace Tabletop.Core.Models
 
 
         public List<Permission> Permissions { get; set; } = new();
-        public List<Fraction> Fractions { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
         public int Id => UserId;
 

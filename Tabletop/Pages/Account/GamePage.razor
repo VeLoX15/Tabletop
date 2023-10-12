@@ -47,6 +47,7 @@
                                     <tr>
                                         <th>@localizer["NAME"]</th>
                                         <th>@localizer["QUANTITY"]</th>
+                                        <th>@localizer["Force"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,13 +58,17 @@
                                             <tr>
                                                 <td>@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                                 <td>@unit.Quantity</td>
+                                                <td>
+                                                    <p>@unit.ForceOfQuantity (@unit.Force)</p>
+                                                </td>
                                             </tr>
                                         }
+                                        <tr>
+                                            <td class="font-bold">Used Force</td>
+                                            <td></td>
+                                            <td class="font-bold">@player.UsedForce</td>
+                                        </tr>
                                     }
-                                    <tr>
-                                        <td class="font-bold">Used Force</td>
-                                        <td class="font-bold">@player.UsedForce</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -109,6 +114,7 @@
                                     <tr>
                                         <th>@localizer["NAME"]</th>
                                         <th>@localizer["QUANTITY"]</th>
+                                        <th>@localizer["Force"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,13 +125,17 @@
                                             <tr>
                                                 <td>@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                                 <td>@unit.Quantity</td>
+                                                <td>
+                                                    <p>@unit.ForceOfQuantity (@unit.Force)</p>
+                                                </td>
                                             </tr>
                                         }
+                                        <tr>
+                                            <td class="font-bold">Used Force</td>
+                                            <td></td>
+                                            <td class="font-bold">@player.UsedForce</td>
+                                        </tr>
                                     }
-                                    <tr>
-                                        <td class="font-bold">Used Force</td>
-                                        <td class="font-bold">@player.UsedForce</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -300,7 +310,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="player-template" @bind-Value="SelectedTemplate" class="form-control">
+                        <InputSelect id="player-template" @bind-Value="SelectedTemplate" @onclick="async () => await CalculateAllForcesAsync(Player)" class="form-control">
                             <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             @foreach (Template item in Templates.Where(x => x.Force == Game.Force && x.FractionId == Player.FractionId))
                             {

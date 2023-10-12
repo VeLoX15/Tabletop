@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`fraction_description` (
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
     `name` VARCHAR(50) NOT NULL,
 	`short_name` VARCHAR(5) NOT NULL,
-    `description` TEXT NOT NULL,
+	`description` TEXT NULL,
 
 	PRIMARY KEY (`fraction_id`, `code`),
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`gamemode_description` (
 	`gamemode_id` INTEGER NOT NULL,
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
 	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
-	`mechanic` TEXT NOT NULL,
+	`description` TEXT NULL,
+	`mechanic` TEXT NULL,
 
 	PRIMARY KEY (`gamemode_id`, `code`),
 	FOREIGN KEY (`gamemode_id`) REFERENCES `tabletop`.`gamemodes`(`gamemode_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`weapon_description` (
 	`weapon_id` INTEGER NOT NULL,
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
 	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
+	`description` TEXT NULL,
 
 	PRIMARY KEY (`weapon_id`, `code`),
 	FOREIGN KEY (`weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
 	`class_id` INTEGER NOT NULL,
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
 	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
+	`description` TEXT NULL,
 
 	PRIMARY KEY (`class_id`, `code`),
 	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -133,8 +133,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`unit_description` (
 	`unit_id` INTEGER NOT NULL,
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
 	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
-	`mechanic` TEXT NOT NULL,
+	`description` TEXT NULL,
+	`mechanic` TEXT NULL,
 
 	PRIMARY KEY (`unit_id`, `code`),
 	FOREIGN KEY (`unit_id`) REFERENCES `tabletop`.`units`(`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`users` (
 	`user_id` INTEGER NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
 	`display_name` VARCHAR(100) NOT NULL,
-	`description` TEXT NOT NULL,
+	`description` TEXT NULL,
 	`main_fraction_id` INT NULL, 
 	`password` VARCHAR(255) NOT NULL,
 	`salt` VARCHAR(255) NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`permission_description` (
 	`permission_id` INTEGER NOT NULL,
 	`code` VARCHAR(5) NOT NULL DEFAULT '',
 	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
+	`description` TEXT NULL,
 
 	PRIMARY KEY (`permission_id`, `code`),
 	FOREIGN KEY (`permission_id`) REFERENCES `tabletop`.`permissions`(`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE
