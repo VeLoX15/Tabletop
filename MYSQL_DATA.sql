@@ -196,7 +196,7 @@ INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `descripti
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (25, 'en', 'Rebel Commando Trooper', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (25, 'de', 'Kommandotruppe der Rebellion', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (26, 'en', 'Rebel Fleet Trooper', '', '');
-INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (26, 'de', 'Flootentruppe der Rebellion', '', '');
+INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (26, 'de', 'Flottentruppe der Rebellion', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (27, 'en', 'Rebel Snow Trooper', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (27, 'de', 'Schneetruppe der Rebellion', '', '');
 INSERT INTO `tabletop`.`unit_description` (`unit_id`, `code`, `name`, `description`, `mechanic`) VALUES (28, 'en', 'Rebel Jetpack Trooper', '', '');

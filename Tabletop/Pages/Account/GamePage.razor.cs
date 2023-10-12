@@ -59,7 +59,7 @@ namespace Tabletop.Pages.Account
             {
                 foreach (Player player in Game.Players)
                 {
-                    await CalculateAllForcesAsync(player);
+                    await CalculateArmyDataAsync(player);
                 }
             }
 
@@ -267,10 +267,24 @@ namespace Tabletop.Pages.Account
             }
         }
 
-        private async Task CalculateAllForcesAsync(Player player)
+        private async Task CalculateArmyDataAsync(Player player)
         {
             await CalculateForceAsync(player);
             await CalculateTotalForceAsync(player);
+            await CountTotalUnitsAsync(player);
+        }
+
+        private Task CountTotalUnitsAsync(Player player)
+        {
+            int count = 0;
+
+            foreach(Unit unit in player.StartUnits)
+            {
+                count += unit.Quantity;
+            }
+
+            player.TotalUnits = count;
+            return Task.CompletedTask;
         }
 
         private Task ClearUnitsAsync()

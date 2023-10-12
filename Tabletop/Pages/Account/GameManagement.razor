@@ -51,6 +51,7 @@
                                 <tr>
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["GAME_MODES"]</th>
+                                    <th>@localizer["FORCE"]</th>
                                     <th>@localizer["DATE"]</th>
                                     <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
@@ -60,6 +61,7 @@
                                     <tr>
                                         <td>@game.Name</td>
                                         <td>@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td>@game.Force</td>
                                         <td>@game.Date.ToShortDateString()</td>
                                         <td class="text-right">
                                             @if (game.UserId == _loggedInUser?.UserId)

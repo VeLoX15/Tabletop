@@ -65,7 +65,7 @@
                                         }
                                         <tr>
                                             <td class="font-bold">Used Force</td>
-                                            <td></td>
+                                            <td class="font-bold">@player.TotalUnits</td>
                                             <td class="font-bold">@player.UsedForce</td>
                                         </tr>
                                     }
@@ -132,7 +132,7 @@
                                         }
                                         <tr>
                                             <td class="font-bold">Used Force</td>
-                                            <td></td>
+                                            <td class="font-bold">@player.TotalUnits</td>
                                             <td class="font-bold">@player.UsedForce</td>
                                         </tr>
                                     }
@@ -310,7 +310,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <InputSelect id="player-template" @bind-Value="SelectedTemplate" @onclick="async () => await CalculateAllForcesAsync(Player)" class="form-control">
+                        <InputSelect id="player-template" @bind-Value="SelectedTemplate" @onclick="async () => await CalculateArmyDataAsync(Player)" class="form-control">
                             <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             @foreach (Template item in Templates.Where(x => x.Force == Game.Force && x.FractionId == Player.FractionId))
                             {
@@ -340,10 +340,6 @@
                                     {
                                         Player.StartUnits.Add(unit);
                                     }
-                                }
-                                else
-                                {
-                                    Player.StartUnits.Clear();
                                 }
 
                                 @foreach (var unit in Player.StartUnits)

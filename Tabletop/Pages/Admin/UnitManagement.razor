@@ -129,6 +129,20 @@
                     </div>
 
                     <div class="form-floating mb-3">
+                        <InputSelect id="select-class" @bind-Value="Input.ClassId" class="form-control">
+                            @if (Input.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @foreach (Class item in AppdataService.Classes)
+                            {
+                                <option value="@item.ClassId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-class">@localizer["CHOOSE_CLASS"]</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
                         <InputTextArea @bind-Value="Input.GetLocalization(CultureInfo.CurrentCulture).Description" class="form-control" id="unit-description" placeholder="Description" />
                         <label for="unit-description">@localizer["DESCRIPTION"]</label>
                         <ValidationMessage For="() => Input.GetLocalization(CultureInfo.CurrentCulture).Description" />

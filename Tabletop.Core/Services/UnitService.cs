@@ -369,7 +369,6 @@ namespace Tabletop.Core.Services
             }
         }
 
-
         private static async Task LoadUnitDescriptionsAsync(List<Unit> list, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
