@@ -150,17 +150,11 @@
   <data name="CANCEL" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="CHOOSE_FRACTION" xml:space="preserve">
-    <value>Wähle Fraktion</value>
+  <data name="CHOOSE" xml:space="preserve">
+    <value>Wähle</value>
   </data>
-  <data name="CHOOSE_MAIN_FRACTION" xml:space="preserve">
-    <value>Choose your main fraction</value>
-  </data>
-  <data name="CHOOSE_PRIMARY_WEAPON" xml:space="preserve">
-    <value>Choose primary weapon</value>
-  </data>
-  <data name="CHOOSE_SECONDARY_WEAPON" xml:space="preserve">
-    <value>Choose secondary weapon</value>
+  <data name="CLASS" xml:space="preserve">
+    <value>Klasse</value>
   </data>
   <data name="CONTACT" xml:space="preserve">
     <value>Kontakt</value>
@@ -180,6 +174,9 @@
   <data name="DEFENSE" xml:space="preserve">
     <value>Verteidigung</value>
   </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
   <data name="DESCRIPTION" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
@@ -188,6 +185,9 @@
   </data>
   <data name="DISTANCE" xml:space="preserve">
     <value>Distanz</value>
+  </data>
+  <data name="EDIT" xml:space="preserve">
+    <value>Bearbeite</value>
   </data>
   <data name="EMAIL" xml:space="preserve">
     <value>support@tablebricks.com</value>
@@ -249,6 +249,9 @@
   <data name="LOGOUT" xml:space="preserve">
     <value>Abmelden</value>
   </data>
+  <data name="MAIN_FRACTION" xml:space="preserve">
+    <value>Hauptfraktion</value>
+  </data>
   <data name="MOVING" xml:space="preserve">
     <value>Bewegung</value>
   </data>
@@ -258,6 +261,9 @@
   <data name="NOT_FOUND" xml:space="preserve">
     <value>nicht gefunden</value>
   </data>
+  <data name="NO_ADDRESS" xml:space="preserve">
+    <value>Entschuldigung, unter dieser Adresse ist nichts zu finden.</value>
+  </data>
   <data name="OWN_PERMISSIONS" xml:space="preserve">
     <value>Eigene Berechtigung</value>
   </data>
@@ -266,6 +272,9 @@
   </data>
   <data name="PERMISSIONS" xml:space="preserve">
     <value>Permissions</value>
+  </data>
+  <data name="PRIMARY" xml:space="preserve">
+    <value>primäre</value>
   </data>
   <data name="PROFILE" xml:space="preserve">
     <value>Profil</value>
@@ -290,6 +299,9 @@
   </data>
   <data name="SEARCH" xml:space="preserve">
     <value>Suche</value>
+  </data>
+  <data name="SECONDARY" xml:space="preserve">
+    <value>sekundäre</value>
   </data>
   <data name="SELECT_CHOOSE" xml:space="preserve">
     <value>--- Wähle ---</value>
@@ -345,6 +357,9 @@
   <data name="UNIT_VALUES" xml:space="preserve">
     <value>Werte der Einheit</value>
   </data>
+  <data name="USED" xml:space="preserve">
+    <value>Verwendet</value>
+  </data>
   <data name="USER" xml:space="preserve">
     <value>Benutzer</value>
   </data>
@@ -353,6 +368,9 @@
   </data>
   <data name="USERS" xml:space="preserve">
     <value>Benutzer</value>
+  </data>
+  <data name="WEAPON" xml:space="preserve">
+    <value>Waffe</value>
   </data>
   <data name="WEAPONS" xml:space="preserve">
     <value>Waffen</value>

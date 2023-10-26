@@ -99,7 +99,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit unit: {0}", Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["UNIT"], Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
            OnClosed="() => Input = null"
            ModalSize="ModalSize.LG"
            HideFooter="true">
@@ -125,7 +125,7 @@
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-fraction">@localizer["CHOOSE_FRACTION"]</label>
+                        <label for="select-fraction">@localizer["CHOOSE"] @localizer["FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -139,7 +139,7 @@
                                 <option value="@item.ClassId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-class">@localizer["CHOOSE_CLASS"]</label>
+                        <label for="select-class">@localizer["CHOOSE"] @localizer["CLASS"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -162,14 +162,14 @@
                         <InputSelect id="unit-defense" @bind-Value="Input.Defense" class="form-control">
                             @if (Input.Defense == 0)
                             {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                <option value="0" selected>@localizer["CHOOSE"] @localizer["DEFENSE"]</option>
                             }
                             @for (int i = 1; i <= 10; i++)
                             {
                                 <option value="@i">@i</option>
                             }
                         </InputSelect>
-                        <label for="unit-defense">@localizer["DEFENSE"]</label>
+                        <label for="unit-defense">@localizer["SELECT_CHOOSE"]</label>
                         <ValidationMessage For="() => Input.Defense" />
                     </div>
 
@@ -187,7 +187,7 @@
                                 <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">@localizer["CHOOSE_PRIMARY_WEAPON"]</label>
+                        <label for="select-weapon">@localizer["CHOOSE"] @localizer["PRIMARY"] @localizer["WEAPON"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -198,7 +198,7 @@
                                 <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">@localizer["CHOOSE_SECONDARY_WEAPON"]</label>
+                        <label for="select-weapon">@localizer["CHOOSE"] @localizer["SECONDARY"] @localizer["WEAPON"]</label>
                     </div>
                 </div>
             </div>
@@ -213,7 +213,7 @@
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete"
+    <ConfirmModal Title="@localizer["DELETE"]"
                   OnClosed="() => SelectedForDeletion = null"
                   OnConfirmed="DeleteAsync">
         <p>@String.Format("Should the unit '{0}' really be deleted?", SelectedForDeletion.GetLocalization(CultureInfo.CurrentCulture)?.Name)</p>

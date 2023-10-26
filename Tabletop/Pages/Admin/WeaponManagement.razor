@@ -98,7 +98,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit weapon: {0}", Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["WEAPON"], Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
        OnClosed="() => Input = null"
        ModalSize="ModalSize.LG"
        HideFooter="true">
@@ -182,7 +182,7 @@
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete"
+    <ConfirmModal Title="@localizer["DELETE"]"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
         <p>@String.Format("Should the weapon '{0}' really be deleted?", SelectedForDeletion.GetLocalization(CultureInfo.CurrentCulture)?.Name)</p>

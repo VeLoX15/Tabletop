@@ -57,7 +57,7 @@ INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `di
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (3, 9, 7, 80, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (4, 4, 4, 30, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (5, 7, 4, 30, 6);
-INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (6, 6, 5, 40, 1);
+INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (6, 6, 4, 40, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (7, 10, 7, 80, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (8, 6, 5, 45, 1);
 INSERT INTO `tabletop`.`weapons` (`weapon_id`, `attack`, `quality`, `range`, `dices`) VALUES (9, 7, 4, 50, 2);

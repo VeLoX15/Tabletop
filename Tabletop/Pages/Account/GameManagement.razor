@@ -87,7 +87,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit game: {0}", Input.Name)"
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["GAME"], Input.Name)"
            OnClosed="() => Input = null"
            ModalSize="ModalSize.LG"
            HideFooter="true">
@@ -106,7 +106,7 @@
                         <InputSelect id="select-unit" @bind-Value="Input.GamemodeId" class="form-control">
                             @if (Input.GamemodeId == 0)
                             {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                <option value="0" selected>@localizer["CHOOSE_GAMEMODE"]</option>
                             }
                             @foreach (Gamemode item in AppdataService.Gamemodes)
                             {
@@ -123,7 +123,7 @@
                             <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
                                 @if (Input.Rounds == null)
                                 {
-                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                    <option value="0" selected>@localizer["CHOOSE_ROUNDS"]</option>
                                 }
                                 @for (int i = 6; i <= 14; i += 1)
                                 {
@@ -166,7 +166,7 @@
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete"
+    <ConfirmModal Title="@localizer["DELETE"]"
                   OnClosed="() => SelectedForDeletion = null"
                   OnConfirmed="DeleteAsync">
         <p>@String.Format("Should the game '{0}' really be deleted?", SelectedForDeletion.Name)</p>

@@ -150,17 +150,11 @@
   <data name="CANCEL" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="CHOOSE_FRACTION" xml:space="preserve">
-    <value>Choose fraction</value>
+  <data name="CHOOSE" xml:space="preserve">
+    <value>Choose</value>
   </data>
-  <data name="CHOOSE_MAIN_FRACTION" xml:space="preserve">
-    <value>Choose your main fraction</value>
-  </data>
-  <data name="CHOOSE_PRIMARY_WEAPON" xml:space="preserve">
-    <value>Choose primary weapon</value>
-  </data>
-  <data name="CHOOSE_SECONDARY_WEAPON" xml:space="preserve">
-    <value>Choose secondary weapon</value>
+  <data name="CLASS" xml:space="preserve">
+    <value>Class</value>
   </data>
   <data name="CONTACT" xml:space="preserve">
     <value>Contact</value>
@@ -180,6 +174,9 @@
   <data name="DEFENSE" xml:space="preserve">
     <value>Defense</value>
   </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="DESCRIPTION" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -188,6 +185,9 @@
   </data>
   <data name="DISTANCE" xml:space="preserve">
     <value>Distance</value>
+  </data>
+  <data name="EDIT" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="EMAIL" xml:space="preserve">
     <value>support@tablebricks.com</value>
@@ -249,6 +249,9 @@
   <data name="LOGOUT" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="MAIN_FRACTION" xml:space="preserve">
+    <value>Main Fraction</value>
+  </data>
   <data name="MOVING" xml:space="preserve">
     <value>Moving</value>
   </data>
@@ -257,6 +260,9 @@
   </data>
   <data name="NOT_FOUND" xml:space="preserve">
     <value>not found</value>
+  </data>
+  <data name="NO_ADDRESS" xml:space="preserve">
+    <value>Sorry, there's nothing at this address.</value>
   </data>
   <data name="OWN_PERMISSIONS" xml:space="preserve">
     <value>Own permissions</value>
@@ -345,6 +351,9 @@
   <data name="UNIT_VALUES" xml:space="preserve">
     <value>Unit Values</value>
   </data>
+  <data name="USED" xml:space="preserve">
+    <value>Used</value>
+  </data>
   <data name="USER" xml:space="preserve">
     <value>User</value>
   </data>
@@ -353,6 +362,9 @@
   </data>
   <data name="USERS" xml:space="preserve">
     <value>Users</value>
+  </data>
+  <data name="WEAPON" xml:space="preserve">
+    <value>Weapon</value>
   </data>
   <data name="WEAPONS" xml:space="preserve">
     <value>Weapons</value>

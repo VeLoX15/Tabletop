@@ -121,9 +121,6 @@
                                         <tr>
                                             <td>
                                                 <div>@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</div>
-                                                <div>
-                                                    <img src="@item.ConvertedImage" height="50" width="50" alt="Unit">
-                                                </div>
                                             </td>
                                             <td class="align-items-center">@item.Quantity</td>
                                             @if (CurrentUser?.UserId == _loggedInUser?.UserId)
@@ -244,7 +241,7 @@ else
                         <InputSelect id="select-fraction" @bind-Value="Unit.FractionId" class="form-control">
                             @if (Unit.FractionId == 0)
                             {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                <option value="0" selected>@localizer["CHOOSE"] @localizer["FRACTION"]</option>
                             }
                             @foreach (Fraction item in Fractions)
                             {
@@ -258,7 +255,7 @@ else
                         <InputSelect id="select-unit" @bind-Value="Unit.UnitId" class="form-control">
                             @if (Unit.UnitId == 0)
                             {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                <option value="0" selected>@localizer["CHOOSE"] @localizer["UNIT"]</option>
                             }
                             @foreach (Unit item in Units.Where(x => x.FractionId == Unit.FractionId))
                             {
@@ -310,7 +307,7 @@ else
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="user-mainfraction">@localizer["CHOOSE_MAIN_FRACTION"]</label>
+                        <label for="user-mainfraction">@localizer["CHOOSE"] @localizer["MAIN_FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">

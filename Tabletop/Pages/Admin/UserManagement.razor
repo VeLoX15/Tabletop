@@ -97,7 +97,7 @@
 
 @if (Input is not null)
 {
-    <Modal Title="@String.Format("Edit user: {0}", Input.DisplayName)"
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["USER"], Input.Username)"
        OnClosed="() => Input = null"
        ModalSize="ModalSize.LG"
        HideFooter="true">
@@ -210,7 +210,7 @@
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete"
+    <ConfirmModal Title="@localizer["DELETE"]"
               OnClosed="() => SelectedForDeletion = null"
               OnConfirmed="DeleteAsync">
         <p>@String.Format("Should the user '{0}' really be deleted?", SelectedForDeletion.DisplayName)</p>

@@ -51,7 +51,7 @@
                                     <th>@localizer["NAME"]</th>
                                     <th>@localizer["FRACTION"]</th>
                                     <th>@localizer["FORCE"]</th>
-                                    <th>Used</th>
+                                    <th>@localizer["USED"]</th>
                                     <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
@@ -86,7 +86,7 @@
 
 @if (Input is not null && _loggedInUser is not null)
 {
-    <Modal Title="@String.Format("Edit template: {0}", Input.Name)"
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["TEMPLATE"], Input.Name)"
            OnClosed="() => Input = null"
            ModalSize="ModalSize.LG"
            HideFooter="true">
@@ -231,7 +231,7 @@
 
 @if (SelectedForDeletion is not null)
 {
-    <ConfirmModal Title="Delete"
+    <ConfirmModal Title="@localizer["DELETE"]"
                   OnClosed="() => SelectedForDeletion = null"
                   OnConfirmed="DeleteAsync">
         <p>@String.Format("Should the game '{0}' really be deleted?", SelectedForDeletion.Name)</p>

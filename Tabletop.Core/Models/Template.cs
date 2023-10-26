@@ -19,6 +19,7 @@ namespace Tabletop.Core.Models
         public List<Unit> Units { get; set; } = new();
 
         public int Id => TemplateId;
+        public int TotalUnits { get; set; }
 
         public Dictionary<string, object?> GetParameters()
         {
