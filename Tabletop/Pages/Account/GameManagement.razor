@@ -106,7 +106,7 @@
                         <InputSelect id="select-unit" @bind-Value="Input.GamemodeId" class="form-control">
                             @if (Input.GamemodeId == 0)
                             {
-                                <option value="0" selected>@localizer["CHOOSE_GAMEMODE"]</option>
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
                             @foreach (Gamemode item in AppdataService.Gamemodes)
                             {
@@ -123,7 +123,7 @@
                             <InputSelect id="game-rounds" @bind-Value="Input.Rounds" class="form-control">
                                 @if (Input.Rounds == null)
                                 {
-                                    <option value="0" selected>@localizer["CHOOSE_ROUNDS"]</option>
+                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                                 }
                                 @for (int i = 6; i <= 14; i += 1)
                                 {
