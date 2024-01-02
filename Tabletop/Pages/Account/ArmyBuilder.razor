@@ -173,8 +173,10 @@
                                 }
 
                                 <tr>
-                                    <th><ValidationMessage For="() => Input.UsedForce" /></th>
-                                    <th></th>
+                                    <th>
+                                        <ValidationMessage For="() => Input.UsedForce" />
+                                    </th>
+                                    <th class="text-center">@Input.TotalUnits</th>
                                     <th>@Input.UsedForce</th>
                                     <th>
                                         @if (Input.Units.Any())

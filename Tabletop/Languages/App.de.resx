@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="A" xml:space="preserve">
+    <value>A</value>
+  </data>
   <data name="ABOUT_ME" xml:space="preserve">
     <value>Über mich</value>
   </data>
@@ -162,11 +165,14 @@
   <data name="COVER_TYPE" xml:space="preserve">
     <value>Deckungsart</value>
   </data>
+  <data name="D" xml:space="preserve">
+    <value>V</value>
+  </data>
   <data name="DAMAGE_TABLE" xml:space="preserve">
     <value>Schadenstabellen</value>
   </data>
   <data name="DAMAGE_TABLE_DESCRIPTION" xml:space="preserve">
-    <value>Here you can find everything about the damage tables.</value>
+    <value>Hier finden Sie alles über die Schadenswerte.</value>
   </data>
   <data name="DATE" xml:space="preserve">
     <value>Datum</value>
@@ -234,8 +240,8 @@
   <data name="GAME_MODES" xml:space="preserve">
     <value>Spielmodi</value>
   </data>
-  <data name="GAME_MODE_DESCRIPTION" xml:space="preserve">
-    <value>Fight for victory in different game modes and bring your faction to success in the galaxy.</value>
+  <data name="GAME_MODES_DESCRIPTION" xml:space="preserve">
+    <value>Kämpfe in verschiedenen Spielmodi um den Sieg und führe deine Fraktion zum Erfolg in der Galaxie.</value>
   </data>
   <data name="HOME" xml:space="preserve">
     <value>Startseite</value>
@@ -274,7 +280,7 @@
     <value>Permissions</value>
   </data>
   <data name="PRIMARY" xml:space="preserve">
-    <value>primäre</value>
+    <value>Primäre</value>
   </data>
   <data name="PROFILE" xml:space="preserve">
     <value>Profil</value>
@@ -301,16 +307,19 @@
     <value>Suche</value>
   </data>
   <data name="SECONDARY" xml:space="preserve">
-    <value>sekundäre</value>
+    <value>Sekundäre</value>
   </data>
   <data name="SELECT_CHOOSE" xml:space="preserve">
     <value>--- Wähle ---</value>
+  </data>
+  <data name="SHORT_NAME" xml:space="preserve">
+    <value>Kürzel</value>
   </data>
   <data name="SIMULATION" xml:space="preserve">
     <value>Simulation</value>
   </data>
   <data name="SIMULATION_DESCRIPTION" xml:space="preserve">
-    <value>You can simulate a battle between two types of units here.</value>
+    <value>Simuliere kämpfe zwischen zwei Einheiten und schaue dir deine Chancen an.</value>
   </data>
   <data name="SLOGAN" xml:space="preserve">
     <value>Erwecke deine Minifiguren zum Leben!</value>
@@ -344,6 +353,9 @@
   </data>
   <data name="THE_GAME_TEXT" xml:space="preserve">
     <value>This Game is an unoffical tabletop of LEGO Star Wars. The project is developed since 2019.</value>
+  </data>
+  <data name="TOTAL" xml:space="preserve">
+    <value>Gesamt</value>
   </data>
   <data name="UNIT" xml:space="preserve">
     <value>Einheit</value>

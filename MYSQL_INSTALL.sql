@@ -104,6 +104,28 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
 );
 
 -- -----------------------------------------------------
+-- Table `tabletop`.`abilities`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`ability` (
+	`ability_id` INTEGER NOT NULL,
+	
+	PRIMARY KEY (`ability_id`)
+);
+
+-- -----------------------------------------------------
+-- Table `tabletop`.`ability_description`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tabletop`.`ability_description` (
+	`ability_id` INTEGER NOT NULL,
+	`code` VARCHAR(5) NOT NULL DEFAULT '',
+	`name` VARCHAR(50) NOT NULL,
+	`description` TEXT NULL,
+
+	PRIMARY KEY (`ability_id`, `code`),
+	FOREIGN KEY (`ability_id`) REFERENCES `tabletop`.`ability`(`ability_id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
 -- Table `tabletop`.`units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tabletop`.`units` 

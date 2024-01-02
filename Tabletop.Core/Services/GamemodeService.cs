@@ -91,7 +91,7 @@ namespace Tabletop.Core.Services
             {
                 sql = @"UPDATE `tabletop`.`gamemode_description` SET
                     `name` = @NAME,
-                    `description` = @DESCRIPTION,
+                    `description` = @DESCRIPTION
                     WHERE `gamemode_id` = @GAMEMODE_ID AND `code` = @CODE";
 
                 var parameters = new

@@ -74,6 +74,7 @@ namespace Tabletop.Pages.Account
         {
             await base.EditAsync(input);
             await CalculateTotalForceAsync();
+            await CalculateTotalCountAsync();
             await CalculateForceAsync();
         }
 
@@ -148,6 +149,7 @@ namespace Tabletop.Pages.Account
             {
                 Input.Units.Clear();
                 Input.UsedForce = 0;
+                Input.TotalUnits = 0;
             }
 
             return Task.CompletedTask;
@@ -156,7 +158,13 @@ namespace Tabletop.Pages.Account
         private async Task ClearUnitAsync(Unit unit)
         {
             unit.Quantity = 0;
+            if(Input is not null)
+            {
+                Input.TotalUnits = 0;
+            }
             Input?.Units.Remove(unit);
+
+            await CalculateTotalCountAsync();
             await CalculateTotalForceAsync();
         }
 
@@ -172,6 +180,7 @@ namespace Tabletop.Pages.Account
                 int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
                 unit.Quantity = quantity;
 
+                await CalculateTotalCountAsync();
                 await CalculateTotalForceAsync();
                 await CalculateForceAsync();
             }
@@ -189,9 +198,23 @@ namespace Tabletop.Pages.Account
                 int quantity = Input?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
                 unit.Quantity = quantity;
 
+                await CalculateTotalCountAsync();
                 await CalculateTotalForceAsync();
                 await CalculateForceAsync();
             }
+        }
+
+        private Task<int> CalculateTotalCountAsync()
+        {
+            if(Input is not null)
+            {
+                Input.TotalUnits = 0;
+                foreach(Unit unit in Input.Units)
+                {
+                    Input.TotalUnits += unit.Quantity;
+                }
+            }
+            return Task.FromResult(0);
         }
 
         private Task<bool> CheckTroopSize(Unit unit)

@@ -18,7 +18,7 @@
                         <th>@localizer["UNIT"]</th>
                         @for (int i = 1; i <= 10; i++)
                         {
-                            <th>D@(i)</th>
+                            <th>@localizer["D"]@(i)</th>
                         }
                     </tr>
                 </thead>
@@ -26,7 +26,7 @@
                     @for (int i = 1; i <= 10; i++)
                     {
                         <tr>
-                            <th>A@(i)</th>
+                            <th>@localizer["A"]@(i)</th>
                             @for (int j = 1; j <= 10; j++)
                             {
                                 var values = Calculation.AttackValueTranslator(i, j);

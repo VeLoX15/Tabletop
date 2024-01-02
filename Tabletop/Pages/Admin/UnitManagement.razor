@@ -125,7 +125,7 @@
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-fraction">@localizer["CHOOSE"] @localizer["FRACTION"]</label>
+                        <label for="select-fraction">@localizer["FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -139,7 +139,7 @@
                                 <option value="@item.ClassId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-class">@localizer["CHOOSE"] @localizer["CLASS"]</label>
+                        <label for="select-class">@localizer["CLASS"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -162,14 +162,14 @@
                         <InputSelect id="unit-defense" @bind-Value="Input.Defense" class="form-control">
                             @if (Input.Defense == 0)
                             {
-                                <option value="0" selected>@localizer["CHOOSE"] @localizer["DEFENSE"]</option>
+                                <option value="0" selected>@localizer["DEFENSE"]</option>
                             }
                             @for (int i = 1; i <= 10; i++)
                             {
                                 <option value="@i">@i</option>
                             }
                         </InputSelect>
-                        <label for="unit-defense">@localizer["SELECT_CHOOSE"]</label>
+                        <label for="unit-defense">@localizer["DEFENSE"]</label>
                         <ValidationMessage For="() => Input.Defense" />
                     </div>
 
@@ -187,7 +187,7 @@
                                 <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">@localizer["CHOOSE"] @localizer["PRIMARY"] @localizer["WEAPON"]</label>
+                        <label for="select-weapon">@localizer["PRIMARY"] @localizer["WEAPON"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -198,7 +198,7 @@
                                 <option value="@item.WeaponId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-weapon">@localizer["CHOOSE"] @localizer["SECONDARY"] @localizer["WEAPON"]</label>
+                        <label for="select-weapon">@localizer["SECONDARY"] @localizer["WEAPON"]</label>
                     </div>
                 </div>
             </div>

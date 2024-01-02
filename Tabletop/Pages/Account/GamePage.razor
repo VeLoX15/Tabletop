@@ -6,6 +6,7 @@
 @inject UserService userService
 @inject PlayerService playerService
 @inject TemplateService templateService
+@inject NavigationManager navigationManager
 @inject IStringLocalizer<App> localizer
 
 <PageTitle>@localizer["TABLEBRICKS"] - @localizer["GAME"]</PageTitle>
@@ -47,7 +48,7 @@
                                     <tr>
                                         <th>@localizer["NAME"]</th>
                                         <th>@localizer["QUANTITY"]</th>
-                                        <th>@localizer["Force"]</th>
+                                        <th>@localizer["FORCE"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,7 +65,7 @@
                                             </tr>
                                         }
                                         <tr>
-                                            <td class="font-bold">Total</td>
+                                            <td class="font-bold">@localizer["TOTAL"]</td>
                                             <td class="font-bold">@player.TotalUnits</td>
                                             <td class="font-bold">@player.UsedForce</td>
                                         </tr>
@@ -114,7 +115,7 @@
                                     <tr>
                                         <th>@localizer["NAME"]</th>
                                         <th>@localizer["QUANTITY"]</th>
-                                        <th>@localizer["Force"]</th>
+                                        <th>@localizer["FORCE"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -131,7 +132,7 @@
                                             </tr>
                                         }
                                         <tr>
-                                            <td class="font-bold">Total</td>
+                                            <td class="font-bold">@localizer["TOTAL"]</td>
                                             <td class="font-bold">@player.TotalUnits</td>
                                             <td class="font-bold">@player.UsedForce</td>
                                         </tr>
@@ -148,6 +149,7 @@
     @if (!Game.Players.Any())
     {
         <Modal Title="@String.Format($"{Game.Name}")"
+               OnClosed="() => NavigateBack()"
                ModalSize="ModalSize.LG"
                HideFooter="true">
 
@@ -179,15 +181,15 @@
 
                         @if (Game.GameId > 0 && _loggedInUser is not null)
                         {
-                            <h4>Team 1</h4>
+                            <h5>Team 1</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-lg">
                                     <thead>
                                         <tr>
-                                            <th>@localizer["USERNAME"]</th>
-                                            <th>@localizer["NAME"]</th>
-                                            <th>@localizer["ACTION"]</th>
+                                            <th class="col-md-3">@localizer["USERNAME"]</th>
+                                            <th class="col-md-3">@localizer["NAME"]</th>
+                                            <th class="col-md-3">@localizer["ACTION"]</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,15 +214,15 @@
                                 </table>
                             </div>
 
-                            <h4>Team 2</h4>
+                            <h5>Team 2</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-lg">
                                     <thead>
                                         <tr>
-                                            <th>@localizer["USERNAME"]</th>
-                                            <th>@localizer["NAME"]</th>
-                                            <th>@localizer["ACTION"]</th>
+                                            <th class="col-md-3">@localizer["USERNAME"]</th>
+                                            <th class="col-md-3">@localizer["NAME"]</th>
+                                            <th class="col-md-3">@localizer["ACTION"]</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -238,36 +240,45 @@
                                         }
                                     </tbody>
                                 </table>
-                                <div class="input-group">
-                                    <select @onchange="UserSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
-                                        @if (SelectedPlayer is null)
-                                        {
-                                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="0">@localizer["SELECT_CHOOSE"]</option>
-                                        }
-
-                                        @foreach (var user in Friends)
-                                        {
-                                            @if (user is not null)
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <select @onchange="UserSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                            @if (SelectedPlayer is null)
                                             {
-                                                <option value="@user.User.UserId">@user.User.Username</option>
+                                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                                             }
-                                        }
-                                    </select>
+                                            else
+                                            {
+                                                <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                            }
 
-                                    <button @onclick="async () => await AddUserAsync()" class="btn btn-success" type="button" disabled="@(SelectedPlayer is null || SelectedTeam == 0)">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
+                                            @foreach (var user in Friends)
+                                            {
+                                                @if (user is not null)
+                                                {
+                                                    <option value="@user.User.UserId">@user.User.Username</option>
+                                                }
+                                            }
+                                        </select>
+
+                                        <button @onclick="async () => await AddUserAsync()" class="btn btn-success" type="button" disabled="@(SelectedPlayer is null || SelectedTeam == 0)">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <select @bind="SelectedTeam" class="form-select" aria-label="Team">
-                                        <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
-                                        <option value="1">Team 1</option>
-                                        <option value="2">Team 2</option>
-                                    </select>
+                                <div class="col-md-6">
+                                    <div>
+                                        <select @bind="SelectedTeam" class="form-select" aria-label="Team">
+                                            @if (SelectedTeam is 0)
+                                            {
+                                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                            }
+                                            <option value="1">Team 1</option>
+                                            <option value="2">Team 2</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -275,8 +286,8 @@
                 </div>
             </EditForm>
 
-            <div class="toolbar">
-                <button type="button" class="btn btn-success" @onclick="SavePlayersAsync">@localizer["SAVE"]</button>
+            <div class="toolbar mt-3">
+                <button type="button" class="btn btn-success" @onclick="SavePlayersAsync" disabled="@(!SelectedPlayers.Where(x => x.Team == 2).Any())">@localizer["SAVE"]</button>
             </div>
         </Modal>
     }
@@ -305,7 +316,7 @@
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-fraction">@localizer["CHOOSE_FRACTION"]</label>
+                        <label for="select-fraction">@localizer["FRACTION"]</label>
                         <ValidationMessage For="() => Player.FractionId" />
                     </div>
 
@@ -320,7 +331,7 @@
                         <label for="player-template">@localizer["TEMPLATE"]</label>
                     </div>
 
-                    <h4>@localizer["UNITS"]</h4>
+                    <h5>@localizer["UNITS"]</h5>
 
                     <div class="table-responsive">
                         <table class="table table-lg">
@@ -371,8 +382,10 @@
                                 }
 
                                 <tr>
-                                    <th><ValidationMessage For="() => Player.UsedForce" /></th>
-                                    <th></th>
+                                    <th>
+                                        <ValidationMessage For="() => Player.UsedForce" />
+                                    </th>
+                                    <th>@Player.TotalUnits</th>
                                     <th>@Player.UsedForce</th>
                                     <th>
                                         @if (Player.StartUnits.Any())

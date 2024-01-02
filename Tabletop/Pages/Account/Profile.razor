@@ -6,7 +6,7 @@
 @inject UserService userService
 @inject IStringLocalizer<App> localizer
 
-<PageTitle>Tablebricks - Account</PageTitle>
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["ACCOUNT"]</PageTitle>
 
 @if (CurrentUser is not null)
 {
@@ -104,7 +104,7 @@
                                     <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                                 }
                             </InputSelect>
-                            <label for="fractions">Choose Fraction</label>
+                            <label for="fractions">@localizer["FRACTION"]</label>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-lg">
@@ -241,28 +241,28 @@ else
                         <InputSelect id="select-fraction" @bind-Value="Unit.FractionId" class="form-control">
                             @if (Unit.FractionId == 0)
                             {
-                                <option value="0" selected>@localizer["CHOOSE"] @localizer["FRACTION"]</option>
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
                             @foreach (Fraction item in Fractions)
                             {
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-fraction">Choose Fraction</label>
+                        <label for="select-fraction">@localizer["FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <InputSelect id="select-unit" @bind-Value="Unit.UnitId" class="form-control">
                             @if (Unit.UnitId == 0)
                             {
-                                <option value="0" selected>@localizer["CHOOSE"] @localizer["UNIT"]</option>
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
                             @foreach (Unit item in Units.Where(x => x.FractionId == Unit.FractionId))
                             {
                                 <option value="@item.UnitId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="select-unit">Choose Unit</label>
+                        <label for="select-unit">@localizer["UNIT"]</label>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -307,7 +307,7 @@ else
                                 <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
                             }
                         </InputSelect>
-                        <label for="user-mainfraction">@localizer["CHOOSE"] @localizer["MAIN_FRACTION"]</label>
+                        <label for="user-mainfraction">@localizer["MAIN_FRACTION"]</label>
                     </div>
 
                     <div class="form-floating mb-3">

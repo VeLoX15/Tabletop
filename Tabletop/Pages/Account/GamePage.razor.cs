@@ -34,7 +34,7 @@ namespace Tabletop.Pages.Account
         public Unit? SelectedUnit { get; set; }
         public Player? SelectedPlayer { get; set; }
         public List<Player> Friends { get; set; } = new(); //Friends of Game Host
-        public List<Player> SelectedPlayers { get; set; } = new(); //Players of Game
+        public List<Player> SelectedPlayers { get; set; } = new(); //Players of the Game
         public List<Template> Templates { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
         public List<Weapon> Weapons { get; set; } = new();
@@ -59,6 +59,7 @@ namespace Tabletop.Pages.Account
             {
                 foreach (Player player in Game.Players)
                 {
+                    player.AllowedForce = Game.Force;
                     await CalculateArmyDataAsync(player);
                 }
             }
@@ -267,6 +268,19 @@ namespace Tabletop.Pages.Account
             }
         }
 
+        private Task<int> CalculateTotalCountAsync()
+        {
+            if (Player is not null)
+            {
+                Player.TotalUnits = 0;
+                foreach (Unit unit in Player.StartUnits)
+                {
+                    Player.TotalUnits += unit.Quantity;
+                }
+            }
+            return Task.FromResult(0);
+        }
+
         private async Task CalculateArmyDataAsync(Player player)
         {
             await CalculateForceAsync(player);
@@ -293,6 +307,7 @@ namespace Tabletop.Pages.Account
             {
                 Player.StartUnits.Clear();
                 Player.UsedForce = 0;
+                Player.TotalUnits = 0;
             }
 
             return Task.CompletedTask;
@@ -305,6 +320,7 @@ namespace Tabletop.Pages.Account
                 unit.Quantity = 0;
                 Player.StartUnits.Remove(unit);
 
+                await CalculateTotalCountAsync();
                 await CalculateTotalForceAsync(Player);
             }
         }
@@ -321,6 +337,7 @@ namespace Tabletop.Pages.Account
                 int quantity = Player.StartUnits?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
                 unit.Quantity = quantity;
 
+                await CalculateTotalCountAsync();
                 await CalculateTotalForceAsync(Player);
                 await CalculateForceAsync(Player);
             }
@@ -338,6 +355,7 @@ namespace Tabletop.Pages.Account
                 int quantity = Player.StartUnits?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
                 unit.Quantity = quantity;
 
+                await CalculateTotalCountAsync();
                 await CalculateTotalForceAsync(Player);
                 await CalculateForceAsync(Player);
             }
@@ -404,6 +422,13 @@ namespace Tabletop.Pages.Account
             }
 
             return Task.FromResult(false);
+        }
+
+        private Task NavigateBack()
+        {
+            navigationManager.NavigateTo($"/Account/Games");
+
+            return Task.CompletedTask;
         }
     }
 }

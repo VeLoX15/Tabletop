@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="A" xml:space="preserve">
+    <value>A</value>
+  </data>
   <data name="ABOUT_ME" xml:space="preserve">
     <value>About me</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="COVER_TYPE" xml:space="preserve">
     <value>Cover type</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>D</value>
   </data>
   <data name="DAMAGE_TABLE" xml:space="preserve">
     <value>Damage Table</value>
@@ -234,7 +240,7 @@
   <data name="GAME_MODES" xml:space="preserve">
     <value>Game modes</value>
   </data>
-  <data name="GAME_MODE_DESCRIPTION" xml:space="preserve">
+  <data name="GAME_MODES_DESCRIPTION" xml:space="preserve">
     <value>Fight for victory in different game modes and bring your faction to success in the galaxy.</value>
   </data>
   <data name="HOME" xml:space="preserve">
@@ -273,6 +279,9 @@
   <data name="PERMISSIONS" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="PRIMARY" xml:space="preserve">
+    <value>Primary</value>
+  </data>
   <data name="PROFILE" xml:space="preserve">
     <value>Profile</value>
   </data>
@@ -297,8 +306,14 @@
   <data name="SEARCH" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="SECONDARY" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
   <data name="SELECT_CHOOSE" xml:space="preserve">
     <value>--- Select ---</value>
+  </data>
+  <data name="SHORT_NAME" xml:space="preserve">
+    <value>Contraction</value>
   </data>
   <data name="SIMULATION" xml:space="preserve">
     <value>Simulation</value>
@@ -338,6 +353,9 @@
   </data>
   <data name="THE_GAME_TEXT" xml:space="preserve">
     <value>This Game is an unoffical tabletop of LEGO Star Wars. The project is developed since 2019.</value>
+  </data>
+  <data name="TOTAL" xml:space="preserve">
+    <value>Total</value>
   </data>
   <data name="UNIT" xml:space="preserve">
     <value>Unit</value>

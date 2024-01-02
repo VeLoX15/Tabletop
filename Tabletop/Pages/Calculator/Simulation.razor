@@ -17,6 +17,10 @@
                 <h1 class="text-center">@localizer["UNIT"] 1</h1>
                 <div class="form-floating mb-3">
                     <InputSelect id="select-fraction" @bind-Value="FractionId1" class="form-control">
+                        @if (FractionId1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @foreach (Fraction item in Fractions)
                         {
                             <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -27,6 +31,10 @@
 
                 <div class="form-floating mb-3">
                     <InputSelect id="select-unit" @bind-Value="UnitId1" class="form-control">
+                        @if (UnitId1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @foreach (Unit item in Units.Where(x => x.FractionId == FractionId1))
                         {
                             <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -37,6 +45,10 @@
 
                 <div class="form-floating mb-3">
                     <InputSelect id="unit-quantity" @bind-Value="Quantity1" class="form-control">
+                        @if (Quantity1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @for (int i = 1; i <= 8; i++)
                         {
                             <option value="@i">@i</option>
@@ -70,6 +82,10 @@
                 <h1 class="text-center">@localizer["UNIT"] 2</h1>
                 <div class="form-floating mb-3">
                     <InputSelect id="select-fraction" @bind-Value="FractionId2" class="form-control">
+                        @if (FractionId2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @foreach (Fraction item in Fractions)
                         {
                             <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -80,6 +96,10 @@
 
                 <div class="form-floating mb-3">
                     <InputSelect id="select-unit" @bind-Value="UnitId2" class="form-control">
+                        @if (UnitId2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @foreach (Unit item in Units.Where(x => x.FractionId == FractionId2))
                         {
                             <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -90,6 +110,10 @@
 
                 <div class="form-floating mb-3">
                     <InputSelect id="unit-quantity" @bind-Value="Quantity2" class="form-control">
+                        @if (Quantity2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
                         @for (int i = 1; i <= 8; i++)
                         {
                             <option value="@i">@i</option>

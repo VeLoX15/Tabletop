@@ -17,6 +17,7 @@ namespace Tabletop.Core.Models
         [CompareField("used_force")]
         public int UsedForce { get; set; }
 
+        public int AllowedForce {  get; set; }
         public User User { get; set; } = new();
         public List<Unit> StartUnits { get; set; } = new();
         public int TotalUnits { get; set; }
