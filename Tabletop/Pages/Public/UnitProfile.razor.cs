@@ -22,6 +22,7 @@ namespace Tabletop.Pages.Public
                 Unit.PrimaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.PrimaryWeaponId);
                 Unit.SecondaryWeapon = AppdataService.Weapons.FirstOrDefault(x => x.WeaponId == Unit?.SecondaryWeaponId);
                 Unit.Class = AppdataService.Classes.FirstOrDefault(x => x.ClassId == Unit?.ClassId);
+                Unit.Ability = AppdataService.Abilities.FirstOrDefault(x => x.AbilityId == Unit?.AbilityId);
 
                 Unit.Force = await Calculation.ForceAsync(Unit);
 

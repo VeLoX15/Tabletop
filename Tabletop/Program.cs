@@ -35,6 +35,7 @@ namespace Tabletop
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UnitService>();
+            builder.Services.AddScoped<AbilityService>();
             builder.Services.AddScoped<WeaponService>();
             builder.Services.AddScoped<GamemodeService>();
             builder.Services.AddScoped<FractionService>();

@@ -26,6 +26,7 @@ namespace Tabletop.Core.Services
                 `moving`,
                 `primary_weapon_id`,
                 `secondary_weapon_id`,
+                `ability_id`
                 `has_jetpack`
                 )
                 VALUES
@@ -36,6 +37,7 @@ namespace Tabletop.Core.Services
                 @MOVING,
                 @PRIMARY_WEAPON_ID,
                 @SECONDARY_WEAPON_ID,
+                @ABILITY_ID,
                 @HAS_JETPACK
                 ); {dbController.GetLastIdSql()}";
 
@@ -343,6 +345,7 @@ namespace Tabletop.Core.Services
                 `moving` = @MOVING,
                 `primary_weapon_id` = @PRIMARY_WEAPON_ID,
                 `secondary_weapon_id` = @SECONDARY_WEAPON_ID,
+                `ability_id` = @ABILITY_ID,
                 `has_jetpack` = @HAS_JETPACK
                 WHERE `unit_id` = @UNIT_ID";
 

@@ -26,6 +26,8 @@ namespace Tabletop.Core.Models
 
         [CompareField("secondary_weapon_id")]
         public int? SecondaryWeaponId { get; set; }
+        [CompareField("ability_id")]
+        public int? AbilityId { get; set; }
         [CompareField("has_jetpack")]
         public bool HasJetpack { get; set; }
 
@@ -37,6 +39,7 @@ namespace Tabletop.Core.Models
         public Weapon? PrimaryWeapon { get; set; }
         public Weapon? SecondaryWeapon { get; set; }
         public Class? Class { get; set; }
+        public Ability? Ability { get; set; }
         public Fraction Fraction { get; set; } = new();
 
         [CompareField("quantity")]
@@ -71,6 +74,7 @@ namespace Tabletop.Core.Models
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },
                 { "SECONDARY_WEAPON_ID", SecondaryWeaponId },
+                { "ABILITY_ID", AbilityId },
                 { "HAS_JETPACK" , HasJetpack },
                 { "QUANTITY", Quantity }
             };

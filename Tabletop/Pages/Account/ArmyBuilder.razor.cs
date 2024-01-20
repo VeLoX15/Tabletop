@@ -18,6 +18,7 @@ namespace Tabletop.Pages.Account
         public Unit? SelectedUnit { get; set; }
         public List<Unit> Units { get; set; } = new();
         public List<Weapon> Weapons { get; set; } = new();
+        public List<Ability> Abilities { get; set; } = new();
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
 
@@ -32,6 +33,7 @@ namespace Tabletop.Pages.Account
 
                 Units = AppdataService.Units;
                 Weapons = AppdataService.Weapons;
+                Abilities = AppdataService.Abilities;
 
                 Filter = new()
                 {
@@ -118,6 +120,7 @@ namespace Tabletop.Pages.Account
                 {
                     unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
                     unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.Ability = Abilities.FirstOrDefault(x => x.AbilityId == unit.AbilityId);
 
                     int unitForce = await Calculation.ForceAsync(unit);
                     totalForce += unitForce * unit.Quantity;
@@ -134,6 +137,7 @@ namespace Tabletop.Pages.Account
                 {
                     unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
                     unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.Ability = Abilities.FirstOrDefault(x => x.AbilityId == unit.AbilityId);
 
                     int force = await Calculation.ForceAsync(unit);
 

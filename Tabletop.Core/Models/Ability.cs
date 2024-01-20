@@ -9,7 +9,9 @@ namespace Tabletop.Core.Models
         public int AbilityId { get; set; }
 
         [CompareField("quality")]
-        public string Quality { get; set; } = string.Empty;
+        public int Quality { get; set; }
+        [CompareField("force")]
+        public int Force { get; set; }
 
         public int Id => AbilityId;
 
@@ -31,7 +33,8 @@ namespace Tabletop.Core.Models
             return new Dictionary<string, object?>
             {
                 { "ABILITY_ID", AbilityId },
-                { "QUALITY", Quality }
+                { "QUALITY", Quality },
+                { "FORCE", Force }
             };
         }
     }

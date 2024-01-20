@@ -106,8 +106,10 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`class_description` (
 -- -----------------------------------------------------
 -- Table `tabletop`.`abilities`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`ability` (
+CREATE TABLE IF NOT EXISTS `tabletop`.`abilities` (
 	`ability_id` INTEGER NOT NULL,
+	`quality` INTEGER NOT NULL,
+	`force` INTEGER NOT NULL,
 	
 	PRIMARY KEY (`ability_id`)
 );
@@ -122,13 +124,13 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`ability_description` (
 	`description` TEXT NULL,
 
 	PRIMARY KEY (`ability_id`, `code`),
-	FOREIGN KEY (`ability_id`) REFERENCES `tabletop`.`ability`(`ability_id`) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (`ability_id`) REFERENCES `tabletop`.`abilities`(`ability_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- -----------------------------------------------------
 -- Table `tabletop`.`units`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tabletop`.`units` 
+CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 (
     `unit_id` INTEGER NOT NULL AUTO_INCREMENT,
     `fraction_id` INTEGER NOT NULL,
@@ -138,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
     `moving` INTEGER NOT NULL,
 	`primary_weapon_id` INTEGER NULL,
 	`secondary_weapon_id` INTEGER NULL,
+	`ability_id` INTEGER NULL,
 	`has_jetpack` BOOLEAN NOT NULL DEFAULT FALSE,
 	`image` MEDIUMBLOB NULL,
 
@@ -145,7 +148,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`units`
 	FOREIGN KEY (`fraction_id`) REFERENCES `tabletop`.`fractions`(`fraction_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (`class_id`) REFERENCES `tabletop`.`classes`(`class_id`),
 	FOREIGN KEY (`primary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
-	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`)
+	FOREIGN KEY (`secondary_weapon_id`) REFERENCES `tabletop`.`weapons`(`weapon_id`),
+	FOREIGN KEY (`ability_id`) REFERENCES `tabletop`.`abilities`(`ability_id`)
 );
 
 -- -----------------------------------------------------

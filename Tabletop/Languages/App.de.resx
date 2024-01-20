@@ -120,6 +120,12 @@
   <data name="A" xml:space="preserve">
     <value>A</value>
   </data>
+  <data name="ABILITIES" xml:space="preserve">
+    <value>Fähigkeiten</value>
+  </data>
+  <data name="ABILITIY" xml:space="preserve">
+    <value>Fähigkeit</value>
+  </data>
   <data name="ABOUT_ME" xml:space="preserve">
     <value>Über mich</value>
   </data>

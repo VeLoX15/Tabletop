@@ -38,6 +38,7 @@ namespace Tabletop.Pages.Account
         public List<Template> Templates { get; set; } = new();
         public List<Unit> Units { get; set; } = new();
         public List<Weapon> Weapons { get; set; } = new();
+        public List<Ability> Abilities { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -48,6 +49,7 @@ namespace Tabletop.Pages.Account
 
             Units = AppdataService.Units;
             Weapons = AppdataService.Weapons;
+            Abilities = AppdataService.Abilities;
 
             if (_loggedInUser is not null && Game is not null)
             {
@@ -243,6 +245,7 @@ namespace Tabletop.Pages.Account
                 {
                     unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
                     unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.Ability = Abilities.FirstOrDefault(x => x.AbilityId == unit.AbilityId);
 
                     int unitForce = await Calculation.ForceAsync(unit);
                     totalForce += unitForce * unit.Quantity;
@@ -259,6 +262,7 @@ namespace Tabletop.Pages.Account
                 {
                     unit.PrimaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.PrimaryWeaponId);
                     unit.SecondaryWeapon = Weapons.FirstOrDefault(x => x.WeaponId == unit.SecondaryWeaponId);
+                    unit.Ability = Abilities.FirstOrDefault(x => x.AbilityId == unit.AbilityId);
 
                     int force = await Calculation.ForceAsync(unit);
 
