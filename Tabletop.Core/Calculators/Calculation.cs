@@ -16,7 +16,7 @@ namespace Tabletop.Core.Calculators
 
             if (unit.PrimaryWeapon != null && unit.Ability != null)
             {
-                primaryWeaponForce = ((unit.PrimaryWeapon.Attack * (unit.PrimaryWeapon.Quality + unit.Ability.Force)) * (unit.PrimaryWeapon.Range / 10)) * unit.PrimaryWeapon.Dices;
+                primaryWeaponForce = ((unit.PrimaryWeapon.Attack * (unit.PrimaryWeapon.Quality + unit.Ability.Quality)) * (unit.PrimaryWeapon.Range / 10)) * unit.PrimaryWeapon.Dices;
             } 
             else if (unit.PrimaryWeapon != null)
             {

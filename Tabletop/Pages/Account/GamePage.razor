@@ -11,7 +11,7 @@
 
 <PageTitle>@localizer["TABLEBRICKS"] - @localizer["GAME"]</PageTitle>
 
-@if (Game is not null)
+    @if (Game is not null)
 {
     <div class="container">
         <div class="card">
@@ -20,14 +20,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div class="card p-4">
-                    <h1 class="text-center">Team 1</h1>
+                    <h2 class="text-center">Team 1</h2>
                     @foreach (var player in Game.Players.Where(x => x.Team == 1))
                     {
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col">
-                                <h4>@player.User.Username (@player.User.DisplayName)</h4>
+                                <h5>@player.User.Username (@player.User.DisplayName)</h5>
                             </div>
                             @if (player.UserId == _loggedInUser?.UserId && !player.StartUnits.Any())
                             {
@@ -52,7 +52,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.UserId == _loggedInUser?.UserId || PlayersReady)
+                                    @if (PlayersReady || player.Team == 1)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -64,21 +64,39 @@
                                                 </td>
                                             </tr>
                                         }
-                                        <tr>
-                                            <td class="font-bold">@localizer["TOTAL"]</td>
-                                            <td class="font-bold">@player.TotalUnits</td>
-                                            <td class="font-bold">@player.UsedForce</td>
-                                        </tr>
                                     }
+                                    <tr>
+                                        <td class="font-bold">@localizer["TOTAL"]</td>
+                                        <td class="font-bold">
+                                            @if (PlayersReady || player.Team == 1)
+                                            {
+                                                @player.TotalUnits
+                                            }
+                                            else
+                                            {
+                                                <p>0</p>
+                                            }
+                                        </td>
+                                        <td class="font-bold">
+                                            @if (PlayersReady || player.Team == 1)
+                                            {
+                                                @player.UsedForce
+                                            }
+                                            else
+                                            {
+                                                <p>0</p>
+                                            }
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     }
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="card p-4">
-                    <h1 class="text-center">VS</h1>
+                    <h2 class="text-center">Versus</h2>
                     <p>@localizer["GAME_MODE"]: @AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
                     @if (Game.Rounds is not null)
                     {
@@ -87,14 +105,14 @@
                     <p>@localizer["FORCE"]: @Game.Force</p>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div class="card p-4">
-                    <h1 class="text-center">Team 2</h1>
+                    <h2 class="text-center">Team 2</h2>
                     @foreach (var player in Game.Players.Where(x => x.Team == 2))
                     {
                         <div class="row">
                             <div class="col">
-                                <h4>@player.User.Username (@player.User.DisplayName)</h4>
+                                <h5>@player.User.Username (@player.User.DisplayName)</h5>
                             </div>
                             @if (player.UserId == _loggedInUser?.UserId && !player.StartUnits.Any())
                             {
@@ -119,7 +137,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (player.User.UserId == _loggedInUser?.UserId || PlayersReady)
+                                    @if (PlayersReady || player.Team == 2)
                                     {
                                         @foreach (var unit in player.StartUnits)
                                         {
@@ -131,12 +149,30 @@
                                                 </td>
                                             </tr>
                                         }
-                                        <tr>
-                                            <td class="font-bold">@localizer["TOTAL"]</td>
-                                            <td class="font-bold">@player.TotalUnits</td>
-                                            <td class="font-bold">@player.UsedForce</td>
-                                        </tr>
                                     }
+                                    <tr>
+                                        <td class="font-bold">@localizer["TOTAL"]</td>
+                                        <td class="font-bold">
+                                            @if (PlayersReady || player.Team == 2)
+                                            {
+                                                @player.TotalUnits
+                                            }
+                                            else
+                                            {
+                                                <p>0</p>
+                                            }
+                                        </td>
+                                        <td class="font-bold">
+                                            @if (PlayersReady || player.Team == 2)
+                                            {
+                                                @player.UsedForce
+                                            }
+                                            else
+                                            {
+                                                <p>0</p>
+                                            }
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -256,7 +292,7 @@
 
                                             @foreach (var user in Friends)
                                             {
-                                                @if (user is not null)
+                                                @if (user is not null && !SelectedPlayers.Any(p => p.User.UserId == user.User.UserId))
                                                 {
                                                     <option value="@user.User.UserId">@user.User.Username</option>
                                                 }
@@ -412,12 +448,15 @@
                                                         <option value="0">@localizer["SELECT_CHOOSE"]</option>
                                                     }
 
-                                                    @foreach (var unit in _loggedInUser.Units.Where(x => x.FractionId == Player.FractionId))
+                                                    @if (_loggedInUser != null)
                                                     {
-                                                        var templateUnit = Player.StartUnits.FirstOrDefault(x => x.UnitId == unit.UnitId);
-                                                        @if (templateUnit is null)
+                                                        @foreach (var unit in _loggedInUser.Units.Where(x => x.FractionId == Player.FractionId))
                                                         {
-                                                            <option value="@unit.UnitId">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                                            var templateUnit = Player.StartUnits.FirstOrDefault(x => x.UnitId == unit.UnitId);
+                                                            @if (templateUnit is null)
+                                                            {
+                                                                <option value="@unit.UnitId">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                                            }
                                                         }
                                                     }
                                                 </select>

@@ -53,6 +53,7 @@
                                     <th>@localizer["GAME_MODES"]</th>
                                     <th>@localizer["FORCE"]</th>
                                     <th>@localizer["DATE"]</th>
+                                    <th>@localizer["STATUS"]</th>
                                     <th class="text-right">@localizer["ACTION"]</th>
                                 </tr>
                             </thead>
@@ -63,6 +64,14 @@
                                         <td>@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
                                         <td>@game.Force</td>
                                         <td>@game.Date.ToShortDateString()</td>
+                                        @if (!game.Players.Any())
+                                        {
+                                            <td>Starting</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ended</td>
+                                        }
                                         <td class="text-right">
                                             @if (game.UserId == _loggedInUser?.UserId)
                                             {
@@ -152,7 +161,22 @@
                         </InputSelect>
                         <label for="game-force">@localizer["FORCE"]</label>
                         <ValidationMessage For="() => Input.Force" />
-                    </div>
+                    </div>                    
+                    
+@*                     <div class="form-floating mb-3">
+                        <InputSelect id="game-force" @bind-Value="Input." class="form-control">
+                            @if (Input.Force == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 200; i <= 800; i += 100)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="game-force">@localizer["FORCE"]</label>
+                        <ValidationMessage For="() => Input.Force" />
+                    </div> *@
                 </div>
             </div>
         </EditForm>

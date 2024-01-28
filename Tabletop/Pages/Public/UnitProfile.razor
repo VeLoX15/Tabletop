@@ -28,11 +28,11 @@
                                     <div>
                                         <h4>@localizer["GAME_MECHANIC"]</h4>
                                         <p>@Unit.GetLocalization(CultureInfo.CurrentCulture)?.Mechanic</p>
-                                            Truppengattung: @Unit.Class?.GetLocalization(CultureInfo.CurrentCulture)?.Name
-                                            @if (Unit.HasJetpack == true)
-                                            {
-                                                <p>Ausrüstung: Jetpack</p>
-                                            }
+                                        Truppengattung: @Unit.Class?.GetLocalization(CultureInfo.CurrentCulture)?.Name
+                                        @if (Unit.HasJetpack == true)
+                                        {
+                                            <p>Ausrüstung: Jetpack</p>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,18 @@
                                             <tbody>
                                                 <tr>
                                                     <td>@Unit.PrimaryWeapon.Attack</td>
-                                                    <td>@Unit.PrimaryWeapon.Quality</td>
+                                                    @if (Unit.Ability == null)
+                                                    {
+                                                        <td>
+                                                            @Unit.PrimaryWeapon.Quality
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @Unit.PrimaryWeapon.Quality+@Unit.Ability?.Quality
+                                                        </td>
+                                                    }
                                                     <td>@Unit.PrimaryWeapon.Range</td>
                                                     <td>@Unit.PrimaryWeapon.Dices</td>
                                                 </tr>

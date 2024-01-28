@@ -16,6 +16,7 @@ namespace Tabletop.Core.Services
             _authenticationStateProvider = authenticationStateProvider;
             _userService = userService;
         }
+
         /// <summary>
         /// Converts the active claims into a <see cref="User"/> object
         /// </summary>
@@ -52,6 +53,7 @@ namespace Tabletop.Core.Services
 
             return null;
         }
+
         /// <summary>
         /// Checks if the currently logged in user as a specific role within it's claims.
         /// </summary>

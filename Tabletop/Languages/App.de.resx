@@ -333,6 +333,9 @@
   <data name="SOCIAL_MEDIA" xml:space="preserve">
     <value>Social Media</value>
   </data>
+  <data name="STATUS" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="TABLEBRICKS" xml:space="preserve">
     <value>Tablebricks</value>
   </data>

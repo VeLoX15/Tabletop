@@ -195,15 +195,12 @@ namespace Tabletop.Pages.Account
         {
             if (Game is not null && SelectedPlayer is not null)
             {
-                if (SelectedPlayers.FirstOrDefault(x => x.PlayerId == SelectedPlayer.PlayerId) == null)
-                {
-                    SelectedPlayer.GameId = Game.GameId;
-                    SelectedPlayer.UserId = SelectedPlayer.User.UserId;
-                    SelectedPlayer.Team = SelectedTeam;
 
-                    SelectedPlayers.Add(SelectedPlayer);
-                }
+                SelectedPlayer.GameId = Game.GameId;
+                SelectedPlayer.UserId = SelectedPlayer.User.UserId;
+                SelectedPlayer.Team = SelectedTeam;
 
+                SelectedPlayers.Add(SelectedPlayer);
                 SelectedPlayer = null;
             }
 
@@ -296,7 +293,7 @@ namespace Tabletop.Pages.Account
         {
             int count = 0;
 
-            foreach(Unit unit in player.StartUnits)
+            foreach (Unit unit in player.StartUnits)
             {
                 count += unit.Quantity;
             }
