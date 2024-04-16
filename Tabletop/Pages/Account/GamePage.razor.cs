@@ -6,7 +6,6 @@ using Tabletop.Core.Services;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Forms;
 using Tabletop.Core.Calculators;
-using System.Numerics;
 
 namespace Tabletop.Pages.Account
 {

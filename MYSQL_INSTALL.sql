@@ -257,6 +257,8 @@ CREATE TABLE IF NOT EXISTS `tabletop`.`games`
 	`name` VARCHAR(50) NOT NULL,
 	`rounds` INTEGER NULL,
 	`force` INTEGER NOT NULL,
+	`number_of_teams` INTEGER NOT NULL,
+	`number_of_players` INTEGER NOT NULL,
 	`date` DATETIME NOT NULL,
 
     PRIMARY KEY (`game_id`),

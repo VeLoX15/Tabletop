@@ -161,22 +161,38 @@
                         </InputSelect>
                         <label for="game-force">@localizer["FORCE"]</label>
                         <ValidationMessage For="() => Input.Force" />
-                    </div>                    
-                    
-@*                     <div class="form-floating mb-3">
-                        <InputSelect id="game-force" @bind-Value="Input." class="form-control">
-                            @if (Input.Force == 0)
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="game-teams" @bind-Value="Input.NumberOfTeams" class="form-control">
+                            @if (Input.NumberOfTeams == 0)
                             {
                                 <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
                             }
-                            @for (int i = 200; i <= 800; i += 100)
+                            @for (int i = 2; i <= 4; i += 1)
                             {
                                 <option value="@i">@i</option>
                             }
                         </InputSelect>
-                        <label for="game-force">@localizer["FORCE"]</label>
-                        <ValidationMessage For="() => Input.Force" />
-                    </div> *@
+                        <label for="game-teams">@localizer["TEAMS"]</label>
+                        <ValidationMessage For="() => Input.NumberOfTeams" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="game-players" @bind-Value="Input.NumberOfPlayers" class="form-control">
+                            @if (Input.NumberOfPlayers == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 2; i <= 8; i += 1)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="game-players">@localizer["PLAYERS"]</label>
+                        <ValidationMessage For="() => Input.NumberOfPlayers" />
+                    </div>
+
                 </div>
             </div>
         </EditForm>

@@ -16,6 +16,10 @@ namespace Tabletop.Core.Models
         public int? Rounds { get; set; }
         [CompareField("force")]
         public int Force { get; set; }
+        [CompareField("number_of_teams")]
+        public int NumberOfTeams { get; set; }
+        [CompareField("number_of_players")]
+        public int NumberOfPlayers { get; set; }
         [CompareField("date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
@@ -34,6 +38,8 @@ namespace Tabletop.Core.Models
                 { "NAME", Name },
                 { "ROUNDS", Rounds },
                 { "FORCE", Force },
+                { "NUMBER_OF_TEAMS", NumberOfTeams },
+                { "NUMBER_OF_PLAYERS", NumberOfPlayers },
                 { "DATE", Date }
             };
         }

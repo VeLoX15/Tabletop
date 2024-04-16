@@ -24,6 +24,8 @@ namespace Tabletop.Core.Services
                 `name`,
                 `rounds`,
                 `force`,
+                `number_of_teams`,
+                `number_of_players`,
                 `date`
                 )
                 VALUES
@@ -33,6 +35,8 @@ namespace Tabletop.Core.Services
                 @NAME,
                 @ROUNDS,
                 @FORCE,
+                @NUMBER_OF_TEAMS,
+                @NUMBER_OF_PLAYERS,
                 @DATE
                 ); {dbController.GetLastIdSql()}";
 
@@ -145,6 +149,8 @@ namespace Tabletop.Core.Services
                 `name` = @NAME,
                 `rounds` = @ROUNDS,
                 `force` = @FORCE,
+                `number_of_teams` = @NUMBER_OF_TEAMS,
+                `number_of_players` = @NUMBER_OF_PLAYERS,
                 `date` = @DATE
                 WHERE `game_id` = @GAME_ID";
 
