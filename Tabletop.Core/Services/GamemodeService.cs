@@ -10,7 +10,7 @@ namespace Tabletop.Core.Services
     {
         public async Task CreateAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = $@"INSERT INTO `tabletop`.`gamemodes` 
+            string sql = $@"INSERT INTO Gamemodes 
                 (
                 )
                 VALUES
@@ -21,19 +21,21 @@ namespace Tabletop.Core.Services
 
             foreach (var description in input.Description)
             {
-                sql = @"INSERT INTO `tabletop`.`gamemode_description`
+                sql = @"INSERT INTO GamemodeDescription
                     (
-                    `gamemode_id`,
-                    `code`,
-                    `name`,
-                    `description`
+                    GamemodeId,
+                    Code,
+                    Name,
+                    Description,
+                    Mechanic
                     )
                     VALUES
                     (
                     @GAMEMODE_ID,
                     @CODE,
                     @NAME,
-                    @DESCRIPTION
+                    @DESCRIPTION,
+                    @MECHANIC
                     )";
 
                 var parameters = new
@@ -50,7 +52,7 @@ namespace Tabletop.Core.Services
 
         public async Task DeleteAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "DELETE FROM `tabletop`.`gamemodes`  WHERE `gamemode_id` = @GAMEMODE_ID";
+            string sql = "DELETE FROM Gamemodes  WHERE GamemodeId = @GAMEMODE_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -60,7 +62,7 @@ namespace Tabletop.Core.Services
 
         public async Task<Gamemode?> GetAsync(int gamemodeId, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"SELECT * FROM `tabletop`.`gamemodes`  WHERE `gamemode_id` = @GAMEMODE_ID";
+            string sql = @"SELECT * FROM Gamemodes  WHERE GamemodeId = @GAMEMODE_ID";
 
             var gamemode = await dbController.GetFirstAsync<Gamemode>(sql, new
             {
@@ -72,7 +74,7 @@ namespace Tabletop.Core.Services
 
         public static async Task<List<Gamemode>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "SELECT * FROM `tabletop`.`gamemodes`";
+            string sql = "SELECT * FROM Gamemodes";
 
             var list = await dbController.SelectDataAsync<Gamemode>(sql, cancellationToken: cancellationToken);
             await LoadGamemodeDescriptionsAsync(list, dbController, cancellationToken);
@@ -81,25 +83,28 @@ namespace Tabletop.Core.Services
 
         public async Task UpdateAsync(Gamemode input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"UPDATE `tabletop`.`gamemodes` SET
-                `image` = @IMAGE
-                WHERE `gamemode_id` = @GAMEMODE_ID";
+            string sql;
+            //string sql = @"UPDATE Gamemodes SET
+            //    Image = @IMAGE
+            //    WHERE GamemodeId = @GAMEMODE_ID";
 
-            await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
+            //await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
             foreach (var description in input.Description)
             {
-                sql = @"UPDATE `tabletop`.`gamemode_description` SET
-                    `name` = @NAME,
-                    `description` = @DESCRIPTION
-                    WHERE `gamemode_id` = @GAMEMODE_ID AND `code` = @CODE";
+                sql = @"UPDATE GamemodeDescription SET
+                    Name = @NAME,
+                    Description = @DESCRIPTION,
+                    Mechanic = @MECHANIC
+                    WHERE GamemodeId = @GAMEMODE_ID AND Code = @CODE";
 
                 var parameters = new
                 {
                     GAMEMODE_ID = input.GamemodeId,
                     CODE = description.Code,
                     NAME = description.Name,
-                    DESCRIPTION = description.Description
+                    DESCRIPTION = description.Description,
+                    MECHANIC = description.Mechanic
                 };
 
                 await dbController.QueryAsync(sql, parameters, cancellationToken);
@@ -110,14 +115,14 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT gd.`name`, g.* " +
-                "FROM `tabletop`.`gamemode_description` gd " +
-                "INNER JOIN `tabletop`.`gamemodes` g " +
-                "ON (g.`gamemode_id` = gd.`gamemode_id`) " +
+            sqlBuilder.AppendLine("SELECT gd.Name, g.* " +
+                "FROM GamemodeDescription gd " +
+                "INNER JOIN Gamemodes g " +
+                "ON (g.GamemodeId = gd.GamemodeId) " +
                 "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
-            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY Name ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
@@ -132,9 +137,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`gamemode_description` WHERE 1 = 1 ");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM GamemodeDescription WHERE 1 = 1 ");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -149,7 +154,7 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sqlBuilder.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sqlBuilder.ToString();
@@ -168,10 +173,10 @@ namespace Tabletop.Core.Services
         private static async Task LoadGamemodeDescriptionsAsync(List<Gamemode> list, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (list.Any())
+            if (list.Count != 0)
             {
                 IEnumerable<int> gamemodeIds = list.Select(x => x.Id);
-                string sql = $"SELECT * FROM `tabletop`.`gamemode_description` WHERE `gamemode_id` IN ({string.Join(",", gamemodeIds)})";
+                string sql = $"SELECT * FROM GamemodeDescription WHERE GamemodeId IN ({string.Join(",", gamemodeIds)})";
                 List<GamemodeDescription> descriptions = await dbController.SelectDataAsync<GamemodeDescription>(sql, null, cancellationToken);
 
                 foreach (var gamemode in list)

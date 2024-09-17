@@ -1,5 +1,5 @@
 ﻿using DbController;
-using DbController.MySql;
+using DbController.SqlServer;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using Tabletop.Core.Interfaces;
@@ -11,22 +11,22 @@ namespace Tabletop.Core.Services
     {
         public static string[] SupportedCultureCodes => SupportedCultures.Select(x => x.Name).ToArray();
 
-        public static CultureInfo[] SupportedCultures => new CultureInfo[]
-        {
-            new CultureInfo("de"),
-            new CultureInfo("en")
-        };
+        public static CultureInfo[] SupportedCultures =>
+        [
+            new ("en"),
+            new ("de")
+        ];
 
         public static bool FirstUserExists { get; set; } = false;
 
-        public static List<Permission> Permissions { get; set; } = new();
+        public static List<Permission> Permissions { get; set; } = [];
 
-        public static List<Unit> Units { get; set; } = new();
-        public static List<Weapon> Weapons { get; set; } = new();
-        public static List<Fraction> Fractions { get; set; } = new();
-        public static List<Gamemode> Gamemodes { get; set; } = new();
-        public static List<Class> Classes { get; set; } = new();
-        public static List<Ability> Abilities { get; set; } = new();
+        public static List<Unit> Units { get; set; } = [];
+        public static List<Weapon> Weapons { get; set; } = [];
+        public static List<Fraction> Fractions { get; set; } = [];
+        public static List<Gamemode> Gamemodes { get; set; } = [];
+        public static List<Class> Classes { get; set; } = [];
+        public static List<Ability> Abilities { get; set; } = [];
 
 
         private static IConfiguration? _configuration;
@@ -34,7 +34,7 @@ namespace Tabletop.Core.Services
         public static async Task InitAsync(IConfiguration configuration)
         {
             _configuration = configuration;
-            using IDbController dbController = new MySqlController(ConnectionString);
+            using IDbController dbController = new SqlController(ConnectionString);
             Permissions = await PermissionService.GetAllAsync(dbController);
             FirstUserExists = await UserService.FirstUserExistsAsync(dbController); 
 
@@ -68,6 +68,7 @@ namespace Tabletop.Core.Services
                 list[index] = input;
             }
         }
+
         /// <summary>
         /// Deletes an item from the corresponding object list.
         /// </summary>
@@ -78,6 +79,7 @@ namespace Tabletop.Core.Services
             List<T> list = GetList<T>();
             list.Remove(input);
         }
+
         /// <summary>
         /// Gets the corresponding list for the type <see cref="T"/>
         /// </summary>

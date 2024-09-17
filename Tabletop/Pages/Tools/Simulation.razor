@@ -1,0 +1,158 @@
+﻿@page "/Tools/Simulation/"
+@attribute [Authorize]
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["SIMULATION"]</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header ps-4">
+            <h2>@localizer["SIMULATION"]</h2>
+            <p>@localizer["SIMULATION_DESCRIPTION"]</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h1 class="text-center">@localizer["UNIT"] 1</h1>
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-fraction" @bind-Value="FractionId1" class="form-control">
+                        @if (FractionId1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @foreach (Fraction item in Fractions)
+                        {
+                            <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                        }
+                    </InputSelect>
+                    <label for="select-unit">@localizer["FRACTION"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-unit" @bind-Value="UnitId1" class="form-control">
+                        @if (UnitId1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @foreach (Unit item in Units.Where(x => x.FractionId == FractionId1))
+                        {
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                        }
+                    </InputSelect>
+                    <label for="select-unit">@localizer["UNIT"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="unit-quantity" @bind-Value="Quantity1" class="form-control">
+                        @if (Quantity1 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @for (int i = 1; i <= Units.FirstOrDefault(x => x.UnitId == UnitId1)?.TroopQuantity; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </InputSelect>
+                    <label for="unit-quantity">@localizer["QUANTITY"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-unit" @bind-Value="Cover1" class="form-control">
+                        @foreach (string cover in Enum.GetNames(typeof(CoverTypes)))
+                        {
+                            <option value="@cover">@cover</option>
+                        }
+                    </InputSelect>
+                    <label for="select-unit">@localizer["COVER_TYPE"]</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h1 class="text-center">VS.</h1>
+                <div class="form-floating mb-3">
+                    <InputNumber @bind-Value="Distance" class="form-control" id="unit-distance" placeholder="Distance" />
+                    <label for="unit-distance">@localizer["DISTANCE"]</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h1 class="text-center">@localizer["UNIT"] 2</h1>
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-fraction" @bind-Value="FractionId2" class="form-control">
+                        @if (FractionId2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @foreach (Fraction item in Fractions)
+                        {
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                        }
+                    </InputSelect>
+                    <label for="select-fraction">@localizer["FRACTION"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-unit" @bind-Value="UnitId2" class="form-control">
+                        @if (UnitId2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @foreach (Unit item in Units.Where(x => x.FractionId == FractionId2))
+                        {
+                            <option value="@item.Id">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                        }
+                    </InputSelect>
+                    <label for="select-unit">@localizer["UNIT"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="unit-quantity" @bind-Value="Quantity2" class="form-control">
+                        @if (Quantity2 == 0)
+                        {
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        }
+                        @for (int i = 1; i <= Units.FirstOrDefault(x => x.UnitId == UnitId2)?.TroopQuantity; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </InputSelect>
+                    <label for="unit-quantity">@localizer["QUANTITY"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-unit" @bind-Value="Cover2" class="form-control">
+                        @foreach (string cover in Enum.GetNames(typeof(CoverTypes)))
+                        {
+                            <option value="@cover">@cover</option>
+                        }
+                    </InputSelect>
+                    <label for="select-unit">@localizer["COVER_TYPE"]</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card p-4">
+                <div class="row">
+                    <div class="col">
+                        <h4>Battle report</h4>
+                    </div>
+                    <div class="col-auto text-end">
+                        <button @onclick="StartSimulation" class="btn btn-success" type="button">
+                            <i class="fa-solid fa-forward"></i>
+                        </button>
+                    </div>
+                </div>
+                <hr />
+                <div>
+                    @foreach (string report in Log)
+                    {
+                        <p>@report</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

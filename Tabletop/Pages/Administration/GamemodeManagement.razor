@@ -1,0 +1,146 @@
+﻿@page "/Administration/Game-Modes"
+@attribute [Authorize(Roles = Roles.VIEW_GAMEMODES)]
+@inherits ManagementBasePage<Gamemode, GamemodeService>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["GAME_MODES"] (@localizer["MANAGEMENT"])</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header ps-4 pe-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2>Game Mode Management</h2>
+                <div class="text-right">
+                    <div class="ms-auto">
+                        <button type="button" class="btn" @onclick="() => OpenFilter = true"><i class="fa-solid fa-filter fa-xl"></i></button>
+                        <AuthorizeView Roles="@(Roles.EDIT_GAMEMODES)">
+                            <Authorized>
+                                <button type="button" class="btn" @onclick="UpdateAppdata"><i class="fa-solid fa-rotate-right fa-xl"></i></button>
+                            </Authorized>
+                        </AuthorizeView>
+                        <AuthorizeView Roles="@(Roles.ADD_GAMEMODES)">
+                            <Authorized>
+                                <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content m-1">
+            <!-- Table with no outer spacing -->
+            <div class="table-responsive">
+                <table class="table mb-0 table-lg">
+                    <thead>
+                        <tr>
+                            <th>@localizer["NAME"]</th>
+                            <th class="text-right">@localizer["ACTION"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Data" Context="gamemode">
+                            <tr>
+                                <td class="text-nowrap">
+                                    <a style="color: inherit; text-decoration: none;" href="/Game-Modes/@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == gamemode.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name">@AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == gamemode.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</a>
+                                </td>
+                                <td class="text-right">
+                                    <AuthorizeView Roles="@(Roles.EDIT_GAMEMODES)">
+                                        <Authorized>
+                                            <span class="pe-1 aktion-icon" role="button" @onclick="async () => await EditAsync(gamemode)">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </span>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="@(Roles.DELETE_GAMEMODES)">
+                                        <Authorized>
+                                            <span class="pe-1 aktion-icon" role="button" @onclick="() => SelectedForDeletion = gamemode">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </span>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Input is not null)
+{
+    var localization = Input.GetLocalization(CultureInfo.CurrentCulture);
+
+    if (localization != null)
+    {
+        <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["GAMEMODE"], Input.GetLocalization(CultureInfo.CurrentCulture)?.Name)"
+               OnClosed="() => Input = null"
+               ModalSize="ModalSize.LG"
+               HideFooter="true">
+
+            <EditForm Model="Input" @ref="_form">
+                <ValidationSummary />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="localization.Name" class="form-control" id="gamemode-name" placeholder="Name" />
+                            <label for="gamemode-name">@localizer["NAME"]</label>
+                            <ValidationMessage For="() => localization.Name" />
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <InputTextArea @bind-Value="localization.Description" class="form-control" id="gamemode-description" placeholder="Description" />
+                            <label for="gamemode-description">@localizer["DESCRIPTION"]</label>
+                            <ValidationMessage For="() => localization.Description" />
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <InputTextArea @bind-Value="localization.Mechanic" class="form-control" id="gamemode-mechanic" placeholder="Mechanic" />
+                            <label for="gamemode-mechanic">@localizer["GAME_MECHANIC"]</label>
+                            <ValidationMessage For="() => localization.Mechanic" />
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+
+            <div class="toolbar">
+                <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
+                <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
+            </div>
+        </Modal>
+    }
+}
+
+@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="@localizer["DELETE"]"
+                  OnClosed="() => SelectedForDeletion = null"
+                  OnConfirmed="DeleteAsync">
+        <p>@String.Format(localizer["REQUEST_DELETION"])</p>
+    </ConfirmModal>
+}
+
+@if (OpenFilter)
+{
+    <Modal Title="@localizer["FILTER"]"
+           OnClosed="() => OpenFilter = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <div class="card-content" style="padding: 0 1.3rem;">
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                    <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
+                </div>
+
+                <div class="toolbar">
+                    <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
+                </div>
+
+            </EditForm>
+        </div>
+
+    </Modal>
+}

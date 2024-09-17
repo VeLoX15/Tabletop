@@ -1,0 +1,384 @@
+﻿@page "/Games/{gameId:int}"
+@attribute [Authorize]
+@inject AuthService authService
+@inject GameService gameService
+@inject UnitService unitService
+@inject UserService userService
+@inject PlayerService playerService
+@inject TemplateService templateService
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["GAME"]</PageTitle>
+
+    @if (Game is not null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>@Game.Name</h2>
+            </div>
+            <div class="row">
+                <div class="col p-4">
+                    @for (int i = 1; i <= Game.NumberOfTeams; i++)
+                    {
+                        <h4>Team @i</h4>
+                    }
+                </div>
+                <div class="col p-4">
+                    <h5>@localizer["GENERAL"]</h5>
+                    <p>@localizer["GAME_MODE"]: @AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
+                    @if (Game.NumberOfRounds is not null)
+                    {
+                        <p>@localizer["ROUNDS"]: @Game.NumberOfRounds</p>
+                    }
+                    <p>@localizer["FORCE"]: @Game.Force</p>
+                </div>
+                <div class="row col p-4">
+                    <div class="col">
+                        <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="400" height="300" fill="grey" />
+                            <rect x="20" y="20" width="30" height="30" fill="green" />
+                            <rect x="120" y="250" width="30" height="30" fill="yellow" />
+                            <rect x="185" y="150" width="30" height="30" fill="blue" />
+                            <rect x="250" y="250" width="30" height="30" fill="red" />
+                            <rect x="350" y="20" width="30" height="30" fill="magenta" />
+                        </svg>
+                    </div>
+                    <div class="float p-2">
+                        @for (int i = 1; i <= Game.NumberOfRounds; i++)
+                        {
+                            <button type="button" class="btn border m-1">@i</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @for (int i = 1; i <= Game.NumberOfTeams; i++)
+            {
+                <div class="col-lg-6">
+                    <div class="card p-4">
+                        <h2 class="text-center">Team @i</h2>
+                        @foreach (var player in Game.Players.Where(x => x.Team == i))
+                        {
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <h5>@player.User.Username (@player.User.DisplayName)</h5>
+                                </div>
+                                @if (player.UserId == _loggedInUser?.UserId && !player.StartUnits.Any())
+                                {
+                                    <div class="col-auto">
+                                        <button type="button" class="btn pt-0" @onclick="() => { Player = player; Player.AllowedForce = Game.Force; }"><i class="fa-solid fa-user-plus"></i></button>
+                                    </div>
+                                }
+                                else if (player.StartUnits.Any())
+                                {
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-check" style="color: #008000;"></i>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-xmark" style="color: #ff0000;"></i>
+                                    </div>
+                                }
+                                @if (PlayersReady || _loggedInUser?.UserId == player.UserId && player.StartUnits.Any())
+                                {
+                                    <div class="col-auto">
+                                        <button type="button" class="btn pt-0" @onclick="async () => { PlayerModal = player; await CalculateArmyDataAsync(PlayerModal); }"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (!Game.Players.Any())
+    {
+        var localization = AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name;
+
+        if (localization != null)
+        {
+            <Modal Title="@String.Format($"{Game.Name}")"
+                   OnClosed="() => NavigateBack()"
+                   ModalSize="ModalSize.LG"
+                   HideFooter="true">
+
+                <EditForm Model="Game" @ref="_formGame">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>@localizer["GAME_MODE"]: @AppdataService.Gamemodes.FirstOrDefault(x => x.GamemodeId == Game.GamemodeId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</p>
+                            @if (Game.NumberOfRounds is not null)
+                            {
+                                <p>@localizer["ROUNDS"]: @Game.NumberOfRounds</p>
+                            }
+                            <p>@localizer["FORCE"]: @Game.Force</p>
+
+                            @if (Game.GameId > 0 && _loggedInUser is not null)
+                            {
+                                @for (int i = 1; i <= Game.NumberOfTeams; i++)
+                                {
+                                    <h5>@localizer["TEAM"] @i</h5>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-lg">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-3">@localizer["USERNAME"]</th>
+                                                    <th class="col-md-3">@localizer["NAME"]</th>
+                                                    <th class="col-md-3">@localizer["ACTION"]</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (i == 1)
+                                                {
+                                                    <tr>
+                                                        <td>@_loggedInUser.Username</td>
+                                                        <td>@_loggedInUser.DisplayName</td>
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                                @foreach (var player in SelectedPlayers.Where(x => x.Team == i))
+                                                {
+                                                    <tr>
+                                                        <td>@player.User.Username</td>
+                                                        <td>@player.User.DisplayName</td>
+                                                        <td>
+                                                            <button class="btn">
+                                                                <i class="fa-solid fa-trash-can" @onclick="() => SelectedPlayers.Remove(player)"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <select @onchange="UserSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                                @if (SelectedPlayer is null)
+                                                {
+                                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                }
+
+                                                @foreach (var user in Friends)
+                                                {
+                                                    @if (user is not null && !SelectedPlayers.Any(p => p.User.UserId == user.User.UserId))
+                                                    {
+                                                        <option value="@user.User.UserId">@user.User.Username</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <button @onclick="async () => await AddUserAsync()" class="btn btn-success" type="button" disabled="@(SelectedPlayer is null || SelectedTeam == 0)">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <select @bind="SelectedTeam" class="form-select" aria-label="Team">
+                                                @if (SelectedTeam == 0)
+                                                {
+                                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                @for (int i = 1; i <= Game.NumberOfTeams; i++)
+                                                {
+                                                    if (SelectedTeam == i)
+                                                    {
+                                                        <option value="@i" selected>Team @i</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@i">Team @i</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </EditForm>
+
+                <div class="toolbar mt-3">
+                    <button type="button" class="btn btn-success" @onclick="SavePlayersAsync" disabled="@(!SelectedPlayers.Where(x => x.Team == 2).Any())">@localizer["SAVE"]</button>
+                </div>
+            </Modal>
+        }
+    }
+}
+
+@if (Game is not null && Player is not null && _loggedInUser is not null)
+{
+    <Modal Title="@localizer["ARMY_BUILDER"]"
+           OnClosed="() => Player = null"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <EditForm Model="Player" @ref="_formArmy">
+            <FluentValidationValidator />
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-fraction" @bind-Value="Player.FractionId" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Player.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @foreach (Fraction item in AppdataService.Fractions)
+                            {
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-fraction">@localizer["FRACTION"]</label>
+                        <ValidationMessage For="() => Player.FractionId" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="player-template" @bind-Value="SelectedTemplate" @onclick="async () => { await LoadTemplateAsync(); await CalculateArmyDataAsync(Player); }" class="form-control">
+                            <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            @foreach (Template item in Templates.Where(x => x.Force == Game.Force && x.FractionId == Player.FractionId))
+                            {
+                                <option value="@item.TemplateId">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="player-template">@localizer["TEMPLATE"]</label>
+                    </div>
+
+                    <h5>@localizer["UNITS"]</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead>
+                                <tr>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["CLASS"]</th>
+                                    <th class="text-center">@localizer["QUANTITY"]</th>
+                                    <th>@localizer["FORCE"]</th>
+                                    <th>@localizer["ACTION"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var unit in Player.StartUnits)
+                                {
+                                    int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+
+                                    <tr>
+                                        <td class="text-bold-500 text-nowrap">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td class="text-bold-500">@AppdataService.Classes.FirstOrDefault(x => x.ClassId == unit.ClassId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-center text-nowrap">
+                                                <button class="btn fa-solid fa-minus cursor-pointer p-3" @onclick="async () => await DecrementAsync(unit)"></button>
+                                                <button class="btn p-0">@unit.Quantity / @_loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity</button>
+                                                <button class="btn fa-solid fa-plus cursor-pointer p-3" @onclick="async () => await IncrementAsync(unit)"></button>
+                                            </div>
+                                        </td>
+                                        <td class="text-nowrap">@unit.ForceOfQuantity (@unit.Force)</td>
+                                        <td>
+                                            <button class="btn fa-solid fa-trash-can" @onclick="async () => await ClearUnitAsync(unit)"></button>
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <th class="text-nowrap">
+                                        @if (Player.UsedForce > Game.Force)
+                                        {
+                                            <ValidationMessage For="() => Player.UsedForce" />
+                                        }
+                                        else if (!Player.StartUnits.Any())
+                                        {
+                                            <ValidationMessage For="() => Player.StartUnits" />
+                                        }
+                                        else
+                                        {
+                                            @localizer["TOTAL"]
+                                        }
+                                    </th>
+                                    <th></th>
+                                    <th class="text-center">@Player.TotalUnits</th>
+                                    <th>@Player.UsedForce (@Math.Round((double)Player.UsedForce / Player.TotalUnits, 0))</th>
+                                    <th>
+                                        @if (Player.StartUnits.Any())
+                                        {
+                                            <button class="btn fa-solid fa-trash-can" @onclick="async () => await ClearUnitsAsync()"></button>
+                                        }
+                                    </th>
+                                </tr>
+
+                                @if (true)
+                                {
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="input-group">
+                                                <select @onchange="UnitSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                                    @if (SelectedUnit is null)
+                                                    {
+                                                        <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                    }
+
+                                                    @if (_loggedInUser != null)
+                                                    {
+                                                        @foreach (var unit in _loggedInUser.Units.Where(x => x.FractionId == Player.FractionId))
+                                                        {
+                                                            var templateUnit = Player.StartUnits.FirstOrDefault(x => x.UnitId == unit.UnitId);
+                                                            @if (templateUnit is null)
+                                                            {
+                                                                <option value="@unit.UnitId">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+
+                                                <button @onclick="AddUnitAsync" class="btn btn-success" type="button" disabled="@(SelectedUnit is null ||  Game.Force == 0)">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Player = null">@localizer["CANCEL"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveArmyAsync">@localizer["SAVE"]</button>
+        </div>
+    </Modal>
+}
+
+@if (PlayerModal != null)
+{
+    <ShowArmyModal
+                   UnitList="PlayerModal.StartUnits"
+                   UsedForce="PlayerModal.UsedForce"
+                   LoggedInUser="_loggedInUser"
+                   OnClosed="() => PlayerModal = null" />
+}

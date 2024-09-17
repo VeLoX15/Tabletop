@@ -1,4 +1,4 @@
-﻿@page "/Gamemodes"
+﻿@page "/Game-Modes"
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<App> localizer
 
@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="card">
-        <div class="card-header ps-4">
+        <div class="card-header ps-4 pe-4">
             <h2>@localizer["GAME_MODES"]</h2>
             <p>@localizer["GAME_MODES_DESCRIPTION"]</p>
         </div>
@@ -16,12 +16,12 @@
         {
             <div class="col-lg-6 pb-4">
                 <div class="card h-100">
-                    <div class="card-header">
-                        <h4 class="card-title ps-2">@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
+                    <div class="card-header ps-4 pe-4">
+                        <h4 class="card-title">@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                     </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text">@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
-                        <a href="@($"/Gamemodes/{gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Name}")" class="btn btn-primary mt-auto">Learn more</a>
+                    <div class="card-body d-flex flex-column ps-4 pe-4">
+                        <p>@gamemode.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
+                        <a href="@($"/Game-Modes/{gamemode.GetLocalization(AppdataService.SupportedCultures[0])?.Name}")" class="btn btn-primary mt-auto">@localizer["MORE"]</a>
                     </div>
                 </div>
             </div>

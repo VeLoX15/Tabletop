@@ -1,5 +1,5 @@
 using DbController;
-using DbController.MySql;
+using DbController.SqlServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -15,18 +15,11 @@ using Tabletop.Core.Services;
 namespace Tabletop.Pages.Account
 {
     [AllowAnonymous]
-    public class LoginModel : PageModel
+    public class LoginModel(UserService userService) : PageModel
     {
-        private readonly UserService _userService;
-
         [BindProperty]
         public LoginInput Input { get; set; } = new LoginInput();
         public string? ReturnUrl { get; set; }
-
-        public LoginModel(UserService userService)
-        {
-            _userService = userService;
-        }
 
         public async Task OnGetAsync(string? returnUrl = null)
         {
@@ -50,8 +43,8 @@ namespace Tabletop.Pages.Account
             {
 
                 // Erst prüfen wir gegen die Datenbank
-                IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                User? user = await _userService.GetAsync(Input.Username, dbController);
+                IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                User? user = await UserService.GetAsync(Input.Username, dbController);
 
                 // Lokale Konten müssen als ersten geprüft werden.
                 if (user is not null)
@@ -72,7 +65,7 @@ namespace Tabletop.Pages.Account
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim("userId", user.UserId.ToString()),
+                        new("userId", user.UserId.ToString()),
                     };
 
                     foreach (var permission in user.Permissions)
@@ -90,7 +83,7 @@ namespace Tabletop.Pages.Account
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                    await _userService.UpdateLastLoginAsync(user, dbController);
+                    await userService.UpdateLastLoginAsync(user, dbController);
 
                     return LocalRedirect(returnUrl);
                 }
@@ -127,10 +120,10 @@ namespace Tabletop.Pages.Account
     public class LoginInput
     {
         [Required]
-        public string Username { get; set; } = String.Empty;
+        public string Username { get; set; } = string.Empty;
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = String.Empty;
+        public string Password { get; set; } = string.Empty;
         [Display(Name = "Stay logged in")]
         public bool RememberMe { get; set; }
     }

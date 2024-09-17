@@ -10,6 +10,10 @@ namespace Tabletop.Core.Validators
             RuleFor(x => x.UsedForce)
                 .LessThanOrEqualTo(x => x.AllowedForce)
                 .WithMessage("Force points over limit");
+                        
+            RuleFor(x => x.StartUnits)
+                .NotEmpty()
+                .WithMessage("At least one unit must be selected");
         }
     }
 }

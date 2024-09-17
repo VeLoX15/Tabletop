@@ -18,6 +18,7 @@ namespace Tabletop
             SqlMapper.RemoveTypeMap(typeof(Guid?));
 
             var config = builder.Configuration;
+
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor()
@@ -48,6 +49,8 @@ namespace Tabletop
             });
 
             builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"), false, true);
+
+            builder.Services.AddControllersWithViews();
 
             // FluentValidation
             builder.Services.AddValidatorsFromAssembly(Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tabletop.Core.dll")));

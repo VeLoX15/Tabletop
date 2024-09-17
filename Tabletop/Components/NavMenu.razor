@@ -1,7 +1,7 @@
 ﻿@using System.Runtime.InteropServices
 @inject IStringLocalizer<App> localizer
 
-<h3 class="text-center">@localizer["TABLEBRICKS_UPPER"]</h3>
+<h1 class="text-center">@localizer["TABLEBRICKS_UPPER"]</h1>
 
 <ul class="menu">
     <li class="sidebar-item">
@@ -12,12 +12,12 @@
     </li>
 
 
-    <li class="sidebar-title">@localizer["INFO"]</li>
+    <li class="sidebar-title"><h5>@localizer["INFO"]</h5></li>
 
 
 
     <li class="sidebar-item">
-        <NavLink href="/Rules" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+        <NavLink href="/Rule-Set" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-book-journal-whills"></i>
             <span>@localizer["RULE_SET"]</span>
         </NavLink>
@@ -31,14 +31,14 @@
     </li>
 
     <li class="sidebar-item">
-        <NavLink href="/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+        <NavLink href="/Game-Modes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-dice-five"></i>
             <span>@localizer["GAME_MODES"]</span>
         </NavLink>
     </li>
 
     <li class="sidebar-item">
-        <NavLink href="/Tables" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+        <NavLink href="/Damage-Tables" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
             <i class="fa-solid fa-table-cells"></i>
             <span>@localizer["TABLES"]</span>
         </NavLink>
@@ -46,12 +46,46 @@
 
     <AuthorizeView>
         <Authorized>
-            <li class="sidebar-title">@localizer["SIMULATION"]</li>
+            <li class="sidebar-title"><h5>@localizer["TOOLS"]</h5></li>
 
             <li class="sidebar-item">
-                <NavLink href="/Calculator/Simulation" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                <NavLink href="/Tools/Simulation" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-microchip"></i>
                     <span>@localizer["SIMULATION"]</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Tools/Army-Builder" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>@localizer["ARMY_BUILDER"]</span>
+                </NavLink>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView>
+        <Authorized>
+            <li class="sidebar-title"><h5>@localizer["GAMES"]</h5></li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Games/Game-List" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-play"></i>
+                    <span>@localizer["PLAY"]</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Games/Game-History" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>@localizer["HISTORY"]</span>
+                </NavLink>
+            </li>
+
+            <li class="sidebar-item">
+                <NavLink href="/Games/Statistics" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>@localizer["STATS"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -59,7 +93,7 @@
 
     <AuthorizeView Roles="@($"{Roles.VIEW_USERS}, {Roles.VIEW_UNITS}, {Roles.VIEW_WEAPONS}, {Roles.VIEW_FRACTIONS}, {Roles.VIEW_GAMEMODES}")">
         <Authorized>
-            <li class="sidebar-title">@localizer["ADMIN"]</li>
+            <li class="sidebar-title"><h5>@localizer["ADMINISTRATION"]</h5></li>
         </Authorized>
     </AuthorizeView>
 
@@ -80,6 +114,17 @@
                 <NavLink href="/Administration/Units" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-person-rifle"></i>
                     <span>@localizer["UNITS"]</span>
+                </NavLink>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="@(Roles.VIEW_ABILITIES)">
+        <Authorized>
+            <li class="sidebar-item">
+                <NavLink href="/Administration/Abilities" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>@localizer["ABILITIES"]</span>
                 </NavLink>
             </li>
         </Authorized>
@@ -110,7 +155,7 @@
     <AuthorizeView Roles="@(Roles.VIEW_GAMEMODES)">
         <Authorized>
             <li class="sidebar-item">
-                <NavLink href="/Administration/Gamemodes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
+                <NavLink href="/Administration/Game-Modes" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-dice-five"></i>
                     <span>@localizer["GAME_MODES"]</span>
                 </NavLink>
@@ -118,27 +163,13 @@
         </Authorized>
     </AuthorizeView>
 
-    <li class="sidebar-title">@localizer["ACCOUNT"]</li>
+    <li class="sidebar-title"><h5>@localizer["ACCOUNT"]</h5></li>
     <AuthorizeView>
         <Authorized>
             <li class="sidebar-item">
                 <NavLink href="/Account/Profile" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
                     <i class="fa-solid fa-user"></i>
                     <span>@localizer["PROFILE"]</span>
-                </NavLink>
-            </li>
-
-            <li class="sidebar-item">
-                <NavLink href="/Account/Games" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    <span>@localizer["GAMES"]</span>
-                </NavLink>
-            </li>
-
-            <li class="sidebar-item">
-                <NavLink href="/Account/Army-Builder" class="sidebar-link blazor-link" Match="NavLinkMatch.All">
-                    <i class="fa-solid fa-pen"></i>
-                    <span>@localizer["ARMY_BUILDER"]</span>
                 </NavLink>
             </li>
 

@@ -9,15 +9,15 @@ namespace Tabletop.Core
     /// </summary>
     public static class DeepCopyByExpressionTrees
     {
-        private static readonly object IsStructTypeToDeepCopyDictionaryLocker = new object();
-        private static Dictionary<Type, bool> IsStructTypeToDeepCopyDictionary = new Dictionary<Type, bool>();
+        private static readonly object _isStructTypeToDeepCopyDictionaryLocker = new();
+        private static Dictionary<Type, bool> _isStructTypeToDeepCopyDictionary = [];
 
-        private static readonly object CompiledCopyFunctionsDictionaryLocker = new object();
-        private static Dictionary<Type, Func<object, Dictionary<object, object>, object>> CompiledCopyFunctionsDictionary =
-            new Dictionary<Type, Func<object, Dictionary<object, object>, object>>();
+        private static readonly object _compiledCopyFunctionsDictionaryLocker = new();
+        private static Dictionary<Type, Func<object, Dictionary<object, object>, object>> _compiledCopyFunctionsDictionary =
+            [];
 
-        private static readonly Type ObjectType = typeof(object);
-        private static readonly Type ObjectDictionaryType = typeof(Dictionary<object, object>);
+        private static readonly Type _objectType = typeof(object);
+        private static readonly Type _objectDictionaryType = typeof(Dictionary<object, object>);
 
         /// <summary>
         /// Creates a deep copy of an object.
@@ -50,14 +50,13 @@ namespace Tabletop.Core
                 return original;
             }
 
-            object alreadyCopiedObject;
 
-            if (copiedReferencesDict.TryGetValue(original, out alreadyCopiedObject))
+            if (copiedReferencesDict.TryGetValue(original, out object alreadyCopiedObject))
             {
                 return alreadyCopiedObject;
             }
 
-            if (type == ObjectType)
+            if (type == _objectType)
             {
                 return new object();
             }
@@ -76,23 +75,22 @@ namespace Tabletop.Core
             // That is why we do not modify the old dictionary instance but
             // we replace it with a new instance everytime.
 
-            Func<object, Dictionary<object, object>, object> compiledCopyFunction;
 
-            if (!CompiledCopyFunctionsDictionary.TryGetValue(type, out compiledCopyFunction))
+            if (!_compiledCopyFunctionsDictionary.TryGetValue(type, out Func<object, Dictionary<object, object>, object> compiledCopyFunction))
             {
-                lock (CompiledCopyFunctionsDictionaryLocker)
+                lock (_compiledCopyFunctionsDictionaryLocker)
                 {
-                    if (!CompiledCopyFunctionsDictionary.TryGetValue(type, out compiledCopyFunction))
+                    if (!_compiledCopyFunctionsDictionary.TryGetValue(type, out compiledCopyFunction))
                     {
                         var uncompiledCopyFunction = CreateCompiledLambdaCopyFunctionForType(type);
 
                         compiledCopyFunction = uncompiledCopyFunction.Compile();
 
-                        var dictionaryCopy = CompiledCopyFunctionsDictionary.ToDictionary(pair => pair.Key, pair => pair.Value);
+                        var dictionaryCopy = _compiledCopyFunctionsDictionary.ToDictionary(pair => pair.Key, pair => pair.Value);
 
                         dictionaryCopy.Add(type, compiledCopyFunction);
 
-                        CompiledCopyFunctionsDictionary = dictionaryCopy;
+                        _compiledCopyFunctionsDictionary = dictionaryCopy;
                     }
                 }
             }
@@ -102,24 +100,17 @@ namespace Tabletop.Core
 
         private static Expression<Func<object, Dictionary<object, object>, object>> CreateCompiledLambdaCopyFunctionForType(Type type)
         {
-            ParameterExpression inputParameter;
-            ParameterExpression inputDictionary;
-            ParameterExpression outputVariable;
-            ParameterExpression boxingVariable;
-            LabelTarget endLabel;
-            List<ParameterExpression> variables;
-            List<Expression> expressions;
 
             ///// INITIALIZATION OF EXPRESSIONS AND VARIABLES
 
             InitializeExpressions(type,
-                                  out inputParameter,
-                                  out inputDictionary,
-                                  out outputVariable,
-                                  out boxingVariable,
-                                  out endLabel,
-                                  out variables,
-                                  out expressions);
+                                  out ParameterExpression inputParameter,
+                                  out ParameterExpression inputDictionary,
+                                  out ParameterExpression outputVariable,
+                                  out ParameterExpression boxingVariable,
+                                  out LabelTarget endLabel,
+                                  out List<ParameterExpression> variables,
+                                  out List<Expression> expressions);
 
             ///// RETURN NULL IF ORIGINAL IS NULL
 
@@ -174,19 +165,19 @@ namespace Tabletop.Core
                                                   out List<Expression> expressions)
         {
 
-            inputParameter = Expression.Parameter(ObjectType);
+            inputParameter = Expression.Parameter(_objectType);
 
-            inputDictionary = Expression.Parameter(ObjectDictionaryType);
+            inputDictionary = Expression.Parameter(_objectDictionaryType);
 
             outputVariable = Expression.Variable(type);
 
-            boxingVariable = Expression.Variable(ObjectType);
+            boxingVariable = Expression.Variable(_objectType);
 
             endLabel = Expression.Label();
 
-            variables = new List<ParameterExpression>();
+            variables = [];
 
-            expressions = new List<Expression>();
+            expressions = [];
 
             variables.Add(outputVariable);
             variables.Add(boxingVariable);
@@ -205,7 +196,7 @@ namespace Tabletop.Core
                 Expression.IfThen(
                     Expression.Equal(
                         inputParameter,
-                        Expression.Constant(null, ObjectType)),
+                        Expression.Constant(null, _objectType)),
                     Expression.Return(endLabel));
 
             expressions.Add(ifNullThenReturnNullExpression);
@@ -221,7 +212,7 @@ namespace Tabletop.Core
             /////
             ///// var output = (<type>)input.MemberwiseClone();
 
-            var memberwiseCloneMethod = ObjectType.GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
+            var memberwiseCloneMethod = _objectType.GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
 
             var memberwiseCloneInputExpression =
                 Expression.Assign(
@@ -248,9 +239,9 @@ namespace Tabletop.Core
                 Expression.Assign(
                     Expression.Property(
                         inputDictionary,
-                        ObjectDictionaryType.GetProperty("Item"),
+                        _objectDictionaryType.GetProperty("Item"),
                         inputParameter),
-                    Expression.Convert(outputVariable, ObjectType));
+                    Expression.Convert(outputVariable, _objectType));
 
             expressions.Add(storeReferencesExpression);
         }
@@ -265,7 +256,7 @@ namespace Tabletop.Core
         {
             expressions.Add(Expression.Label(endLabel));
 
-            expressions.Add(Expression.Convert(outputVariable, ObjectType));
+            expressions.Add(Expression.Convert(outputVariable, _objectType));
 
             var finalBody = Expression.Block(variables, expressions);
 
@@ -386,13 +377,13 @@ namespace Tabletop.Core
 
             var indexFrom = Expression.ArrayIndex(Expression.Convert(inputParameter, arrayType), indices);
 
-            var forceDeepCopy = elementType != ObjectType;
+            var forceDeepCopy = elementType != _objectType;
 
             var rightSide =
                 Expression.Convert(
                     Expression.Call(
-                        DeepCopyByExpressionTreeObjMethod,
-                        Expression.Convert(indexFrom, ObjectType),
+                        _deepCopyByExpressionTreeObjMethod,
+                        Expression.Convert(indexFrom, _objectType),
                         Expression.Constant(forceDeepCopy, typeof(bool)),
                         inputDictionary),
                     elementType);
@@ -430,7 +421,7 @@ namespace Tabletop.Core
             var newLoop =
                 Expression.Loop(
                     Expression.Block(
-                        new ParameterExpression[0],
+                        [],
                         Expression.IfThen(
                             Expression.GreaterThanOrEqual(indexVariable, lengthVariable),
                             Expression.Break(endLabelForThisLoop)),
@@ -443,7 +434,7 @@ namespace Tabletop.Core
             var indexAssignment = Expression.Assign(indexVariable, Expression.Constant(0));
 
             return Expression.Block(
-                new[] { lengthVariable },
+                [lengthVariable],
                 lengthAssignment,
                 indexAssignment,
                 newLoop);
@@ -467,7 +458,7 @@ namespace Tabletop.Core
                 Expression.Call(
                     Expression.Convert(inputParameter, typeof(Array)),
                     getLengthMethod,
-                    new[] { dimensionConstant }));
+                    [dimensionConstant]));
         }
 
         private static void FieldsCopyExpressions(Type type,
@@ -484,11 +475,11 @@ namespace Tabletop.Core
 
             ///// READONLY FIELDS COPY (with boxing)
 
-            bool shouldUseBoxing = readonlyFields.Any();
+            bool shouldUseBoxing = readonlyFields.Count != 0;
 
             if (shouldUseBoxing)
             {
-                var boxingExpression = Expression.Assign(boxingVariable, Expression.Convert(outputVariable, ObjectType));
+                var boxingExpression = Expression.Assign(boxingVariable, Expression.Convert(outputVariable, _objectType));
 
                 expressions.Add(boxingExpression);
             }
@@ -553,7 +544,7 @@ namespace Tabletop.Core
                 typeCache = typeCache.BaseType;
             }
 
-            return fieldsList.ToArray();
+            return [.. fieldsList];
         }
 
         private static FieldInfo[] GetAllFields(Type type)
@@ -561,8 +552,8 @@ namespace Tabletop.Core
             return GetAllRelevantFields(type, forceAllFields: true);
         }
 
-        private static readonly Type FieldInfoType = typeof(FieldInfo);
-        private static readonly MethodInfo SetValueMethod = FieldInfoType.GetMethod("SetValue", new[] { ObjectType, ObjectType });
+        private static readonly Type _fieldInfoType = typeof(FieldInfo);
+        private static readonly MethodInfo _setValueMethod = _fieldInfoType.GetMethod("SetValue", [_objectType, _objectType]);
 
         private static void ReadonlyFieldToNullExpression(FieldInfo field, ParameterExpression boxingVariable, List<Expression> expressions)
         {
@@ -576,15 +567,15 @@ namespace Tabletop.Core
             var fieldToNullExpression =
                     Expression.Call(
                         Expression.Constant(field),
-                        SetValueMethod,
+                        _setValueMethod,
                         boxingVariable,
                         Expression.Constant(null, field.FieldType));
 
             expressions.Add(fieldToNullExpression);
         }
 
-        private static readonly Type ThisType = typeof(DeepCopyByExpressionTrees);
-        private static readonly MethodInfo DeepCopyByExpressionTreeObjMethod = ThisType.GetMethod("DeepCopyByExpressionTreeObj", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly Type _thisType = typeof(DeepCopyByExpressionTrees);
+        private static readonly MethodInfo _deepCopyByExpressionTreeObjMethod = _thisType.GetMethod("DeepCopyByExpressionTreeObj", BindingFlags.NonPublic | BindingFlags.Static);
 
         private static void ReadonlyFieldCopyExpression(Type type,
                                                         FieldInfo field,
@@ -602,16 +593,16 @@ namespace Tabletop.Core
 
             var fieldFrom = Expression.Field(Expression.Convert(inputParameter, type), field);
 
-            var forceDeepCopy = field.FieldType != ObjectType;
+            var forceDeepCopy = field.FieldType != _objectType;
 
             var fieldDeepCopyExpression =
                 Expression.Call(
-                    Expression.Constant(field, FieldInfoType),
-                    SetValueMethod,
+                    Expression.Constant(field, _fieldInfoType),
+                    _setValueMethod,
                     boxingVariable,
                     Expression.Call(
-                        DeepCopyByExpressionTreeObjMethod,
-                        Expression.Convert(fieldFrom, ObjectType),
+                        _deepCopyByExpressionTreeObjMethod,
+                        Expression.Convert(fieldFrom, _objectType),
                         Expression.Constant(forceDeepCopy, typeof(bool)),
                         inputDictionary));
 
@@ -651,15 +642,15 @@ namespace Tabletop.Core
 
             var fieldTo = Expression.Field(outputVariable, field);
 
-            var forceDeepCopy = field.FieldType != ObjectType;
+            var forceDeepCopy = field.FieldType != _objectType;
 
             var fieldDeepCopyExpression =
                 Expression.Assign(
                     fieldTo,
                     Expression.Convert(
                         Expression.Call(
-                            DeepCopyByExpressionTreeObjMethod,
-                            Expression.Convert(fieldFrom, ObjectType),
+                            _deepCopyByExpressionTreeObjMethod,
+                            Expression.Convert(fieldFrom, _objectType),
                             Expression.Constant(forceDeepCopy, typeof(bool)),
                             inputDictionary),
                         fieldType));
@@ -695,21 +686,20 @@ namespace Tabletop.Core
             // That is why we do not modify the old dictionary instance but
             // we replace it with a new instance everytime.
 
-            bool isStructTypeToDeepCopy;
 
-            if (!IsStructTypeToDeepCopyDictionary.TryGetValue(type, out isStructTypeToDeepCopy))
+            if (!_isStructTypeToDeepCopyDictionary.TryGetValue(type, out bool isStructTypeToDeepCopy))
             {
-                lock (IsStructTypeToDeepCopyDictionaryLocker)
+                lock (_isStructTypeToDeepCopyDictionaryLocker)
                 {
-                    if (!IsStructTypeToDeepCopyDictionary.TryGetValue(type, out isStructTypeToDeepCopy))
+                    if (!_isStructTypeToDeepCopyDictionary.TryGetValue(type, out isStructTypeToDeepCopy))
                     {
                         isStructTypeToDeepCopy = IsStructWhichNeedsDeepCopy_NoDictionaryUsed(type);
 
-                        var newDictionary = IsStructTypeToDeepCopyDictionary.ToDictionary(pair => pair.Key, pair => pair.Value);
+                        var newDictionary = _isStructTypeToDeepCopyDictionary.ToDictionary(pair => pair.Key, pair => pair.Value);
 
                         newDictionary[type] = isStructTypeToDeepCopy;
 
-                        IsStructTypeToDeepCopyDictionary = newDictionary;
+                        _isStructTypeToDeepCopyDictionary = newDictionary;
                     }
                 }
             }
@@ -733,7 +723,7 @@ namespace Tabletop.Core
 
         private static bool HasInItsHierarchyFieldsWithClasses(Type type, HashSet<Type> alreadyCheckedTypes = null)
         {
-            alreadyCheckedTypes = alreadyCheckedTypes ?? new HashSet<Type>();
+            alreadyCheckedTypes ??= [];
 
             alreadyCheckedTypes.Add(type);
 

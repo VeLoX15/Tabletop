@@ -1,4 +1,4 @@
-using DbController.MySql;
+using DbController.SqlServer;
 using DbController;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -7,6 +7,9 @@ using Tabletop.Core.Services;
 using Blazor.Pagination;
 using Tabletop.Core.Filters;
 using Microsoft.JSInterop;
+using Tabletop.Core.Calculators;
+using System.Globalization;
+using Tabletop.Core;
 
 namespace Tabletop.Pages.Account
 {
@@ -24,19 +27,20 @@ namespace Tabletop.Pages.Account
         private User? _loggedInUser;
 
         public int SelectedFraction { get; set; } = 1;
-        public List<Fraction> Fractions { get; set; } = new();
-        public List<Unit> UserUnits { get; set; } = new();
-        public List<Unit> Units { get; set; } = new();
+        public List<Fraction> Fractions { get; set; } = [];
+        public List<Unit> UserUnits { get; set; } = [];
+        public List<Unit> Units { get; set; } = [];
         public Unit Unit { get; set; } = new();
         public int Page { get => _page; set => _page = value < 1 ? 1 : value; }
         public int TotalItems { get; set; }
 
         private int _page = 1;
-        public bool AddFriendModal { get; set; } = false;
-        public bool AddUnitModal { get; set; } = false;
-        public bool EditProfile { get; set; } = false;
-        public List<User> Users { get; set; } = new();
-        public List<User> Friends { get; set; } = new();
+        public bool AddFriendModal { get; set; }
+        public bool AddUnitModal { get; set; }
+        public bool EditProfile { get; set; }
+        public bool IsFriend { get; set; }
+        public List<User> Users { get; set; } = [];
+        public List<User> Friends { get; set; } = [];
         public UserFilter Filter { get; set; } = new()
         {
             Limit = AppdataService.PageLimit
@@ -50,10 +54,10 @@ namespace Tabletop.Pages.Account
 
                 UserName ??= _loggedInUser?.Username ?? string.Empty;
 
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                CurrentUser = await userService.GetAsync(UserName, dbController);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                CurrentUser = await UserService.GetAsync(UserName, dbController);
 
-                if (CurrentUser?.MainFractionId > 0)
+                if (CurrentUser != null)
                 {
                     SelectedFraction = CurrentUser.MainFractionId;
                 }
@@ -64,10 +68,39 @@ namespace Tabletop.Pages.Account
                     CurrentUser.ConvertedImage = $"data:image/png;base64,{base64String}";
                 }
 
+                AddFriendModal = false;
+                AddUnitModal = false;
+                EditProfile = false;       
+
                 await LoadContent();
                 await SelectFractionUnitsByUser();
 
                 await LoadAsync();
+                await CalculateForceAsync();
+                await CheckFriendAsync();
+            }
+        }
+
+        public async Task CheckFriendAsync()
+        {
+            if (CurrentUser != null && _loggedInUser != null)
+            {
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                IsFriend = await UserService.CheckUserFriendAsync(_loggedInUser.Id, CurrentUser.Id, dbController);
+            }
+        }
+
+        private async Task CalculateForceAsync()
+        {
+            if (CurrentUser is not null)
+            {
+                foreach (var unit in UserUnits)
+                {
+                    int force = await Calculation.ForceAsync(unit);
+
+                    unit.Force = force;
+                    unit.ForceOfQuantity = force * unit.Quantity;
+                }
             }
         }
 
@@ -76,38 +109,18 @@ namespace Tabletop.Pages.Account
             Filter.PageNumber = navigateToPage1 ? 1 : Page;
             if (Filter.SearchPhrase != string.Empty)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
                 TotalItems = await userService.GetTotalAsync(Filter, dbController);
                 Users = await userService.GetAsync(Filter, dbController);
             }
-        }
-
-        protected Task OpenFriendModal()
-        {
-            AddFriendModal = true;
-            Filter.SearchPhrase = string.Empty;
-            Users = new();
-            return Task.CompletedTask;
-        }
-
-        protected Task OpenUnitModal()
-        {
-            AddUnitModal = true;
-            return Task.CompletedTask;
-        }
-
-        protected Task OpenEditProfile()
-        {
-            EditProfile = true;
-            return Task.CompletedTask;
         }
 
         protected async Task LoadContent()
         {
             if (CurrentUser != null)
             {
-                Fractions = AppdataService.Fractions.ToList();
-                Units = AppdataService.Units.ToList();
+                Fractions = [.. AppdataService.Fractions];
+                Units = [.. AppdataService.Units];
 
                 await FriendReloading();
                 await UnitReloading();
@@ -118,9 +131,9 @@ namespace Tabletop.Pages.Account
         {
             if (CurrentUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
 
-                Friends = await userService.GetUserFriendsAsync(CurrentUser.Id, dbController);
+                Friends = await UserService.GetUserFriendsAsync(CurrentUser.Id, dbController);
 
                 foreach (User item in Friends)
                 {
@@ -137,8 +150,8 @@ namespace Tabletop.Pages.Account
         {
             if (CurrentUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                UserUnits = await unitService.GetUserUnitsAsync(CurrentUser.Id, dbController);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                UserUnits = await UnitService.GetUserUnitsAsync(CurrentUser.Id, dbController);
             }
         }
 
@@ -149,12 +162,12 @@ namespace Tabletop.Pages.Account
 
         protected async Task AddFriendAsync(int friendId)
         {
-            if (CurrentUser != null)
+            if (_loggedInUser != null && CurrentUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                await userService.CreateUserFriendAsync(CurrentUser.Id, friendId, dbController);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                await UserService.CreateUserFriendAsync(_loggedInUser.Id, friendId, dbController);
                 await FriendReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Friend has been added");
+                await JSRuntime.ShowToastAsync(ToastType.success, CurrentUser.Username + " " + localizer["FOLLOWED"]);
             }
         }
 
@@ -162,12 +175,12 @@ namespace Tabletop.Pages.Account
         {
             if (CurrentUser is not null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
 
                 CurrentUser.Units.Add(unit);
-                await unitService.CreateUserUnitAsync(CurrentUser, unit, dbController);
+                await UnitService.CreateUserUnitAsync(CurrentUser, unit, dbController);
                 await UnitReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been added");
+                await JSRuntime.ShowToastAsync(ToastType.success, unit.GetLocalization(CultureInfo.CurrentCulture)?.Name + " " + localizer["ADDED"]);
             }
         }
 
@@ -175,31 +188,31 @@ namespace Tabletop.Pages.Account
         {
             if (CurrentUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
                 await userService.UpdateAsync(CurrentUser, dbController);
-                await JSRuntime.ShowToastAsync(ToastType.success, "Profile has been edited");
+                await JSRuntime.ShowToastAsync(ToastType.success, localizer["PROFILE"] + " " + localizer["EDITED"]);
             }
         }
 
-        protected async Task DeleteFriendAsync(int friendId)
+        protected async Task DeleteFriendAsync()
         {
-            if (CurrentUser != null)
+            if (CurrentUser != null && _loggedInUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                await userService.DeleteFriendAsync(CurrentUser.Id, friendId, dbController);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                await UserService.DeleteFriendAsync(_loggedInUser.Id, CurrentUser.Id, dbController);
                 await FriendReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Friend has been deleted");
+                await JSRuntime.ShowToastAsync(ToastType.success, CurrentUser.Username + " " + localizer["UNFOLLOWED"]);
             }
         }
 
-        protected async Task DeleteUnitAsync(int unitId)
+        protected async Task DeleteUnitAsync(Unit unit)
         {
             if (CurrentUser != null)
             {
-                using IDbController dbController = new MySqlController(AppdataService.ConnectionString);
-                await unitService.DeleteUnitAsync(CurrentUser.Id, unitId, dbController);
+                using IDbController dbController = new SqlController(AppdataService.ConnectionString);
+                await unitService.DeleteUnitAsync(CurrentUser.Id, unit.UnitId, dbController);
                 await UnitReloading();
-                await JSRuntime.ShowToastAsync(ToastType.success, "Unit has been deleted");
+                await JSRuntime.ShowToastAsync(ToastType.success, unit.GetLocalization(CultureInfo.CurrentCulture)?.Name + " " + localizer["DELETED"]);
             }
         }
     }

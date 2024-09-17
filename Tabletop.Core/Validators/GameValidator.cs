@@ -10,8 +10,8 @@ namespace Tabletop.Core.Validators
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("The field must be filled")
-                .MaximumLength(50)
-                .WithMessage("Name must contain only 50 characters.");
+                .MaximumLength(30)
+                .WithMessage("Name must contain only 30 characters.");
 
             RuleFor(x => x.GamemodeId)
                 .NotEmpty()
@@ -19,7 +19,7 @@ namespace Tabletop.Core.Validators
 
             When(x => x.GamemodeId is 1 or 4, () =>
             {
-                RuleFor(x => x.Rounds)
+                RuleFor(x => x.NumberOfRounds)
                     .NotNull()
                     .WithMessage("Rounds must be selected");
             });

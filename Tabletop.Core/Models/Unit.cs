@@ -1,5 +1,6 @@
 ﻿using DbController;
 using Tabletop.Core.Interfaces;
+using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Models
 {
@@ -22,14 +23,14 @@ namespace Tabletop.Core.Models
         public int Moving { get; set; }
 
         [CompareField("primary_weapon_id")]
-        public int? PrimaryWeaponId { get; set; }
+        public int PrimaryWeaponId { get; set; }
 
         [CompareField("secondary_weapon_id")]
         public int? SecondaryWeaponId { get; set; }
-        [CompareField("ability_id")]
-        public int? AbilityId { get; set; }
-        [CompareField("has_jetpack")]
-        public bool HasJetpack { get; set; }
+        [CompareField("first_ability_id")]
+        public int? FirstAbilityId { get; set; }
+        [CompareField("second_ability_id")]
+        public int? SecondAbilityId { get; set; }
 
         [CompareField("image")]
         public byte[]? Image { get; set; }
@@ -39,8 +40,8 @@ namespace Tabletop.Core.Models
         public Weapon? PrimaryWeapon { get; set; }
         public Weapon? SecondaryWeapon { get; set; }
         public Class? Class { get; set; }
-        public Ability? Ability { get; set; }
-        public Fraction Fraction { get; set; } = new();
+        public Ability? FirstAbility { get; set; }
+        public Ability? SecondAbility { get; set; }
 
         [CompareField("quantity")]
         public int Quantity { get; set; }
@@ -74,8 +75,8 @@ namespace Tabletop.Core.Models
                 { "MOVING", Moving },
                 { "PRIMARY_WEAPON_ID", PrimaryWeaponId },
                 { "SECONDARY_WEAPON_ID", SecondaryWeaponId },
-                { "ABILITY_ID", AbilityId },
-                { "HAS_JETPACK" , HasJetpack },
+                { "FIRST_ABILITY_ID", FirstAbilityId },
+                { "SECOND_ABILITY_ID" , SecondAbilityId },
                 { "QUANTITY", Quantity }
             };
         }

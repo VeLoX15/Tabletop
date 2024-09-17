@@ -1,0 +1,43 @@
+﻿@inject IStringLocalizer<App> localizer
+
+<Modal Title="@LoggedInUser?.Username"
+       OnClosed="OnClosed"
+       ModalSize="ModalSize.LG"
+       HideFooter="true">
+
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>@localizer["NAME"]</th>
+                    <th>@localizer["QUANTITY"]</th>
+                    <th>@localizer["FORCE"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var unit in UnitList)
+                {
+                    int maxQuantity = LoggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+
+                    <tr>
+                        <td class="text-bold-500 text-nowrap">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                        <td>@unit.Quantity</td>
+                        <td class="text-nowrap">@unit.ForceOfQuantity (@unit.Force)</td>
+                    </tr>
+                }
+                <tr>
+                    <th>@localizer["TOTAL"]</th>
+                    <th>@UnitList.Sum(x => x.Quantity)</th>
+                    <th class="text-nowrap">@UsedForce (@Math.Round((double)UsedForce / UnitList.Sum(x => x.Quantity), 0))</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</Modal>
+
+@code {
+    [Parameter] public List<Unit> UnitList { get; set; } = [];
+    [Parameter] public User? LoggedInUser { get; set; }
+    [Parameter] public int UsedForce { get; set; }
+    [Parameter] public EventCallback OnClosed { get; set; }
+}

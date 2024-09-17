@@ -1,0 +1,44 @@
+﻿@page "/active-users"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+@implements IAsyncDisposable
+
+@code {
+    private HubConnection? _hubConnection;
+    private List<int> _activeUserIds = new List<int>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/userPresenceHub"))
+            .Build();
+
+        _hubConnection.On<List<int>>("UserListUpdated", (userIds) =>
+        {
+            _activeUserIds = userIds;
+            InvokeAsync(StateHasChanged);
+        });
+
+        await _hubConnection.StartAsync();
+        await _hubConnection.SendAsync("UserJoined");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.SendAsync("UserLeft");
+            await _hubConnection.DisposeAsync();
+        }
+    }
+}
+
+<div>
+    <h3>Active Users</h3>
+    <ul>
+        @foreach (var userId in _activeUserIds)
+        {
+            <li>@userId</li>
+        }
+    </ul>
+</div>

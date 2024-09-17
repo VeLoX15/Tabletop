@@ -1,0 +1,274 @@
+﻿@page "/Tools/Army-Builder"
+@attribute [Authorize]
+@inject AuthService authService
+@inject UnitService unitService
+@inherits ManagementBasePage<Template, TemplateService>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["ARMY_BUILDER"]</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header ps-4 pe-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2>@localizer["ARMY_BUILDER"]</h2>
+                <div class="ms-auto">
+                    <button type="button" class="btn" @onclick="() => OpenFilter = true"><i class="fa-solid fa-filter fa-xl"></i></button>
+                    <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                </div>
+            </div>
+
+            <div>
+                <p>@localizer["ARMY_BUILDER_DESCRIPTION"]</p>
+            </div>
+        </div>
+        <div class="card-content m-1">
+            <div class="table-responsive">
+                <table class="table mb-0 table-lg">
+                    <thead>
+                        <tr>
+                            <th>@localizer["NAME"]</th>
+                            <th>@localizer["FRACTION"]</th>
+                            <th>@localizer["FORCE"]</th>
+                            <th class="text-right">@localizer["ACTION"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Data" Context="template">
+                            <tr>
+                                <td class="text-nowrap">@template.Name</td>
+                                <td class="text-nowrap">@AppdataService.Fractions.FirstOrDefault(x => x.FractionId == template.FractionId)?.GetLocalization(CultureInfo.CurrentCulture)?.ShortName</td>
+                                <td>@template.Force</td>
+                                <td class="d-flex justify-content-end">
+                                    <span class="pe-1 aktion-icon" role="button" @onclick="async () => { await EditAsync(template); ShowArmy = true; }">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </span>
+                                    <span class="pe-1 aktion-icon" role="button" @onclick="async () => await EditAsync(template)">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </span>
+                                    <span class="pe-1 aktion-icon" role="button" @onclick="() => SelectedForDeletion = template">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@if (Input is not null && !ShowArmy)
+{
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["TEMPLATE"], Input.Name)"
+           OnClosed="() => Input = null"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <EditForm Model="Input" @ref="_form">
+            <FluentValidationValidator />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Name" class="form-control" id="template-name" placeholder="Name" />
+                        <label for="template-name">@localizer["NAME"]</label>
+                        <ValidationMessage For="() => Input.Name" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="template-force" @bind-Value="Input.Force" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Input.Force == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 200; i <= 800; i += 200)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="template-force">@localizer["FORCE"]</label>
+                        <ValidationMessage For="() => Input.Force" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-fraction" @bind-Value="Input.FractionId" @oninput="ClearUnitsAsync" class="form-control">
+                            @if (Input.FractionId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @foreach (Fraction item in AppdataService.Fractions)
+                            {
+                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-fraction">@localizer["FRACTION"]</label>
+                        <ValidationMessage For="() => Input.FractionId" />
+                    </div>
+
+                    <h4>@localizer["UNITS"]</h4>
+
+                    <div class="table-responsive">
+                        <table class="table table-lg">
+                            <thead>
+                                <tr>
+                                    <th>@localizer["NAME"]</th>
+                                    <th>@localizer["CLASS"]</th>
+                                    <th class="text-center">@localizer["QUANTITY"]</th>
+                                    <th>@localizer["FORCE"]</th>
+                                    <th>@localizer["ACTION"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var unit in Input.Units)
+                                {
+                                    int maxQuantity = _loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity ?? 0;
+
+                                    <tr>
+                                        <td class="text-bold-500 text-nowrap">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td class="text-bold-500">@AppdataService.Classes.FirstOrDefault(x => x.ClassId == unit.ClassId)?.GetLocalization(CultureInfo.CurrentCulture)?.Name</td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-center text-nowrap">
+                                                <button class="btn fa-solid fa-minus cursor-pointer p-3" @onclick="async () => await DecrementAsync(unit)"></button>
+                                                <button class="btn p-0">@unit.Quantity / @_loggedInUser?.Units?.FirstOrDefault(x => x.UnitId == unit.UnitId)?.Quantity</button>
+                                                <button class="btn fa-solid fa-plus cursor-pointer p-3" @onclick="async () => await IncrementAsync(unit)"></button>
+                                            </div>
+                                        </td>
+                                        <td class="text-nowrap">@unit.ForceOfQuantity (@unit.Force)</td>
+                                        <td>
+                                            <button class="btn fa-solid fa-trash-can" @onclick="async () => await ClearUnitAsync(unit)"></button>
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <th class="text-nowrap">
+                                        @if (Input.UsedForce > Input.Force)
+                                        {
+                                            <ValidationMessage For="() => Input.UsedForce" />
+                                        }
+                                        else
+                                        {
+                                            @localizer["TOTAL"]
+                                        }
+                                    </th>
+                                    <th></th>
+                                    <th class="text-center">@Input.TotalUnits</th>
+                                    <th>@Input.UsedForce (@Math.Round((double)Input.UsedForce / Input.TotalUnits, 0))</th>
+                                    <th>
+                                        @if (Input.Units.Any())
+                                        {
+                                            <button class="btn fa-solid fa-trash-can" @onclick="ClearUnitsAsync"></button>
+                                        }
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="input-group">
+                                            <select @onchange="UnitSelectionChangedAsync" class="form-select" id="inputGroupSelect04" aria-label="Unit">
+                                                @if (SelectedUnit is null)
+                                                {
+                                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">@localizer["SELECT_CHOOSE"]</option>
+                                                }
+
+                                                @if (_loggedInUser != null)
+                                                {
+                                                    @foreach (var unit in _loggedInUser.Units.Where(x => x.FractionId == Input.FractionId))
+                                                    {
+                                                        var templateUnit = Input.Units.FirstOrDefault(x => x.UnitId == unit.UnitId);
+                                                        @if (templateUnit is null)
+                                                        {
+                                                            <option value="@unit.UnitId">@unit.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+
+                                            <button @onclick="AddUnitAsync" class="btn btn-success fa-solid fa-plus" type="button" disabled="@(SelectedUnit is null || Input.Force == 0)"></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["CANCEL"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
+        </div>
+    </Modal>
+}
+
+@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="@localizer["DELETE"]"
+                  OnClosed="() => SelectedForDeletion = null"
+                  OnConfirmed="DeleteAsync">
+        <p>@String.Format(localizer["REQUEST_DELETION"])</p>
+    </ConfirmModal>
+}
+
+@if (OpenFilter)
+{
+    <Modal Title="@localizer["FILTER"]"
+           OnClosed="() => OpenFilter = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <div class="card-content" style="padding: 0 1.3rem;">
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                    <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="select-fraction" @bind-Value="Filter.FractionId" class="form-control">
+                        <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        @foreach (Fraction item in AppdataService.Fractions)
+                        {
+                            <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                        }
+                    </InputSelect>
+                    <label for="select-fraction">@localizer["FRACTION"]</label>
+                    <ValidationMessage For="() => Filter.FractionId" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect id="template-force" @bind-Value="Filter.Force" @oninput="ClearUnitsAsync" class="form-control">
+                        <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                        @for (int i = 200; i <= 800; i += 100)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </InputSelect>
+                    <label for="template-force">@localizer["FORCE"]</label>
+                    <ValidationMessage For="() => Filter.Force" />
+                </div>
+
+                <div class="toolbar">
+                    <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
+                </div>
+            </EditForm>
+        </div>
+    </Modal>
+}
+
+@if (Input is not null && ShowArmy)
+{
+    <ShowArmyModal UnitList="Input.Units"
+                   UsedForce="Input.UsedForce"
+                   LoggedInUser="_loggedInUser"
+                   OnClosed="() => { Input = null; ShowArmy = false; }" />
+}

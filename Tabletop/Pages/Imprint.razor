@@ -1,0 +1,47 @@
+﻿@page "/Imprint"
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"]</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="ps-4 pe-4">
+            <div class="">
+                <h1>@localizer["IMPRINT"]</h1>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <td class="bold">@localizer["NAME"]:</td>
+                            <td>@localizer["TABLEBRICKS"]</td>
+                        </tr>
+
+                        <tr>
+                            <td class="bold">@localizer["EMAIL"]:</td>
+                            <td><a href="mailto:support@tablebricks.com">@localizer["EMAIL_ADDRESS"]</a></td>
+                        </tr>
+
+                        <tr>
+                            <td class="bold">@localizer["LOCATION"]:</td>
+                            <td>@localizer["GERMANY"]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h2>@localizer["DISCLAIMER"]</h2>
+                <h4 class="pt-2">@localizer["DISCLAIMER_HL1"]</h4>
+                <p>@localizer["DISCLAIMER_HL1_T1"]</p>
+                <p>@localizer["DISCLAIMER_HL1_T2"]</p>
+                <h4 class="pt-2">@localizer["DISCLAIMER_HL2"]</h4>
+                <p>@localizer["DISCLAIMER_HL2_T1"]</p>
+                <p>@localizer["DISCLAIMER_HL2_T2"]</p>
+                <p>@localizer["DISCLAIMER_HL2_T3"]</p>
+                <p>@localizer["DISCLAIMER_HL2_T4"]</p>
+                <h4 class="pt-2">@localizer["DISCLAIMER_HL3"]</h4>
+                <p>@localizer["DISCLAIMER_HL3_T1"]</p>
+            </div>
+        </div>
+    </div>
+</div>

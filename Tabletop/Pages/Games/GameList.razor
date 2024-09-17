@@ -1,0 +1,197 @@
+﻿@page "/Games/Game-List"
+@attribute [Authorize]
+@inject AuthService authService
+@inject UserService userService
+@inject NavigationManager navigationManager
+@inherits ManagementBasePage<Game, GameService>
+@inject IStringLocalizer<App> localizer
+
+<PageTitle>@localizer["TABLEBRICKS"] - @localizer["ACTIVE_GAMES"]</PageTitle>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header ps-4 pe-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2>@localizer["ACTIVE_GAMES"]</h2>
+                <div class="ms-auto">
+                    <button type="button" class="btn" @onclick="() => OpenFilter = true"><i class="fa-solid fa-filter fa-xl"></i></button>
+                    <button type="button" class="btn" @onclick="NewAsync"><i class="fa-solid fa-square-plus fa-xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-content m-1">
+            <div class="table-responsive">
+                <table class="table mb-0 table-lg">
+                    <thead>
+                        <tr>
+                            <th>@localizer["NAME"]</th>
+                            <th>@localizer["HOST"]</th>
+                            <th class="text-right">@localizer["ACTION"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Data" Context="game">
+                            <tr>
+                                <td class="text-nowrap">@game.Name</td>
+                                <td>@game.Host</td>
+                                <td class="d-flex justify-content-end">
+                                    @if (game.UserId == _loggedInUser?.UserId)
+                                    {
+                                        <span class="pe-3 aktion-icon" role="button" @onclick="() => SelectedForDeletion = game">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </span>
+                                    }
+                                    <NavLink href="@($"/Games/{game.GameId}")" style="color: #222222;">
+                                        <i class="fa-solid fa-play"></i>
+                                    </NavLink>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Input is not null)
+{
+    <Modal Title="@String.Format("{0} {1}: {2}", @localizer["EDIT"], @localizer["GAME"], Input.Name)"
+           OnClosed="() => Input = null"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <EditForm Model="Input" @ref="_form">
+            <FluentValidationValidator />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Name" class="form-control" id="game-name" placeholder="Name" />
+                        <label for="game-name">@localizer["NAME"]</label>
+                        <ValidationMessage For="() => Input.Name" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="select-unit" @bind-Value="Input.GamemodeId" class="form-control">
+                            @if (Input.GamemodeId == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @foreach (Gamemode item in AppdataService.Gamemodes)
+                            {
+                                <option value="@item.GamemodeId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                            }
+                        </InputSelect>
+                        <label for="select-unit">@localizer["GAME_MODES"]</label>
+                        <ValidationMessage For="() => Input.GamemodeId" />
+                    </div>
+
+                    @if (Input.GamemodeId == 1 || Input.GamemodeId == 4)
+                    {
+                        <div class="form-floating mb-3">
+                            <InputSelect id="game-rounds" @bind-Value="Input.NumberOfRounds" class="form-control">
+                                @if (Input.NumberOfRounds == null)
+                                {
+                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                }
+                                @for (int i = 6; i <= 14; i += 1)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </InputSelect>
+                            <label for="game-rounds">@localizer["ROUNDS"]</label>
+                            <ValidationMessage For="() => Input.NumberOfRounds" />
+                        </div>
+                    }
+                    else
+                    {
+                        Input.NumberOfRounds = null;
+                    }
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="game-teams" @bind-Value="Input.NumberOfTeams" class="form-control">
+                            @if (Input.NumberOfTeams == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 2; i <= 4; i += 1)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="game-teams">@localizer["TEAMS"]</label>
+                        <ValidationMessage For="() => Input.NumberOfTeams" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="game-players" @bind-Value="Input.NumberOfPlayers" class="form-control">
+                            @if (Input.NumberOfPlayers == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 2; i <= 8; i += 1)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="game-players">@localizer["PLAYERS"]</label>
+                        <ValidationMessage For="() => Input.NumberOfPlayers" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputSelect id="game-force" @bind-Value="Input.Force" class="form-control">
+                            @if (Input.Force == 0)
+                            {
+                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                            }
+                            @for (int i = 200; i <= 800; i += 200)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                        <label for="game-force">@localizer["FORCE"]</label>
+                        <ValidationMessage For="() => Input.Force" />
+                    </div>
+
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-danger" @onclick="() => Input = null">@localizer["Cancel"]</button>
+            <button type="button" class="btn btn-success" @onclick="SaveAsync">@localizer["SAVE"]</button>
+        </div>
+    </Modal>
+}
+
+@if (SelectedForDeletion is not null)
+{
+    <ConfirmModal Title="@localizer["DELETE"]"
+                  OnClosed="() => SelectedForDeletion = null"
+                  OnConfirmed="DeleteAsync">
+        <p>@String.Format(localizer["REQUEST_DELETION"])</p>
+    </ConfirmModal>
+}
+
+@if (OpenFilter)
+{
+    <Modal Title="@localizer["FILTER"]"
+           OnClosed="() => OpenFilter = false"
+           ModalSize="ModalSize.LG"
+           HideFooter="true">
+
+        <div class="card-content" style="padding: 0 1.3rem;">
+            <EditForm Model="Filter" OnValidSubmit="async () => await LoadAsync(true)">
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Filter.SearchPhrase" class="form-control" id="usermanagement-filter-searchphrase" placeholder="Search users" />
+                    <label for="usermanagement-filter-searchphrase">@localizer["SEARCH"]</label>
+                </div>
+
+                <div class="toolbar">
+                    <button type="submit" class="btn btn-primary">@localizer["SEARCH"]</button>
+                </div>
+            </EditForm>
+        </div>
+
+    </Modal>
+}

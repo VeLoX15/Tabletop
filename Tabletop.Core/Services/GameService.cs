@@ -5,35 +5,31 @@ using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class GameService : IModelService<Game, int, GameFilter>
+    public class GameService(PlayerService playerService, UserService userService) : IModelService<Game, int, GameFilter>
     {
-        private readonly PlayerService _playerService;
-
-        public GameService(PlayerService playerService)
-        {
-            _playerService = playerService;
-        }
+        private readonly PlayerService _playerService = playerService;
+        private readonly UserService _userService = userService;
 
         public async Task CreateAsync(Game input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = $@"INSERT INTO `tabletop`.`games` 
+            string sql = $@"INSERT INTO Games 
                 (
-                `user_id`,
-                `gamemode_id`,
-                `name`,
-                `rounds`,
-                `force`,
-                `number_of_teams`,
-                `number_of_players`,
-                `date`
+                UserId,
+                GamemodeId,
+                Name,
+                NumberOfRounds,
+                Force,
+                NumberOfTeams,
+                NumberOfPlayers,
+                Date
                 )
                 VALUES
                 (
                 @USER_ID,
                 @GAMEMODE_ID,
                 @NAME,
-                @ROUNDS,
+                @NUMBER_OF_ROUNDS,
                 @FORCE,
                 @NUMBER_OF_TEAMS,
                 @NUMBER_OF_PLAYERS,
@@ -46,7 +42,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(Game input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`games` WHERE `game_id` = @GAME_ID";
+            string sql = "DELETE FROM Games WHERE GameId = @GAME_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -57,7 +53,7 @@ namespace Tabletop.Core.Services
         public async Task<Game?> GetAsync(int gameId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`games`  WHERE `game_id` = @GAME_ID";
+            string sql = @"SELECT * FROM Games  WHERE GameId = @GAME_ID";
 
             var game = await dbController.GetFirstAsync<Game>(sql, new
             {
@@ -75,7 +71,7 @@ namespace Tabletop.Core.Services
         public static async Task<List<Game>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "SELECT * FROM `tabletop`.`games`";
+            string sql = "SELECT * FROM Games";
 
             var list = await dbController.SelectDataAsync<Game>(sql, cancellationToken: cancellationToken);
 
@@ -86,20 +82,21 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT DISTINCT g.* FROM `games` g LEFT JOIN `players` p ON g.`game_id` = p.`game_id` WHERE p.`user_id` = @USER_ID OR g.`user_id` = @USER_ID ");
+            sb.AppendLine("SELECT DISTINCT g.* FROM Games g LEFT JOIN Players p ON g.GameId = p.GameId WHERE p.UserId = @USER_ID OR g.UserId = @USER_ID ");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `date` DESC ");
+            sb.AppendLine(@$" ORDER BY Date DESC ");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
 
             List<Game> list = await dbController.SelectDataAsync<Game>(sql, GetFilterParameter(filter), cancellationToken);
 
-            if (list.Any())
+            if (list.Count != 0)
             {
                 foreach (var item in list)
                 {
                     item.Players = await _playerService.GetGamePlayersAsync(item.GameId, dbController, cancellationToken);
+                    item.Host = await _userService.GetUsernameAsync(item.UserId, dbController, cancellationToken);
                 }
             }
 
@@ -121,7 +118,7 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sb.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sb.ToString();
@@ -132,7 +129,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`games` WHERE `user_id` = @USER_ID");
+            sb.AppendLine("SELECT COUNT(*) FROM Games WHERE UserId = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
@@ -144,15 +141,15 @@ namespace Tabletop.Core.Services
 
         public async Task UpdateAsync(Game input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"UPDATE `tabletop`.`games` SET
-                `gamemode_id` = @GAMEMODE_ID,
-                `name` = @NAME,
-                `rounds` = @ROUNDS,
-                `force` = @FORCE,
-                `number_of_teams` = @NUMBER_OF_TEAMS,
-                `number_of_players` = @NUMBER_OF_PLAYERS,
-                `date` = @DATE
-                WHERE `game_id` = @GAME_ID";
+            string sql = @"UPDATE Games SET
+                GamemodeId = @GAMEMODE_ID,
+                Name = @NAME,
+                NumberOfRounds = @NUMBER_OF_ROUNDS,
+                Force = @FORCE,
+                NumberOfTeams = @NUMBER_OF_TEAMS,
+                NumberOfPlayers = @NUMBER_OF_PLAYERS,
+                Date = @DATE
+                WHERE GameId = @GAME_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 

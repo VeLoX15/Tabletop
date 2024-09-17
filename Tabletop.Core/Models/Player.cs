@@ -19,7 +19,8 @@ namespace Tabletop.Core.Models
 
         public int AllowedForce {  get; set; }
         public User User { get; set; } = new();
-        public List<Unit> StartUnits { get; set; } = new();
+        public List<Unit> StartUnits { get; set; } = [];
+        public List<Unit> Casualties { get; set; } = [];
         public int TotalUnits { get; set; }
 
         public int Id => PlayerId;

@@ -5,24 +5,24 @@ using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class UserService : IModelService<User, int, UserFilter>
+    public class UserService(PermissionService permissionService) : IModelService<User, int, UserFilter>
     {
-        private readonly PermissionService _permissionService;
+        private readonly PermissionService _permissionService = permissionService;
 
-        public UserService(PermissionService permissionService)
-        {
-            _permissionService = permissionService;
-        }
         public async Task CreateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
+            input.LastLogin = DateTime.Now;
+            input.RegistrationDate = DateTime.Now;
+
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = $@"INSERT INTO `tabletop`.`users`
+            string sql = $@"INSERT INTO Users
                 (
-                `username`,
-                `display_name`,
-                `password`,
-                `salt`,
-                `last_login`
+                Username,
+                DisplayName,
+                Password,
+                Salt,
+                LastLogin,
+                RegistrationDate
                 )
                 VALUES 
                 (
@@ -30,7 +30,8 @@ namespace Tabletop.Core.Services
                 @DISPLAY_NAME,
                 @PASSWORD,
                 @SALT,
-                @LAST_LOGIN
+                @LAST_LOGIN,
+                @REGISTRATION_DATE
                 ); {dbController.GetLastIdSql()}";
 
             input.UserId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
@@ -41,7 +42,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`users``WHERE `user_id` = @USER_ID";
+            string sql = "DELETE FROM Users WHERE UserId = @USER_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -49,10 +50,10 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
-        public async Task DeleteFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task DeleteFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`user_friends` WHERE `user_id` = @USER_ID AND `friend_id` = @FRIEND_ID";
+            string sql = "DELETE FROM UserFriends WHERE UserId = @USER_ID AND FriendId = @FRIEND_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -64,7 +65,7 @@ namespace Tabletop.Core.Services
         public async Task<User?> GetAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`users` WHERE `user_id` = @USER_ID";
+            string sql = @"SELECT * FROM Users WHERE UserId = @USER_ID";
 
             var user = await dbController.GetFirstAsync<User>(sql, new
             {
@@ -73,16 +74,16 @@ namespace Tabletop.Core.Services
 
             if (user is not null)
             {
-                user.Permissions = await _permissionService.GetUserPermissionsAsync(user.UserId, dbController, cancellationToken);
+                user.Permissions = await PermissionService.GetUserPermissionsAsync(user.UserId, dbController, cancellationToken);
             }
 
             return user;
         }
 
-        public async Task<User?> GetAsync(string username, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<User?> GetAsync(string username, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`users` WHERE UPPER(username) = UPPER(@USERNAME)";
+            string sql = @"SELECT * FROM Users WHERE UPPER(username) = UPPER(@USERNAME)";
 
             var user = await dbController.GetFirstAsync<User>(sql, new
             {
@@ -91,16 +92,16 @@ namespace Tabletop.Core.Services
 
             if (user is not null)
             {
-                user.Permissions = await _permissionService.GetUserPermissionsAsync(user.UserId, dbController, cancellationToken);
+                user.Permissions = await PermissionService.GetUserPermissionsAsync(user.UserId, dbController, cancellationToken);
             }
 
             return user;
         }
 
-        public async Task<User?> GetUserForPlayerAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<User?> GetUserForPlayerAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT `user_id`, `username`, `display_name`, `image` FROM `tabletop`.`users` WHERE `user_id` = @USER_ID";
+            string sql = @"SELECT UserId, Username, DisplayName, Image FROM Users WHERE UserId = @USER_ID";
 
             var user = await dbController.GetFirstAsync<User>(sql, new
             {
@@ -114,9 +115,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.Append("SELECT `user_id`, `username`, `display_name`, `description`, `main_fraction_id`, `last_login`, `image` FROM `tabletop`.`users` WHERE 1 = 1");
+            sqlBuilder.Append("SELECT UserId, Username, DisplayName, Description, MainFractionId, LastLogin, RegistrationDate, Image FROM Users WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@$"  ORDER BY `user_id` DESC");
+            sqlBuilder.AppendLine(@$"  ORDER BY UserId DESC");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
@@ -127,7 +128,7 @@ namespace Tabletop.Core.Services
             // Berechtigungen müssen noch geladen werden
             List<Permission> permissions = await PermissionService.GetAllAsync(dbController);
 
-            sql = "SELECT * FROM `tabletop`.`user_permissions`";
+            sql = "SELECT * FROM UserPermissions";
             List<UserPermission> user_permissions = await dbController.SelectDataAsync<UserPermission>(sql, null, cancellationToken);
 
             foreach (var user in list)
@@ -157,8 +158,8 @@ namespace Tabletop.Core.Services
             {
                 sb.AppendLine(@" AND 
 (
-        UPPER(display_name) LIKE @SEARCHPHRASE
-    OR  UPPER(username) LIKE @SEARCHPHRASE
+        UPPER(DisplayName) LIKE @SEARCHPHRASE
+    OR  UPPER(Username) LIKE @SEARCHPHRASE
 )");
             }
 
@@ -170,7 +171,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) FROM `tabletop`.`users` WHERE 1 = 1");
+            sqlBuilder.AppendLine("SELECT COUNT(*) FROM Users WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
 
             string sql = sqlBuilder.ToString();
@@ -180,13 +181,13 @@ namespace Tabletop.Core.Services
             return result;
         }
 
-        public async Task<List<User>> GetUserFriendsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<User>> GetUserFriendsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT u.user_id, u.username, u.display_name, u.image
-FROM tabletop.users AS u
-JOIN tabletop.user_friends AS uf ON u.user_id = uf.friend_id
-WHERE uf.user_id = @USER_ID";
+            string sql = @"SELECT u.UserId, u.Username, u.DisplayName, u.Image
+FROM Users AS u
+JOIN UserFriends AS uf ON u.UserId = uf.FriendId
+WHERE uf.UserId = @USER_ID";
 
             var list = await dbController.SelectDataAsync<User>(sql, new
             {
@@ -196,15 +197,37 @@ WHERE uf.user_id = @USER_ID";
             return list;
         }
 
+        public static async Task<bool> CheckUserFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"SELECT 
+                CASE 
+                    WHEN EXISTS (
+                        SELECT 1 
+                        FROM UserFriends 
+                        WHERE UserId = @USER_ID AND FriendId = @FRIEND_ID
+                    ) THEN 'true'
+                    ELSE 'false'
+                END AS IsFriend;";
+
+            bool isfriend = await dbController.GetFirstAsync<bool>(sql, new
+            {
+                USER_ID = userId,
+                FRIEND_ID = friendId
+            }, cancellationToken);
+
+            return isfriend;
+        }
+
         public async Task UpdateAsync(User input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"UPDATE `tabletop`.`users` SET
-`username` = @USERNAME,
-`display_name` = @DISPLAY_NAME,
-`description` = @DESCRIPTION,
-`main_fraction_id` = @MAIN_FRACTION_ID
-WHERE user_id = @USER_ID";
+            string sql = @"UPDATE Users SET
+Username = @USERNAME,
+DisplayName = @DISPLAY_NAME,
+Description = @DESCRIPTION,
+MainFractionId = @MAIN_FRACTION_ID
+WHERE UserId = @USER_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
@@ -215,29 +238,49 @@ WHERE user_id = @USER_ID";
         {
             cancellationToken.ThrowIfCancellationRequested();
             input.LastLogin = DateTime.Now;
-            string sql = @"UPDATE `tabletop`.`users` SET
-`last_login` = @LAST_LOGIN
-WHERE user_id = @USER_ID";
+            string sql = @"UPDATE Users SET
+LastLogin = @LAST_LOGIN
+WHERE UserId = @USER_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
         }
 
         public static async Task<bool> FirstUserExistsAsync(IDbController dbController)
         {
-            string sql = "SELECT * FROM `tabletop`.`users`";
+            string sql = "SELECT * FROM Users";
 
             var tmp = await dbController.GetFirstAsync<object>(sql);
 
             return tmp != null;
         }
 
-        public async Task CreateUserFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        public async Task<string> GetUsernameAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"INSERT INTO `tabletop`.`user_friends`
+            string sql = @"SELECT Username FROM Users WHERE UserId = @USER_ID";
+
+            var user = await dbController.GetFirstAsync<User>(sql, new
+            {
+                USER_ID = userId
+            }, cancellationToken);
+
+            if (user != null)
+            {
+                return user.Username;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public static async Task CreateUserFriendAsync(int userId, int friendId, IDbController dbController, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string sql = @"INSERT INTO UserFriends
     (
-    user_id,
-    friend_id
+    UserId,
+    FriendId
     )
     VALUES
     (

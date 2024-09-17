@@ -13,7 +13,7 @@ namespace Tabletop.Pages.Public
 
         protected override void OnInitialized()
         {
-            Gamemode = AppdataService.Gamemodes.FirstOrDefault(x => x.GetLocalization(CultureInfo.CurrentCulture)?.Name == GamemodeName) ?? new();
+            Gamemode = AppdataService.Gamemodes.FirstOrDefault(x => x.GetLocalization(AppdataService.SupportedCultures[0])?.Name == GamemodeName) ?? new();
 
             if (Gamemode.Image != null)
             {

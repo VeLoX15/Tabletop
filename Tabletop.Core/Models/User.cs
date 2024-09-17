@@ -20,14 +20,16 @@ namespace Tabletop.Core.Models
         public string Salt { get; set; } = string.Empty;
         [CompareField("last_login")]
         public DateTime LastLogin { get; set; }
+        [CompareField("registration_date")]
+        public DateTime RegistrationDate { get; set; }
         [CompareField("image")]
         public byte[]? Image { get; set; }
 
         public string ConvertedImage { get; set; } = string.Empty;
 
 
-        public List<Permission> Permissions { get; set; } = new();
-        public List<Unit> Units { get; set; } = new();
+        public List<Permission> Permissions { get; set; } = [];
+        public List<Unit> Units { get; set; } = [];
         public int Id => UserId;
 
         public Dictionary<string, object?> GetParameters()
@@ -42,6 +44,7 @@ namespace Tabletop.Core.Models
                 { "PASSWORD", Password },
                 { "SALT", Salt },
                 { "LAST_LOGIN", LastLogin },
+                { "REGISTRATION_DATE", RegistrationDate },
                 { "IMAGE", Image }
             };
         }

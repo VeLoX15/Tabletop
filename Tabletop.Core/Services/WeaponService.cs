@@ -11,12 +11,12 @@ namespace Tabletop.Core.Services
         public async Task CreateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = $@"INSERT INTO `tabletop`.`weapons`
+            string sql = $@"INSERT INTO Weapons
                 (
-                `attack`,
-                `quality`,
-                `range`,
-                `dices`
+                Attack,
+                Quality,
+                Range,
+                Dices
                 )
                 VALUES
                 (
@@ -30,12 +30,12 @@ namespace Tabletop.Core.Services
 
             foreach (var description in input.Description)
             {
-                sql = @"INSERT INTO `tabletop`.`weapon_description`
+                sql = @"INSERT INTO WeaponDescription
                     (
-                    `weapon_id`,
-                    `code`,
-                    `name`,
-                    `description`
+                    WeaponId,
+                    Code,
+                    Name,
+                    Description
                     )
                     VALUES
                     (
@@ -60,7 +60,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
+            string sql = "DELETE FROM Weapons WHERE WeaponId = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -71,7 +71,7 @@ namespace Tabletop.Core.Services
         public async Task<Weapon?> GetAsync(int weaponId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`weapons` WHERE `weapon_id` = @WEAPON_ID";
+            string sql = @"SELECT * FROM Weapons WHERE WeaponId = @WEAPON_ID";
 
             var weapon = await dbController.GetFirstAsync<Weapon>(sql, new
             {
@@ -89,14 +89,14 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT wd.`name`, w.* " +
-                "FROM `tabletop`.`weapon_description` wd " +
-                "INNER JOIN `tabletop`.`weapons` w " +
-                "ON (w.`weapon_id` = wd.`weapon_id`) " +
+            sqlBuilder.AppendLine("SELECT wd.Name, w.* " +
+                "FROM WeaponDescription wd " +
+                "INNER JOIN Weapons w " +
+                "ON (w.WeaponId = wd.WeaponId) " +
                 "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
-            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY Name ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sqlBuilder.ToString();
@@ -122,7 +122,7 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sqlBuilder.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sqlBuilder.ToString();
@@ -133,9 +133,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`weapon_description` WHERE 1 = 1 ");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM WeaponDescription WHERE 1 = 1 ");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -146,7 +146,7 @@ namespace Tabletop.Core.Services
 
         public static async Task<List<Weapon>> GetAllAsync(IDbController dbController)
         {
-            string sql = "SELECT * FROM `tabletop`.`weapons`";
+            string sql = "SELECT * FROM Weapons";
 
             var list = await dbController.SelectDataAsync<Weapon>(sql);
             await LoadWeaponDescriptionsAsync(list, dbController);
@@ -156,21 +156,21 @@ namespace Tabletop.Core.Services
         public async Task UpdateAsync(Weapon input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"UPDATE `tabletop`.`weapons` SET
-                `attack` = @ATTACK,
-                `quality` = @QUALITY,
-                `range` = @RANGE,
-                `dices` = @DICES
-                WHERE `weapon_id` = @WEAPON_ID";
+            string sql = @"UPDATE Weapons SET
+                Attack = @ATTACK,
+                Quality = @QUALITY,
+                Range = @RANGE,
+                Dices = @DICES
+                WHERE WeaponId = @WEAPON_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
             foreach (var description in input.Description)
             {
-                sql = @"UPDATE `tabletop`.`weapon_description` SET
-                    `name` = @NAME,
-                    `description` = @DESCRIPTION
-                    WHERE `weapon_id` = @WEAPON_ID AND `code` = @CODE";
+                sql = @"UPDATE WeaponDescription SET
+                    Name = @NAME,
+                    Description = @DESCRIPTION
+                    WHERE WeaponId = @WEAPON_ID AND Code = @CODE";
 
                 var parameters = new
                 {
@@ -187,10 +187,10 @@ namespace Tabletop.Core.Services
         private static async Task LoadWeaponDescriptionsAsync(List<Weapon> list, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (list.Any())
+            if (list.Count != 0)
             {
                 IEnumerable<int> weaponIds = list.Select(x => x.Id);
-                string sql = $"SELECT * FROM `tabletop`.`weapon_description` WHERE `weapon_id` IN ({string.Join(",", weaponIds)})";
+                string sql = $"SELECT * FROM WeaponDescription WHERE WeaponId IN ({string.Join(",", weaponIds)})";
                 List<WeaponDescription> descriptions = await dbController.SelectDataAsync<WeaponDescription>(sql, null, cancellationToken);
 
                 foreach (var weapon in list)
@@ -205,7 +205,7 @@ namespace Tabletop.Core.Services
             cancellationToken.ThrowIfCancellationRequested();
 
 
-            string sql = $"SELECT * FROM `tabletop`.`weapon_description` WHERE `weapon_id` IN @WEAPON_ID";
+            string sql = $"SELECT * FROM WeaponDescription WHERE WeaponId IN @WEAPON_ID";
             weapon.Description = await dbController.SelectDataAsync<WeaponDescription>(sql, new
             {
                 WEAPON_ID = weapon.WeaponId

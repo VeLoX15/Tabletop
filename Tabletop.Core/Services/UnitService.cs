@@ -6,51 +6,48 @@ using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class UnitService : IModelService<Unit, int, UnitFilter>
+    public class UnitService(WeaponService weaponService) : IModelService<Unit, int, UnitFilter>
     {
-        private readonly WeaponService _weaponService;
-
-        public UnitService(WeaponService weaponService)
-        {
-            _weaponService = weaponService;
-        }
+        private readonly WeaponService _weaponService = weaponService;
 
         public async Task CreateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = $@"INSERT INTO `tabletop`.`units` 
+            string sql = $@"INSERT INTO Units 
                 (
-                `fraction_id`,
-                `class_id`,
-                `defense`,
-                `moving`,
-                `primary_weapon_id`,
-                `secondary_weapon_id`,
-                `ability_id`
-                `has_jetpack`
+                FractionId,
+                ClassId,
+                TroopQuantity,
+                Defense,
+                Moving,
+                PrimaryWeaponId,
+                SecondaryWeaponId,
+                FistAbilityId,
+                SecondAbilityId
                 )
                 VALUES
                 (
                 @FRACTION_ID,
-                @CLASS_ID
+                @CLASS_ID,
+                @TROOP_QUANTITY,
                 @DEFENSE,
                 @MOVING,
                 @PRIMARY_WEAPON_ID,
                 @SECONDARY_WEAPON_ID,
-                @ABILITY_ID,
-                @HAS_JETPACK
+                @FIRST_ABILITY_ID,
+                @SECOND_ABILITY_ID
                 ); {dbController.GetLastIdSql()}";
 
             input.UnitId = await dbController.GetFirstAsync<int>(sql, input.GetParameters(), cancellationToken);
 
             foreach (var description in input.Description)
             {
-                sql = @"INSERT INTO `tabletop`.`unit_description`
+                sql = @"INSERT INTO UnitDescription
                     (
-                    `unit_id`,
-                    `code`,
-                    `name`,
-                    `description`
+                    UnitId,
+                    Code,
+                    Name,
+                    Description
                     )
                     VALUES
                     (
@@ -75,7 +72,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
+            string sql = "DELETE FROM Units WHERE UnitId = @UNIT_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -86,7 +83,7 @@ namespace Tabletop.Core.Services
         public async Task DeleteUnitAsync(int userId, int unitId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`user_units` WHERE `user_id` = @USER_ID AND `unit_id` = @UNIT_ID";
+            string sql = "DELETE FROM UserUnits WHERE UserId = @USER_ID AND UnitId = @UNIT_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -98,7 +95,7 @@ namespace Tabletop.Core.Services
         public async Task<Unit?> GetAsync(int unitId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`units`  WHERE `unit_id` = @UNIT_ID";
+            string sql = @"SELECT * FROM Units  WHERE UnitId = @UNIT_ID";
 
             var unit = await dbController.GetFirstAsync<Unit>(sql, new
             {
@@ -114,11 +111,10 @@ namespace Tabletop.Core.Services
             return unit;
         }
 
-
         public static async Task<List<Unit>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "SELECT * FROM `tabletop`.`units`";
+            string sql = "SELECT * FROM Units";
 
             var list = await dbController.SelectDataAsync<Unit>(sql, cancellationToken: cancellationToken);
 
@@ -130,14 +126,14 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT ud.`name`, u.* " +
-                "FROM `tabletop`.`unit_description` ud " +
-                "INNER JOIN `tabletop`.`units` u " +
-                "ON (u.`unit_id` = ud.`unit_id`) " +
+            sqlBuilder.AppendLine("SELECT ud.Name, u.* " +
+                "FROM UnitDescription ud " +
+                "INNER JOIN Units u " +
+                "ON (u.UnitId = ud.UnitId) " +
                 "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
-            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY Name ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sqlBuilder.ToString();
@@ -153,6 +149,7 @@ namespace Tabletop.Core.Services
             return new Dictionary<string, object?>
             {
                 { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
+                { "FRACTION_ID", filter.FractionId },
                 { "CULTURE", CultureInfo.CurrentCulture.Name }
             };
         }
@@ -163,7 +160,11 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sqlBuilder.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
+            }
+            if (filter.FractionId != 0)
+            {
+                sqlBuilder.AppendLine(@" AND FractionId = @FRACTION_ID");
             }
 
             string sql = sqlBuilder.ToString();
@@ -174,9 +175,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`unit_description` WHERE 1 = 1 ");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM UnitDescription ud JOIN Units u ON ud.UnitId = u.UnitId WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -185,14 +186,14 @@ namespace Tabletop.Core.Services
             return result;
         }
 
-        public async Task<List<Unit>> GetUserUnitsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<Unit>> GetUserUnitsAsync(int userId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"
-                SELECT uu.quantity, u.*
-                FROM `tabletop`.`user_units` uu
-                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = uu.`unit_id`)
-                WHERE uu.`user_id` = @USER_ID";
+                SELECT uu.Quantity, u.*
+                FROM UserUnits uu
+                INNER JOIN Units u ON (u.UnitId = uu.UnitId)
+                WHERE uu.UserId = @USER_ID";
 
             var list = await dbController.SelectDataAsync<Unit>(sql, new
             {
@@ -203,14 +204,14 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        public async Task<List<Unit>> GetPlayerUnitsAsync(int playerId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<Unit>> GetPlayerUnitsAsync(int playerId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"
-                SELECT pu.quantity, u.*
-                FROM `tabletop`.`player_units` pu
-                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = pu.`unit_id`)
-                WHERE pu.`player_id` = @PLAYER_ID";
+                SELECT pu.Quantity, u.*
+                FROM PlayerUnits pu
+                INNER JOIN Units u ON (u.UnitId = pu.UnitId)
+                WHERE pu.PlayerId = @PLAYER_ID";
 
             var list = await dbController.SelectDataAsync<Unit>(sql, new
             {
@@ -221,14 +222,14 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        public async Task<List<Unit>> GetTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<Unit>> GetTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string sql = @"
-                SELECT tu.quantity, u.*
-                FROM `tabletop`.`template_units` tu
-                INNER JOIN `tabletop`.`units` u ON (u.`unit_id` = tu.`unit_id`)
-                WHERE tu.`template_id` = @TEMPLATE_ID";
+                SELECT tu.Quantity, u.*
+                FROM TemplateUnits tu
+                INNER JOIN Units u ON (u.UnitId = tu.UnitId)
+                WHERE tu.TemplateId = @TEMPLATE_ID";
 
             var list = await dbController.SelectDataAsync<Unit>(sql, new
             {
@@ -239,21 +240,21 @@ namespace Tabletop.Core.Services
             return list;
         }
 
-        public async Task CreateUserUnitAsync(User user, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task CreateUserUnitAsync(User user, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "DELETE FROM `tabletop`.`user_units` WHERE `user_id` = @USER_ID AND `unit_id` = @UNIT_ID";
+            string sql = "DELETE FROM UserUnits WHERE UserId = @USER_ID AND UnitId = @UNIT_ID";
             await dbController.QueryAsync(sql, new
             {
                 USER_ID = user.UserId,
                 UNIT_ID = unit.UnitId
             }, cancellationToken);
 
-            sql = @"INSERT INTO `tabletop`.`user_units`
+            sql = @"INSERT INTO UserUnits
                 (
-                `user_id`,
-                `unit_id`,
-                `quantity`
+                UserId,
+                UnitId,
+                Quantity
                 )
                 VALUES
                 (
@@ -270,32 +271,32 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
-        public async Task DeleteTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task DeleteTemplateUnitsAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "DELETE FROM `tabletop`.`template_units` WHERE `template_id` = @TEMPLATE_ID";
+            string sql = "DELETE FROM TemplateUnits WHERE TemplateId = @TEMPLATE_ID";
             await dbController.QueryAsync(sql, new
             {
                 TEMPLATE_ID = templateId
             }, cancellationToken);
         }
 
-        public async Task DeletePlayerUnitsAsync(int player_id, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task DeletePlayerUnitsAsync(int player_id, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "DELETE FROM `tabletop`.`player_units` WHERE `player_id` = @PLAYER_ID";
+            string sql = "DELETE FROM PlayerUnits WHERE PlayerId = @PLAYER_ID";
             await dbController.QueryAsync(sql, new
             {
                 PLAYER_ID = player_id
             }, cancellationToken);
         }
 
-        public async Task CreateTemplateUnitAsync(Template template, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task CreateTemplateUnitAsync(Template template, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"INSERT INTO `tabletop`.`template_units`
+            string sql = @"INSERT INTO TemplateUnits
                 (
-                `template_id`,
-                `unit_id`,
-                `quantity`
+                TemplateId,
+                UnitId,
+                Quantity
                 )
                 VALUES
                 (
@@ -312,14 +313,14 @@ namespace Tabletop.Core.Services
             }, cancellationToken);
         }
 
-        public async Task CreatePlayerUnitAsync(Player player, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task CreatePlayerUnitAsync(Player player, Unit unit, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"INSERT INTO `tabletop`.`player_units`
+            string sql = @"INSERT INTO PlayerUnits
                 (
-                `player_id`,
-                `unit_id`,
-                `quantity`
+                PlayerId,
+                UnitId,
+                Quantity
                 )
                 VALUES
                 (
@@ -338,26 +339,27 @@ namespace Tabletop.Core.Services
 
         public async Task UpdateAsync(Unit input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"UPDATE `tabletop`.`units` SET
-                `fraction_id` = @FRACTION_ID,
-                `class_id` = @CLASS_ID,
-                `defense` = @DEFENSE,
-                `moving` = @MOVING,
-                `primary_weapon_id` = @PRIMARY_WEAPON_ID,
-                `secondary_weapon_id` = @SECONDARY_WEAPON_ID,
-                `ability_id` = @ABILITY_ID,
-                `has_jetpack` = @HAS_JETPACK
-                WHERE `unit_id` = @UNIT_ID";
+            string sql = @"UPDATE Units SET
+                FractionId = @FRACTION_ID,
+                ClassId = @CLASS_ID,
+                TroopQuantity = @TROOP_QUANTITY,
+                Defense = @DEFENSE,
+                Moving = @MOVING,
+                PrimaryWeaponId = @PRIMARY_WEAPON_ID,
+                SecondaryWeaponId = @SECONDARY_WEAPON_ID,
+                FirstAbilityId = @FIRST_ABILITY_ID,
+                SecondAbilityId = @SECOND_ABILITY_ID
+                WHERE UnitId = @UNIT_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
             foreach (var description in input.Description)
             {
-                sql = @"UPDATE `tabletop`.`unit_description` SET
-                    `name` = @NAME,
-                    `description` = @DESCRIPTION,
-                    `mechanic` = @MECHANIC
-                    WHERE `unit_id` = @UNIT_ID AND `code` = @CODE";
+                sql = @"UPDATE UnitDescription SET
+                    Name = @NAME,
+                    Description = @DESCRIPTION,
+                    Mechanic = @MECHANIC
+                    WHERE UnitId = @UNIT_ID AND Code = @CODE";
 
                 var parameters = new
                 {
@@ -375,10 +377,10 @@ namespace Tabletop.Core.Services
         private static async Task LoadUnitDescriptionsAsync(List<Unit> list, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (list.Any())
+            if (list.Count != 0)
             {
                 IEnumerable<int> unitIds = list.Select(x => x.Id);
-                string sql = $"SELECT * FROM `tabletop`.`unit_description` WHERE `unit_id` IN ({string.Join(",", unitIds)})";
+                string sql = $"SELECT * FROM UnitDescription WHERE UnitId IN ({string.Join(",", unitIds)})";
                 List<UnitDescription> descriptions = await dbController.SelectDataAsync<UnitDescription>(sql, null, cancellationToken);
 
                 foreach (var unit in list)

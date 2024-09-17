@@ -1,21 +1,13 @@
 ﻿using DbController;
-using DbController.MySql;
+using DbController.SqlServer;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using Tabletop.Core.Models;
 
 namespace Tabletop.Core.Services
 {
-    public class AuthService
+    public class AuthService(AuthenticationStateProvider authenticationStateProvider, UserService userService)
     {
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
-        private readonly UserService _userService;
-
-        public AuthService(AuthenticationStateProvider authenticationStateProvider, UserService userService)
-        {
-            _authenticationStateProvider = authenticationStateProvider;
-            _userService = userService;
-        }
 
         /// <summary>
         /// Converts the active claims into a <see cref="User"/> object
@@ -24,11 +16,11 @@ namespace Tabletop.Core.Services
         public async Task<User?> GetUserAsync(IDbController? dbController = null)
         {
 
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
             if (user.Identity is not null && user.Identity.IsAuthenticated)
             {
-                Claim? claim = user.FindFirst("userId");
+                Claim? claim = user.FindFirst("UserId");
                 if (claim is null)
                 {
                     return null;
@@ -39,9 +31,9 @@ namespace Tabletop.Core.Services
                 bool shouldDispose = dbController is null;
 
 
-                dbController ??= new MySqlController(AppdataService.ConnectionString);
+                dbController ??= new SqlController(AppdataService.ConnectionString);
 
-                var result = await _userService.GetAsync(userId, dbController);
+                var result = await userService.GetAsync(userId, dbController);
 
                 if (shouldDispose)
                 {
@@ -61,7 +53,7 @@ namespace Tabletop.Core.Services
         /// <returns></returns>
         public async Task<bool> HasRole(string roleName)
         {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
             return user.IsInRole(roleName);

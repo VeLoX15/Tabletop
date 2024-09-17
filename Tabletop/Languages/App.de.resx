@@ -123,7 +123,7 @@
   <data name="ABILITIES" xml:space="preserve">
     <value>Fähigkeiten</value>
   </data>
-  <data name="ABILITIY" xml:space="preserve">
+  <data name="ABILITY" xml:space="preserve">
     <value>Fähigkeit</value>
   </data>
   <data name="ABOUT_ME" xml:space="preserve">
@@ -141,11 +141,20 @@
   <data name="ACTION" xml:space="preserve">
     <value>Aktion</value>
   </data>
+  <data name="ACTIVE_GAMES" xml:space="preserve">
+    <value>Aktive Spiele</value>
+  </data>
+  <data name="ADDED" xml:space="preserve">
+    <value>wurde hinzugefügt</value>
+  </data>
   <data name="ADDRESS" xml:space="preserve">
     <value>46282 Dorsten, Deutschland</value>
   </data>
   <data name="ADMIN" xml:space="preserve">
     <value>Administrator</value>
+  </data>
+  <data name="ADMINISTRATION" xml:space="preserve">
+    <value>Administration</value>
   </data>
   <data name="ARMIES" xml:space="preserve">
     <value>Armeen</value>
@@ -153,8 +162,17 @@
   <data name="ARMY_BUILDER" xml:space="preserve">
     <value>Armee Designer</value>
   </data>
+  <data name="ARMY_BUILDER_DESCRIPTION" xml:space="preserve">
+    <value>Erstelle Vorlagen für deine nächsten Schlachten.</value>
+  </data>
   <data name="ATTACK" xml:space="preserve">
     <value>Angriff</value>
+  </data>
+  <data name="AVAILABLE" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="BEGINS" xml:space="preserve">
+    <value>Startet</value>
   </data>
   <data name="CANCEL" xml:space="preserve">
     <value>Abbrechen</value>
@@ -165,11 +183,17 @@
   <data name="CLASS" xml:space="preserve">
     <value>Klasse</value>
   </data>
+  <data name="COMMING_SOON" xml:space="preserve">
+    <value>Diese Seite ist in Entwicklung.</value>
+  </data>
   <data name="CONTACT" xml:space="preserve">
     <value>Kontakt</value>
   </data>
   <data name="COVER_TYPE" xml:space="preserve">
     <value>Deckungsart</value>
+  </data>
+  <data name="CREATE_ACCOUNT" xml:space="preserve">
+    <value>Erstelle ein Konto</value>
   </data>
   <data name="D" xml:space="preserve">
     <value>V</value>
@@ -189,11 +213,47 @@
   <data name="DELETE" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="DELETED" xml:space="preserve">
+    <value>wurde gelöscht</value>
+  </data>
   <data name="DESCRIPTION" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
   <data name="DICES" xml:space="preserve">
     <value>Würfel</value>
+  </data>
+  <data name="DISCLAIMER" xml:space="preserve">
+    <value>Haftungsausschluss</value>
+  </data>
+  <data name="DISCLAIMER_HL1" xml:space="preserve">
+    <value>Haftung für Inhalte</value>
+  </data>
+  <data name="DISCLAIMER_HL1_T1" xml:space="preserve">
+    <value>Alle Inhalte unseres Internetauftritts wurden mit größter Sorgfalt und nach bestem Gewissen erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.</value>
+  </data>
+  <data name="DISCLAIMER_HL1_T2" xml:space="preserve">
+    <value>Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntniserlangung einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von den o.g. Rechtsverletzungen werden wir diese Inhalte unverzüglich entfernen.</value>
+  </data>
+  <data name="DISCLAIMER_HL2" xml:space="preserve">
+    <value>Haftungsbeschränkung für externe Links</value>
+  </data>
+  <data name="DISCLAIMER_HL2_T1" xml:space="preserve">
+    <value>Unsere Webseite enthält Links auf externe Webseiten Dritter. Auf die Inhalte dieser direkt oder indirekt verlinkten Webseiten haben wir keinen Einfluss. Daher können wir für die „externen Links“ auch keine Gewähr auf Richtigkeit der Inhalte übernehmen. Für die Inhalte der externen Links sind die jeweilige Anbieter oder Betreiber (Tablebricks) der Seiten verantwortlich.</value>
+  </data>
+  <data name="DISCLAIMER_HL2_T2" xml:space="preserve">
+    <value>Die externen Links wurden zum Zeitpunkt der Linksetzung auf eventuelle Rechtsverstöße überprüft und waren im Zeitpunkt der Linksetzung frei von rechtswidrigen Inhalten. Eine ständige inhaltliche Überprüfung der externen Links ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht möglich. Bei direkten oder indirekten Verlinkungen auf die Webseiten Dritter, die außerhalb unseres Verantwortungsbereichs liegen, würde eine Haftungsverpflichtung ausschließlich in dem Fall nur bestehen, wenn wir von den Inhalten Kenntnis erlangen und es uns technisch möglich und zumutbar wäre, die Nutzung im Falle rechtswidriger Inhalte zu verhindern.</value>
+  </data>
+  <data name="DISCLAIMER_HL2_T3" xml:space="preserve">
+    <value>Diese Haftungsausschlusserklärung gilt auch innerhalb des eigenen Internetauftrittes "Tablebricks.com" gesetzten Links und Verweise von Fragestellern, Blogeinträgern, Gästen des Diskussionsforums. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargestellten Informationen entstehen, haftet allein der Diensteanbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.</value>
+  </data>
+  <data name="DISCLAIMER_HL2_T4" xml:space="preserve">
+    <value>Werden uns Rechtsverletzungen bekannt, werden die externen Links durch uns unverzüglich entfernt.</value>
+  </data>
+  <data name="DISCLAIMER_HL3" xml:space="preserve">
+    <value>Urheberrecht</value>
+  </data>
+  <data name="DISCLAIMER_HL3_T1" xml:space="preserve">
+    <value>Die auf unserer Webseite veröffentlichen Inhalte und Werke unterliegen dem deutschen Urheberrecht (http://www.gesetze-im-internet.de/bundesrecht/urhg/gesamt.pdf). Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung des geistigen Eigentums in ideeller und materieller Sicht des Urhebers außerhalb der Grenzen des Urheberrechtes bedürfen der vorherigen schriftlichen Zustimmung des jeweiligen Urhebers i.S.d. Urhebergesetzes (http://www.gesetze-im-internet.de/bundesrecht/urhg/gesamt.pdf). Downloads und Kopien dieser Seite sind nur für den privaten und nicht kommerziellen Gebrauch erlaubt. Sind die Inhalte auf unserer Webseite nicht von uns erstellt wurden, sind die Urheberrechte Dritter zu beachten. Die Inhalte Dritter werden als solche kenntlich gemacht. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte unverzüglich entfernen.</value>
   </data>
   <data name="DISTANCE" xml:space="preserve">
     <value>Distanz</value>
@@ -201,7 +261,13 @@
   <data name="EDIT" xml:space="preserve">
     <value>Bearbeite</value>
   </data>
+  <data name="EDITED" xml:space="preserve">
+    <value>wurde bearbeitet</value>
+  </data>
   <data name="EMAIL" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="EMAIL_ADDRESS" xml:space="preserve">
     <value>support@tablebricks.com</value>
   </data>
   <data name="ERROR" xml:space="preserve">
@@ -212,6 +278,12 @@
   </data>
   <data name="FIND_PLAYERS" xml:space="preserve">
     <value>Finde andere Spieler</value>
+  </data>
+  <data name="FOLLOW" xml:space="preserve">
+    <value>Folgen</value>
+  </data>
+  <data name="FOLLOWED" xml:space="preserve">
+    <value>wird gefolgt</value>
   </data>
   <data name="FORCE" xml:space="preserve">
     <value>Macht</value>
@@ -231,11 +303,14 @@
   <data name="GAME" xml:space="preserve">
     <value>Spiel</value>
   </data>
+  <data name="GAMEMODES" xml:space="preserve">
+    <value>Spielmodi</value>
+  </data>
   <data name="GAMES" xml:space="preserve">
     <value>Spiele</value>
   </data>
-  <data name="GAME_INFO" xml:space="preserve">
-    <value>Game History</value>
+  <data name="GAME_HISTORY" xml:space="preserve">
+    <value>Spielhistorie</value>
   </data>
   <data name="GAME_MECHANIC" xml:space="preserve">
     <value>Spielmechanik</value>
@@ -249,11 +324,47 @@
   <data name="GAME_MODES_DESCRIPTION" xml:space="preserve">
     <value>Kämpfe in verschiedenen Spielmodi um den Sieg und führe deine Fraktion zum Erfolg in der Galaxie.</value>
   </data>
+  <data name="GENERAL" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="GERMANY" xml:space="preserve">
+    <value>Deutschland</value>
+  </data>
+  <data name="HISTORY" xml:space="preserve">
+    <value>Historie</value>
+  </data>
   <data name="HOME" xml:space="preserve">
     <value>Startseite</value>
   </data>
+  <data name="HOME_TEXT_1" xml:space="preserve">
+    <value>Tablebricks ist ein leidenschaftliches Fanprojekt, das wir, ein kleines Team aus Deutschland, seit 2019 mit Hingabe entwickeln. Inspiriert von klassischen Tabletop-Spielen und den unbegrenzten Baumöglichkeiten, die LEGO bietet, haben wir ein einzigartiges Konzept für LEGO® Star Wars geschaffen. Unser Ziel ist es, ein Spielerlebnis zu bieten, das sowohl zugänglich als auch grenzenlos ist. Mit minimalem Aufwand kannst du sofort losspielen, während dir gleichzeitig die Möglichkeit offensteht, epische Schlachten mit riesigen Armeen auf beeindruckend Landschaften zu führen. Tablebricks erweckt deine Minifiguren zum Leben und lässt sie in spannenden Spielmodi antreten.</value>
+  </data>
+  <data name="HOME_TEXT_2" xml:space="preserve">
+    <value>Unser Team hat hart daran gearbeitet, eine Plattform zu schaffen, die Tablebricks zugänglich macht und den Spielern ein neues, aufregendes Erlebnis bietet. Auf unserer Website kannst du deine Statistiken teilen und mithilfe unserer Tools dein aktives Spiel intelligenter gestalten. Dabei ist es uns wichtig, dass die digitale Komponente gezielt das Spielerlebnis unterstützt. Zum Beispiel kannst du im Armee-Designer Vorlagen für deine nächste Partie erstellen oder den Simulationsmodus nutzen, um deine Züge zu optimieren. Dennoch legen wir großen Wert darauf, dass du nicht auf die digitale Unterstützung angewiesen bist. Tablebricks lässt sich daher auch vollständig analog spielen und bietet so eine flexible Spielerfahrung für alle Vorlieben. Entdecke, wie Tablebricks deine LEGO® Star Wars Abenteuer auf ein neues Level hebt und erfahre mehr auf unserer Website.</value>
+  </data>
+  <data name="HOST" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="IMPRINT" xml:space="preserve">
+    <value>Impressum</value>
+  </data>
   <data name="INFO" xml:space="preserve">
     <value>Information</value>
+  </data>
+  <data name="INFORMATION" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="ITEM" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="JETPACK" xml:space="preserve">
+    <value>Jetpack</value>
+  </data>
+  <data name="LAST_LOGIN" xml:space="preserve">
+    <value>Zuletzt online am</value>
+  </data>
+  <data name="LOCATION" xml:space="preserve">
+    <value>Ort</value>
   </data>
   <data name="LOGIN" xml:space="preserve">
     <value>Anmeldung</value>
@@ -264,17 +375,35 @@
   <data name="MAIN_FRACTION" xml:space="preserve">
     <value>Hauptfraktion</value>
   </data>
+  <data name="MANAGEMENT" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="MECHANIC" xml:space="preserve">
+    <value>Mechanik</value>
+  </data>
+  <data name="MORE" xml:space="preserve">
+    <value>Mehr</value>
+  </data>
   <data name="MOVING" xml:space="preserve">
     <value>Bewegung</value>
   </data>
+  <data name="MY_GAME_HISTORY" xml:space="preserve">
+    <value>Meine Spielhistory</value>
+  </data>
   <data name="NAME" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>Kein</value>
   </data>
   <data name="NOT_FOUND" xml:space="preserve">
     <value>nicht gefunden</value>
   </data>
   <data name="NO_ADDRESS" xml:space="preserve">
     <value>Entschuldigung, unter dieser Adresse ist nichts zu finden.</value>
+  </data>
+  <data name="OUR_PROJECT" xml:space="preserve">
+    <value>Unser Projekt</value>
   </data>
   <data name="OWN_PERMISSIONS" xml:space="preserve">
     <value>Eigene Berechtigung</value>
@@ -284,6 +413,15 @@
   </data>
   <data name="PERMISSIONS" xml:space="preserve">
     <value>Permissions</value>
+  </data>
+  <data name="PLAY" xml:space="preserve">
+    <value>Spielen</value>
+  </data>
+  <data name="PLAYERS" xml:space="preserve">
+    <value>Spieler</value>
+  </data>
+  <data name="PLAYS" xml:space="preserve">
+    <value>Spielt</value>
   </data>
   <data name="PRIMARY" xml:space="preserve">
     <value>Primäre</value>
@@ -300,6 +438,15 @@
   <data name="RANGE" xml:space="preserve">
     <value>Reichweite</value>
   </data>
+  <data name="REGISTERED_SINCE" xml:space="preserve">
+    <value>Registriert seit</value>
+  </data>
+  <data name="RELOADED" xml:space="preserve">
+    <value>wurde neu geladen</value>
+  </data>
+  <data name="REQUEST_DELETION" xml:space="preserve">
+    <value>Wollen Sie wirklich löschen?</value>
+  </data>
   <data name="ROUNDS" xml:space="preserve">
     <value>Runden</value>
   </data>
@@ -308,6 +455,9 @@
   </data>
   <data name="SAVE" xml:space="preserve">
     <value>Speichern</value>
+  </data>
+  <data name="SAVED" xml:space="preserve">
+    <value>wurde gespeichert</value>
   </data>
   <data name="SEARCH" xml:space="preserve">
     <value>Suche</value>
@@ -321,6 +471,9 @@
   <data name="SHORT_NAME" xml:space="preserve">
     <value>Kürzel</value>
   </data>
+  <data name="SIGN_IN" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
   <data name="SIMULATION" xml:space="preserve">
     <value>Simulation</value>
   </data>
@@ -330,8 +483,8 @@
   <data name="SLOGAN" xml:space="preserve">
     <value>Erwecke deine Minifiguren zum Leben!</value>
   </data>
-  <data name="SOCIAL_MEDIA" xml:space="preserve">
-    <value>Social Media</value>
+  <data name="STATS" xml:space="preserve">
+    <value>Statistiken</value>
   </data>
   <data name="STATUS" xml:space="preserve">
     <value>Status</value>
@@ -345,26 +498,29 @@
   <data name="TABLES" xml:space="preserve">
     <value>Tabellen</value>
   </data>
+  <data name="TEAM" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="TEAMS" xml:space="preserve">
+    <value>Teams</value>
+  </data>
   <data name="TEMPLATE" xml:space="preserve">
     <value>Vorlage</value>
   </data>
-  <data name="THE_APP" xml:space="preserve">
-    <value>Die Website</value>
-  </data>
-  <data name="THE_APP_TEXT_1" xml:space="preserve">
-    <value>This web application is an exciting fan project created by a small, dedicated team in Germany. Inspired by classic tabletop games and the endless possibilities offered by LEGO, they have developed a fascinating concept for playing with it. This innovative application perfectly complements the game and encompasses all the rules and mechanics necessary for an optimal gaming experience.</value>
-  </data>
-  <data name="THE_APP_TEXT_2" xml:space="preserve">
-    <value>This application is a true enhancement for every player who wants to fully enjoy the game. It provides an intuitive user interface that allows players of all experience levels to seamlessly immerse themselves and focus on what matters most—the gameplay itself. The team has worked hard to create a platform that excites players by giving them full control over their gaming experience while also providing the ability to document their progress and achievements.</value>
-  </data>
-  <data name="THE_GAME" xml:space="preserve">
-    <value>Das Spiel</value>
-  </data>
-  <data name="THE_GAME_TEXT" xml:space="preserve">
-    <value>This Game is an unoffical tabletop of LEGO Star Wars. The project is developed since 2019.</value>
+  <data name="TOOLS" xml:space="preserve">
+    <value>Tools</value>
   </data>
   <data name="TOTAL" xml:space="preserve">
     <value>Gesamt</value>
+  </data>
+  <data name="TROOP_CATEGORY" xml:space="preserve">
+    <value>Truppengattung</value>
+  </data>
+  <data name="UNFOLLOW" xml:space="preserve">
+    <value>Entfolgen</value>
+  </data>
+  <data name="UNFOLLOWED" xml:space="preserve">
+    <value>wird nicht mehr gefolgt</value>
   </data>
   <data name="UNIT" xml:space="preserve">
     <value>Einheit</value>
@@ -373,7 +529,7 @@
     <value>Einheiten</value>
   </data>
   <data name="UNIT_OVERVIEW_DESCRIPTION" xml:space="preserve">
-    <value>Overview about the unit types of the</value>
+    <value>Übersicht aller Einheiten</value>
   </data>
   <data name="UNIT_VALUES" xml:space="preserve">
     <value>Werte der Einheit</value>

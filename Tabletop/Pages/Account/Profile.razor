@@ -1,104 +1,109 @@
 ﻿@page "/Account/Profile/{userName}"
-@page "/Account/Profile/"
+@page "/Account/Profile"
 @attribute [Authorize]
 @inject AuthService authService
 @inject UnitService unitService
 @inject UserService userService
 @inject IStringLocalizer<App> localizer
 
-<PageTitle>@localizer["TABLEBRICKS"] - @localizer["ACCOUNT"]</PageTitle>
-
-@if (CurrentUser is not null)
+@if (CurrentUser != null)
 {
+    <PageTitle>@localizer["TABLEBRICKS"] - @CurrentUser?.Username</PageTitle>
+
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="profile-block">
-                    <div class="profile-block-thumb profile-banner rounded"></div>
-                    <div class="profile-img">
-                        <a>
-                            <img src="@CurrentUser?.ConvertedImage" alt="Logo">
-                        </a>
-                    </div>
-                    <div class="profile-name">
-                        <h2>@CurrentUser?.Username (@CurrentUser?.DisplayName)</h2>
-                    </div>
+        <div class="card">
+            <div class="profile-block">
+                <div class="profile-block-thumb profile-banner rounded"></div>
+                <div class="profile-img">
+                    <a>
+                        <img src="@CurrentUser?.ConvertedImage" alt="Logo">
+                    </a>
+                </div>
+                <div class="profile-name">
+                    <h2>@CurrentUser?.Username (@CurrentUser?.DisplayName)</h2>
+                    @if (IsFriend)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="async () => { await DeleteFriendAsync(); await CheckFriendAsync(); }">
+                            @localizer["UNFOLLOW"]
+                        </button>
+                    }
+                    else if (CurrentUser?.Id != _loggedInUser?.Id && CurrentUser != null)
+                    {
+                        <button type="button" class="btn btn-success" @onclick="async () => { await AddFriendAsync(CurrentUser.Id); await CheckFriendAsync(); }">
+                            @localizer["FOLLOW"]
+                        </button>
+                    }
                 </div>
             </div>
-        </div>
-        <div class="row pt-4">
-            <div class="col-lg-6">
-                <div class="card p-4 pb-3">
-                    <div class="row">
-                        <div class="col">
-                            <h4>@localizer["ABOUT_ME"]</h4>
-                        </div>
-                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
-                        {
-                            <div class="col-auto text-end">
-                                <button type="button" class="btn pt-0" @onclick="OpenEditProfile"><i class="fa-solid fa-user-pen"></i></button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="p-4 pb-3">
+                        <div class="row pb-4">
+                            <div class="col">
+                                <h4>@localizer["ABOUT_ME"]</h4>
                             </div>
-                        }
+                            @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                            {
+                                <div class="col-auto text-end">
+                                    <button type="button" class="btn pt-0" @onclick="() => EditProfile = true"><i class="fa-solid fa-user-pen"></i></button>
+                                </div>
+                            }
+                        </div>
+                        <p>@CurrentUser?.Description</p>
+                        <h6>@localizer["LAST_LOGIN"] @CurrentUser?.LastLogin.ToShortDateString()</h6>
+                        <h6>@localizer["REGISTERED_SINCE"] @CurrentUser?.RegistrationDate.ToShortDateString()</h6>
                     </div>
-                    <p>@CurrentUser?.Description</p>
-                </div>
 
-                <div class="card p-4">
-                    <div class="row">
-                        <div class="col">
-                            <h4>@localizer["FRIENDS"]</h4>
-                        </div>
-                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
-                        {
-                            <div class="col-auto text-end">
-                                <button type="button" class="btn pt-0" @onclick="OpenFriendModal"><i class="fa-solid fa-user-plus"></i></button>
+                    <hr class="ms-4"/>
+
+                    <div class="p-4 pt-2">
+                        <div class="row pb-4">
+                            <div class="col">
+                                <h4>@localizer["FRIENDS"]</h4>
                             </div>
-                        }
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-lg">
-                            <tbody>
-                                @foreach (User item in Friends)
+                            @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                            {
+                                <div class="col-auto text-end">
+                                    <button type="button" class="btn pt-0" @onclick="() => AddFriendModal = true"><i class="fa-solid fa-user-plus"></i></button>
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                @foreach (User item in Friends.Take(4))
                                 {
-                                    <tr>
-                                        <td>
-                                            <a href="/Account/Profile/@item.Username">
+                                    <div class="col">
+                                        <div class="d-flex align-items-center">
+                                            <a href="/Account/Profile/@item.Username" class="me-3">
                                                 <img src="@item.ConvertedImage" height="50" width="50" class="rounded-circle">
                                             </a>
-                                        </td>
-                                        <td>@item.Username (@item.DisplayName)</td>
-                                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
-                                        {
-                                            <td>
-                                                <span class="aktion-icon" role="button" @onclick="() => DeleteFriendAsync(item.UserId)">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </span>
-                                            </td>
-                                        }
-                                    </tr>
+                                            <div>
+                                                <div>@item.Username (@item.DisplayName)</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
+                    <hr class="mb-0 ms-4"/>
                 </div>
-            </div>
 
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="p-4">
-                        <div class="row">
+                <div class="col-lg-6">
+                    <div class="ps-4 pe-4">
+                        <div class="row pt-4">
                             <div class="form-group col">
                                 <h4>@localizer["ARMIES"]</h4>
                             </div>
                             @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                             {
                                 <div class="col-auto text-end">
-                                    <button type="button" class="btn pt-0" @onclick="OpenUnitModal"><i class="fa-solid fa-person-circle-plus fa-lg"></i></button>
+                                    <button type="button" class="btn pt-0" @onclick="() => AddUnitModal = true"><i class="fa-solid fa-person-circle-plus fa-lg"></i></button>
                                 </div>
                             }
                         </div>
                         <div class="form-floating">
-                            <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="SelectFractionUnitsByUser" class="form-control">
+                            <InputSelect id="fractions" @bind-Value="SelectedFraction" @oninput="@(async () => { await SelectFractionUnitsByUser(); await CalculateForceAsync(); })" class="form-control">
                                 @foreach (Fraction item in Fractions)
                                 {
                                     <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
@@ -107,29 +112,46 @@
                             <label for="fractions">@localizer["FRACTION"]</label>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-lg">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>@localizer["UNIT"]</th>
                                         <th>@localizer["QUANTITY"]</th>
-                                        <th></th>
+                                        <th>@localizer["FORCE"]</th>
+                                        @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                                        {
+                                            <th></th>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (Unit item in UserUnits.Where(x => x.FractionId == SelectedFraction))
                                     {
                                         <tr>
-                                            <td>
-                                                <div>@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</div>
+                                            <td class="text-nowrap">
+                                                <a style="color: inherit; text-decoration: none;" href="/Fractions/@AppdataService.Fractions.FirstOrDefault(x => x.FractionId == item.FractionId)?.GetLocalization(CultureInfo.CurrentCulture)?.ShortName/@item.UnitId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</a>
                                             </td>
                                             <td class="align-items-center">@item.Quantity</td>
+                                            <td class="text-nowrap">@(item.ForceOfQuantity) (@item.Force)</td>
                                             @if (CurrentUser?.UserId == _loggedInUser?.UserId)
                                             {
                                                 <td class="align-items-center">
-                                                    <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item.UnitId)">
+                                                    <span class="aktion-icon" role="button" @onclick="() => DeleteUnitAsync(item)">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </span>
                                                 </td>
+                                            }
+                                        </tr>
+                                    }
+                                    @if (UserUnits.Where(x => x.FractionId == SelectedFraction).Any())
+                                    {
+                                        <tr>
+                                            <td class="font-bold">@localizer["TOTAL"]</td>
+                                            <td class="font-bold">@UserUnits.Where(x => x.FractionId == SelectedFraction).Sum(x => x.Quantity)</td>
+                                            <td class="font-bold">@UserUnits.Where(x => x.FractionId == SelectedFraction).Sum(x => x.ForceOfQuantity)</td>
+                                            @if (CurrentUser?.UserId == _loggedInUser?.UserId)
+                                            {
+                                                <td></td>
                                             }
                                         </tr>
                                     }
@@ -156,7 +178,7 @@ else
     </div>
 }
 
-@if (AddFriendModal)
+@if (AddFriendModal && CurrentUser?.UserId == _loggedInUser?.UserId)
 {
     <Modal Title="@localizer["FIND_PLAYERS"]"
            OnClosed="() => AddFriendModal = false"
@@ -225,7 +247,7 @@ else
     </Modal>
 }
 
-@if (AddUnitModal)
+@if (AddUnitModal && CurrentUser?.UserId == _loggedInUser?.UserId)
 {
     <Modal Title="Edit your armies"
            OnClosed="() => AddUnitModal = false"
@@ -279,7 +301,7 @@ else
     </Modal>
 }
 
-@if (EditProfile && CurrentUser != null)
+@if (EditProfile && CurrentUser?.UserId == _loggedInUser?.UserId)
 {
     <Modal Title="Edit your profile"
            OnClosed="() => EditProfile = false"
@@ -289,37 +311,40 @@ else
         <EditForm Model="CurrentUser">
             <FluentValidationValidator />
             <ValidationSummary />
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-floating mb-3">
-                        <InputText @bind-Value="CurrentUser.DisplayName" class="form-control" id="user-displayname" placeholder="Quantity" />
-                        <label for="user-displayname">@localizer["NAME"]</label>
-                    </div>
+            @if (CurrentUser is not null)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="CurrentUser.DisplayName" class="form-control" id="user-displayname" placeholder="Quantity" />
+                            <label for="user-displayname">@localizer["NAME"]</label>
+                        </div>
 
-                    <div class="form-floating mb-3">
-                        <InputSelect id="user-mainfraction" @bind-Value="CurrentUser.MainFractionId" class="form-control">
-                            @if (CurrentUser.MainFractionId == 0)
-                            {
-                                <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
-                            }
-                            @foreach (Fraction item in Fractions)
-                            {
-                                <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
-                            }
-                        </InputSelect>
-                        <label for="user-mainfraction">@localizer["MAIN_FRACTION"]</label>
-                    </div>
 
-                    <div class="form-floating mb-3">
-                        <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
-                        <label for="user-description">@localizer["DESCRIPTION"]</label>
-                    </div>
+                        <div class="form-floating mb-3">
+                            <InputSelect id="user-mainfraction" @bind-Value="CurrentUser.MainFractionId" class="form-control">
+                                @if (CurrentUser.MainFractionId == 0)
+                                {
+                                    <option value="0" selected>@localizer["SELECT_CHOOSE"]</option>
+                                }
+                                @foreach (Fraction item in Fractions)
+                                {
+                                    <option value="@item.FractionId">@item.GetLocalization(CultureInfo.CurrentCulture)?.Name</option>
+                                }
+                            </InputSelect>
+                            <label for="user-mainfraction">@localizer["MAIN_FRACTION"]</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputTextArea @bind-Value="CurrentUser.Description" class="form-control" id="user-description" placeholder="Quantity" />
+                            <label for="user-description">@localizer["DESCRIPTION"]</label>
+                        </div>
 
-                    <div class="mb-3">
-                        <InputFile @bind-Value="CurrentUser.Image" class="form-control" id="user-image" placeholder="Image" />
+                        <div class="mb-3">
+                            <InputFile @bind-Value="CurrentUser.Image" class="form-control" id="user-image" placeholder="Image" />
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </EditForm>
 
         <div class="toolbar">

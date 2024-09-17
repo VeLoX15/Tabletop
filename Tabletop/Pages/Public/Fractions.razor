@@ -18,16 +18,15 @@
                 <div class="card h-100">
                     @if (fraction.ConvertedImage != string.Empty)
                     {
-                        <a href="@($"/Fractions/{fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName}")">
+                        <a href="@($"/Fractions/{fraction.GetLocalization(AppdataService.SupportedCultures[0])?.ShortName}")">
                             <img src="@fraction.ConvertedImage" class="card-img-top">
                         </a>
                     }
                     <div class="card-header ps-4">
                         <h4 class="card-title">@fraction.GetLocalization(CultureInfo.CurrentCulture)?.Name</h4>
                     </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text" style="text-align: justify">@fraction.GetLocalization(CultureInfo.CurrentCulture)?.Description</p>
-                        <a href="@($"/Fractions/{fraction.GetLocalization(CultureInfo.CurrentCulture)?.ShortName}")" class="btn btn-primary mt-auto">More</a>
+                    <div class="card-body d-flex flex-column ps-4">
+                        <a href="@($"/Fractions/{fraction.GetLocalization(AppdataService.SupportedCultures[0])?.ShortName}")" class="btn btn-primary mt-auto">@localizer["MORE"]</a>
                     </div>
                 </div>
             </div>

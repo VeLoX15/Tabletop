@@ -3,7 +3,7 @@ using Tabletop.Core.Interfaces;
 
 namespace Tabletop.Core.Models
 {
-    public class Ability : LocalizationModelBase<AbilityDescription>
+    public class Ability : LocalizationModelBase<AbilityDescription>, IDbModel
     {
         [CompareField("ability_id")]
         public int AbilityId { get; set; }
@@ -23,7 +23,8 @@ namespace Tabletop.Core.Models
                 {
                     { "ABILITY_ID", AbilityId },
                     { "NAME", description.Name },
-                    { "DESCRIPTION", description.Description }
+                    { "DESCRIPTION", description.Description },
+                    { "MECHANIC", description.Mechanic }
                 };
             }
         }
@@ -52,5 +53,8 @@ namespace Tabletop.Core.Models
 
         [CompareField("description")]
         public string Description { get; set; } = string.Empty;
+
+        [CompareField("mechanic")]
+        public string Mechanic { get; set; } = string.Empty;
     }
 }

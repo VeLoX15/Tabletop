@@ -10,7 +10,7 @@ namespace Tabletop.Core.Services
     {
         public async Task CreateAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = $@"INSERT INTO `tabletop`.`fractions` 
+            string sql = $@"INSERT INTO Fractions
                 (
                 )
                 VALUES
@@ -21,18 +21,20 @@ namespace Tabletop.Core.Services
 
             foreach (var description in input.Description)
             {
-                sql = @"INSERT INTO `tabletop`.`fraction_description`
+                sql = @"INSERT INTO FractionDescription
                     (
-                    `fraction_id`,
-                    `code`,
-                    `name`,
-                    `description`
+                    FractionId,
+                    Code,
+                    Name,
+                    ShortName,
+                    Description
                     )
                     VALUES
                     (
                     @FRACTION_ID,
                     @CODE,
                     @NAME,
+                    @SHORT_NAME,
                     @DESCRIPTION
                     )";
 
@@ -41,6 +43,7 @@ namespace Tabletop.Core.Services
                     FRACTION_ID = input.FractionId,
                     CODE = description.Code,
                     NAME = description.Name,
+                    SHORT_NAME = description.ShortName,
                     DESCRIPTION = description.Description
                 };
 
@@ -50,7 +53,7 @@ namespace Tabletop.Core.Services
 
         public async Task DeleteAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "DELETE FROM `tabletop`.`fractions` WHERE `fraction_id` = @FRACTION_ID";
+            string sql = "DELETE FROM Fractions WHERE FractionId = @FRACTION_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -60,7 +63,7 @@ namespace Tabletop.Core.Services
 
         public async Task<Fraction?> GetAsync(int fractionId, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"SELECT * FROM `tabletop`.`fractions` WHERE `fraction_id` = @FRACTION_ID";
+            string sql = @"SELECT * FROM Fractions WHERE FractionId = @FRACTION_ID";
 
             var fraction = await dbController.GetFirstAsync<Fraction>(sql, new
             {
@@ -72,7 +75,7 @@ namespace Tabletop.Core.Services
 
         public static async Task<List<Fraction>> GetAllAsync(IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = "SELECT * FROM `tabletop`.`fractions`";
+            string sql = "SELECT * FROM Fractions";
 
             var list = await dbController.SelectDataAsync<Fraction>(sql, cancellationToken: cancellationToken);
             await LoadFractionDescriptionsAsync(list, dbController, cancellationToken);
@@ -81,24 +84,26 @@ namespace Tabletop.Core.Services
 
         public async Task UpdateAsync(Fraction input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = @"UPDATE `tabletop`.`fractions` SET
-                `image` = @IMAGE
-                WHERE `fraction_id` = @FRACTION_ID";
+            string sql = @"UPDATE Fractions SET
+                Image = @IMAGE
+                WHERE FractionId = @FRACTION_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
             foreach (var description in input.Description)
             {
-                sql = @"UPDATE `tabletop`.`fraction_description` SET
-                    `name` = @NAME,
-                    `description` = @DESCRIPTION
-                    WHERE `fraction_id` = @FRACTION_ID AND `code` = @CODE";
+                sql = @"UPDATE FractionDescription SET
+                    Name = @NAME,
+                    Description = @DESCRIPTION,
+                    ShortName = @SHORT_NAME
+                    WHERE FractionId = @FRACTION_ID AND Code = @CODE";
 
                 var parameters = new
                 {
                     FRACTION_ID = input.FractionId,
                     CODE = description.Code,
                     NAME = description.Name,
+                    SHORT_NAME = description.ShortName,
                     DESCRIPTION = description.Description
                 };
 
@@ -110,14 +115,14 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT fd.`name`, f.* " +
-                "FROM `tabletop`.`fraction_description` fd " +
-                "INNER JOIN `tabletop`.`fractions` f " +
-                "ON (f.`fraction_id` = fd.`fraction_id`) " +
+            sqlBuilder.AppendLine("SELECT fd.Name, f.* " +
+                "FROM FractionDescription fd " +
+                "INNER JOIN Fractions f " +
+                "ON (f.FractionId = fd.FractionId) " +
                 "WHERE 1 = 1");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
-            sqlBuilder.AppendLine(@$" ORDER BY `name` ASC ");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
+            sqlBuilder.AppendLine(@$" ORDER BY Name ASC ");
             sqlBuilder.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             // Zum Debuggen schreiben wir den Wert einmal als Variabel
@@ -132,9 +137,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sqlBuilder = new();
-            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM `tabletop`.`fraction_description` WHERE 1 = 1 ");
+            sqlBuilder.AppendLine("SELECT COUNT(*) AS record_count FROM FractionDescription WHERE 1 = 1 ");
             sqlBuilder.AppendLine(GetFilterWhere(filter));
-            sqlBuilder.AppendLine(@" AND `code` = @CULTURE");
+            sqlBuilder.AppendLine(@" AND Code = @CULTURE");
 
             string sql = sqlBuilder.ToString();
 
@@ -149,7 +154,7 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sqlBuilder.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sqlBuilder.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
             }
 
             string sql = sqlBuilder.ToString();
@@ -168,10 +173,10 @@ namespace Tabletop.Core.Services
         private static async Task LoadFractionDescriptionsAsync(List<Fraction> list, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (list.Any())
+            if (list.Count != 0)
             {
                 IEnumerable<int> fractionIds = list.Select(x => x.Id);
-                string sql = $"SELECT * FROM `tabletop`.`fraction_description` WHERE `fraction_id` IN ({string.Join(",", fractionIds)})";
+                string sql = $"SELECT * FROM FractionDescription WHERE FractionId IN ({string.Join(",", fractionIds)})";
                 List<FractionDescription> descriptions = await dbController.SelectDataAsync<FractionDescription>(sql, null, cancellationToken);
 
                 foreach (var fraction in list)

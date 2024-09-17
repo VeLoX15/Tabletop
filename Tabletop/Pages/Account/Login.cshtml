@@ -30,31 +30,31 @@
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-lg-4">
-                <div class="login loginbox p-4">
-                    <a href="/" class="text-center mb-4 text-decoration-none"><h1 class="text-white">Tablebricks</h1></a>
-                    <h2 class="text-center mb-4 text-white">@localizer["LOGIN"]</h2>
-                    <form method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group mb-4">
-                            <input asp-for="Input.Username" type="text" class="form-control" placeholder="@localizer["USERNAME"]">
-                            <span asp-validation-for="Input.Username" class="text-danger"></span>
-                        </div>
-                        <div class="form-group mb-4">
-                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="@localizer["PASSWORD"]">
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                        <div class="form-check mb-4">
-                            <input asp-for="Input.RememberMe" class="form-check-input" id="rememberMe">
-                            <label asp-for="Input.RememberMe" class="form-check-label">
-                                @Html.DisplayNameFor(m => m.Input.RememberMe)
-                            </label>
-                        </div>
-                        <button class="btn btn-primary btn-block btn-lg shadow-lg">Anmelden</button>
-                        <div class="text-center">
-                            <a href="registration.php">Create an account</a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="login loginbox p-4">
+                    <a href="/" class="text-center mb-4 text-decoration-none"><h1 class="text-white">@localizer["Tablebricks"]</h1></a>
+                        <h2 class="text-center mb-4 text-white">@localizer["LOGIN"]</h2>
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group mb-4">
+                                <input asp-for="Input.Username" type="text" class="form-control" placeholder="@localizer["USERNAME"]">
+                                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-4">
+                                <input asp-for="Input.Password" type="password" class="form-control" placeholder="@localizer["PASSWORD"]">
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-check mb-4">
+                                <input asp-for="Input.RememberMe" class="form-check-input" id="rememberMe">
+                                <label asp-for="Input.RememberMe" class="form-check-label">
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        <button class="btn btn-primary btn-block btn-lg shadow-lg">@localizer["SIGN_IN"]</button>
+                            <div class="text-center">
+                            <a href="Registration">@localizer["CREATE_ACCOUNT"]</a>
+                            </div>
+                        </form>
+                    </div>
             </div>
         </div>
     </div>

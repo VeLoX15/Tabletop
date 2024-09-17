@@ -9,7 +9,7 @@ namespace Tabletop.Pages.Public
 
         protected override void OnInitialized()
         {
-            List = AppdataService.Fractions.ToList();
+            List = [.. AppdataService.Fractions];
 
             foreach(var fraction in List)
             {

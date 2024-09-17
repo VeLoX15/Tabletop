@@ -9,7 +9,7 @@ namespace Tabletop.Pages.Public
 
         protected override void OnInitialized()
         {
-            List = AppdataService.Gamemodes.ToList();
+            List = [.. AppdataService.Gamemodes];
 
             foreach (var gamemode in List)
             {

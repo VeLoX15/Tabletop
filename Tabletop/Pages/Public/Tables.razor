@@ -1,4 +1,4 @@
-﻿@page "/Tables"
+﻿@page "/Damage-Tables"
 @inject IStringLocalizer<App> localizer
 
 <PageTitle>@localizer["TABLEBRICKS"] - @localizer["DAMAGE_TABLE"]</PageTitle>
@@ -6,43 +6,44 @@
 <div class="container">
     <div class="card">
         <div class="card-header ps-4">
-            <h2>@localizer["DAMAGE_TABLE"]</h2>
-            <p>@localizer["DAMAGE_TABLE_DESCRIPTION"]</p>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0">@localizer["DAMAGE_TABLE"]</h2>
+            </div>
         </div>
-    </div>
-    <div class="card p-4">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@localizer["UNIT"]</th>
-                        @for (int i = 1; i <= 10; i++)
-                        {
-                            <th>@localizer["D"]@(i)</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 1; i <= 10; i++)
-                    {
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th>@localizer["A"]@(i)</th>
-                            @for (int j = 1; j <= 10; j++)
+                            <th>@localizer["UNIT"]</th>
+                            @for (int i = 1; i <= 10; i++)
                             {
-                                var values = Calculation.AttackValueTranslator(i, j);
-                                if (values.Item2 > 0)
-                                {
-                                    <td>@values.Item1&@values.Item2</td>
-                                }
-                                else
-                                {
-                                    <td>@values.Item1</td>
-                                }
+                                <th>@localizer["D"]@(i)</th>
                             }
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <tr>
+                                <th>@localizer["A"]@(i)</th>
+                                @for (int j = 1; j <= 10; j++)
+                                {
+                                    var values = Calculation.AttackValueTranslator(i, j);
+                                    if (values.Item2 > 0)
+                                    {
+                                        <td>@values.Item1&@values.Item2</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@values.Item1</td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

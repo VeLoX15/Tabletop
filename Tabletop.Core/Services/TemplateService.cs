@@ -7,22 +7,15 @@ namespace Tabletop.Core.Services
 {
     public class TemplateService : IModelService<Template, int, TemplateFilter>
     {
-        private readonly UnitService _unitService;
-
-        public TemplateService(UnitService unitService)
-        {
-            _unitService = unitService;
-        }
-
         public async Task CreateAsync(Template input, IDbController dbController, CancellationToken cancellationToken = default)
         {
-            string sql = $@"INSERT INTO `tabletop`.`templates` 
+            string sql = $@"INSERT INTO Templates 
                 (
-                `user_id`,
-                `fraction_id`,
-                `name`,
-                `force`,
-                `used_force`
+                UserId,
+                FractionId,
+                Name,
+                Force,
+                UsedForce
                 )
                 VALUES
                 (
@@ -37,7 +30,7 @@ namespace Tabletop.Core.Services
 
             foreach(var unit in input.Units)
             {
-                await _unitService.CreateTemplateUnitAsync(input, unit, dbController, cancellationToken);
+                await UnitService.CreateTemplateUnitAsync(input, unit, dbController, cancellationToken);
             }
         }
 
@@ -45,9 +38,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _unitService.DeleteTemplateUnitsAsync(input.TemplateId, dbController, cancellationToken);
+            await UnitService.DeleteTemplateUnitsAsync(input.TemplateId, dbController, cancellationToken);
 
-            string sql = "DELETE FROM `tabletop`.`templates` WHERE `template_id` = @TEMPLATE_ID";
+            string sql = "DELETE FROM Templates WHERE TemplateId = @TEMPLATE_ID";
 
             await dbController.QueryAsync(sql, new
             {
@@ -59,7 +52,7 @@ namespace Tabletop.Core.Services
         public async Task<Template?> GetAsync(int templateId, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = @"SELECT * FROM `tabletop`.`templates`  WHERE `template_id` = @TEMPLATE_ID";
+            string sql = @"SELECT * FROM Templates  WHERE TemplateId = @TEMPLATE_ID";
 
             var template = await dbController.GetFirstAsync<Template>(sql, new
             {
@@ -69,20 +62,19 @@ namespace Tabletop.Core.Services
             return template;
         }
 
-        public async Task<List<Template>> GetTemplateOnForceAsync(int user_id, int force, IDbController dbController, CancellationToken cancellationToken = default)
+        public static async Task<List<Template>> GetTemplateOnForceAsync(int user_id, IDbController dbController, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string sql = "SELECT * FROM `tabletop`.`templates` WHERE `user_id` = @USER_ID AND `force` = @FORCE";
+            string sql = "SELECT * FROM Templates WHERE UserId = @USER_ID";
 
             var list = await dbController.SelectDataAsync<Template>(sql, new
             {
-                USER_ID = user_id,
-                FORCE = force
+                USER_ID = user_id
             }, cancellationToken);
 
             foreach (var item in list)
             {
-                item.Units = await _unitService.GetTemplateUnitsAsync(item.TemplateId, dbController, cancellationToken);
+                item.Units = await UnitService.GetTemplateUnitsAsync(item.TemplateId, dbController, cancellationToken);
             }
 
             return list;
@@ -92,9 +84,9 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT * FROM `tabletop`.`templates`  WHERE `user_id` = @USER_ID");
+            sb.AppendLine("SELECT * FROM Templates  WHERE UserId = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
-            sb.AppendLine(@$"  ORDER BY `name` ASC");
+            sb.AppendLine(@$"  ORDER BY Name ASC");
             sb.AppendLine(dbController.GetPaginationSyntax(filter.PageNumber, filter.Limit));
 
             string sql = sb.ToString();
@@ -103,7 +95,7 @@ namespace Tabletop.Core.Services
 
             foreach(var item in list)
             {
-                item.Units = await _unitService.GetTemplateUnitsAsync(item.TemplateId, dbController, cancellationToken);
+                item.Units = await UnitService.GetTemplateUnitsAsync(item.TemplateId, dbController, cancellationToken);
             }
 
             return list;
@@ -114,7 +106,9 @@ namespace Tabletop.Core.Services
             return new Dictionary<string, object?>
             {
                 { "SEARCHPHRASE", $"%{filter.SearchPhrase}%" },
-                { "USER_ID", filter.UserId }
+                { "USER_ID", filter.UserId },
+                { "FRACTION_ID", filter.FractionId },
+                { "FORCE", filter.Force }
             };
         }
 
@@ -124,7 +118,15 @@ namespace Tabletop.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filter.SearchPhrase))
             {
-                sb.AppendLine(@" AND (UPPER(`name`) LIKE @SEARCHPHRASE)");
+                sb.AppendLine(@" AND (UPPER(Name) LIKE @SEARCHPHRASE)");
+            }
+            if (filter.FractionId != 0)
+            {
+                sb.AppendLine(@" AND FractionId = @FRACTION_ID");
+            }
+            if (filter.Force != 0)
+            {
+                sb.AppendLine(@" AND Force = @FORCE");
             }
 
             string sql = sb.ToString();
@@ -135,7 +137,7 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
             StringBuilder sb = new();
-            sb.AppendLine("SELECT COUNT(*) FROM `tabletop`.`templates`  WHERE `user_id` = @USER_ID");
+            sb.AppendLine("SELECT COUNT(*) FROM Templates WHERE UserId = @USER_ID");
             sb.AppendLine(GetFilterWhere(filter));
 
             string sql = sb.ToString();
@@ -149,20 +151,20 @@ namespace Tabletop.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _unitService.DeleteTemplateUnitsAsync(input.TemplateId, dbController, cancellationToken);
+            await UnitService.DeleteTemplateUnitsAsync(input.TemplateId, dbController, cancellationToken);
 
-            string sql = @"UPDATE `tabletop`.`templates` SET
-                `fraction_id` = @FRACTION_ID,
-                `name` = @NAME,
-                `force` = @FORCE,
-                `used_force` = @USED_FORCE
-                WHERE `template_id` = @TEMPLATE_ID";
+            string sql = @"UPDATE Templates SET
+                FractionId = @FRACTION_ID,
+                Name = @NAME,
+                Force = @FORCE,
+                UsedForce = @USED_FORCE
+                WHERE TemplateId = @TEMPLATE_ID";
 
             await dbController.QueryAsync(sql, input.GetParameters(), cancellationToken);
 
             foreach (var unit in input.Units)
             {
-                await _unitService.CreateTemplateUnitAsync(input, unit, dbController, cancellationToken);
+                await UnitService.CreateTemplateUnitAsync(input, unit, dbController, cancellationToken);
             }
         }
     }
