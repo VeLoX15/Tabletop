@@ -8,10 +8,6 @@ namespace Tabletop.Core.Services
         private readonly UnitService _unitService;
         private readonly UserService _userService;
 
-        public PlayerService(UnitService unitService, UserService userService)
-        {
-            _unitService = unitService;
-            _userService = userService;
         }
 
         public async Task CreateAsync(Player input, IDbController dbController, CancellationToken cancellationToken = default)
